@@ -13,7 +13,7 @@ upbase=(230, 155)
 downbase=(920, 602)
 
 def main():
-    #初期設定
+    #初期設定だよ
     pygame.init() 
     screen = pygame.display.set_mode(field) 
     pygame.display.set_caption("Duel Masters") 
