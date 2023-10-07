@@ -17,3 +17,12 @@ def b_s_001(save,flag):
 
 def gb_c_001_cip(save,flag):
     return func.draw(2,save,flag)
+
+def b_s_001(save,flag):
+    return func.draw(1,save,flag)
+
+
+def b_c_003_cip(save,flag):
+    if flag:
+        temp=save[0]
+    return

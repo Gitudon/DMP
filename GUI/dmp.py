@@ -16,7 +16,7 @@ def main():
     #初期設定だよ
     pygame.init() 
     screen = pygame.display.set_mode(field) 
-    pygame.display.set_caption("Duel Masters") 
+    pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     
@@ -124,7 +124,7 @@ def main():
                             elif 70<=y<=120:
                                 save[4]=sorted(save[4])
                             elif 130<=y<=180:
-                                save=draw(1,save,True)
+                                save=cards.b_s_001(save,True)
                             elif 190<=y<=240:
                                 fflag=False
                                 showcards(save[2],screen,True)
