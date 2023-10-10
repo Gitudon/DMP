@@ -159,6 +159,23 @@ def draw(n,save,flag):
                 print("You can't draw a card.")
     return save
 
+def bochiokuri(n,save,flag):
+    if flag:
+        for _ in range(n):
+            if save[0]!=[]:
+                save[10].append(save[0][0])
+                save[0] = save[0][1:]
+            else:
+                print("You can't put a card.")
+    else:
+        for _ in range(n):
+            if save[1]!=[]:
+                save[11].append(save[1][1])
+                save[1] = save[1][1:]
+            else:
+                print("You can't put a card.")
+    return save
+
 def shieldplus(n,save,flag):
     if flag:
         for _ in range(n):

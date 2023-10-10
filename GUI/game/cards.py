@@ -19,8 +19,7 @@ def gb_c_001_cip(save,flag):
     return func.draw(2,save,flag)
 
 def b_s_001(save,flag):
-    return func.draw(1,save,flag)
-
+    return func.draw(2,save,flag)
 
 def b_c_003_cip(save,flag):
     if flag:
@@ -33,8 +32,57 @@ def b_c_003_cip(save,flag):
         save[11]=[]
     return save
 
-def b_c_001_cip(save,flag):
+def b_c_001_cip(save,flag,screen):
     if flag:
         if len(save[0])>5:
-            temp=save[:5]
+            temp=save[0][:5]
+        else:
+            temp=save[0]
+        func.showcards(temp,screen,True)
+    else:
+        if len(save[1])>5:
+            temp=save[1][:5]
+        else:
+            temp=save[1]
+        func.showcards(temp,screen,False)
     return save
+
+def b_cs_001_cip(flag):
+    return
+
+def b_s_002(save,flag):
+    if flag:
+        save[0]=func.draw(1,save,flag)
+    else:
+        save[1]=func.draw(1,save,flag)
+
+# 任意効果の実装：選択のためのボタンを描画する関数を実装
+
+def bw_cs_001(save,flag):
+    return func.draw(3,save,flag)
+
+def d_c_001_cip(save,flag):
+    return func.bochiokuri(1,save,flag)
+
+def d_c_004_cip(save,flag):
+    a=True
+    if a:
+        if flag:
+            tmp=func.shuffle(save[11])
+            save[11]=[]
+            save[1]+=tmp
+            return save
+        else:
+            tmp=func.shuffle(save[10])
+            save[10]=[]
+            save[0]+=tmp
+            return save
+    else:
+        return func.bochiokuri(2,save,flag)
+
+def d_c_005_cip(save,flag):
+    a=True
+    if a:
+        save=func.bochiokuri(3,save,flag)
+    return save
+
