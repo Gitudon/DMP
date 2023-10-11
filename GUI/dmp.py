@@ -19,13 +19,15 @@ def main():
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+    # カードを表す配列の形式 もしかしたら
+    # card = [name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
     
     #デッキ選択
     screen.fill(fieldcolor)
     pygame.display.update()
     choosing=True
     num=1
-    decklist(screen,num,True)
+    decklist(screen,num)
     pygame.display.update()
     while choosing:
         for event in pygame.event.get():
@@ -42,7 +44,7 @@ def main():
                     choosing=False
     choosing=True
     num=1
-    decklist(screen,num,False)
+    decklist(screen,num)
     pygame.display.update()
     while choosing:
         for event in pygame.event.get():
@@ -58,7 +60,7 @@ def main():
                     deckname2="deck"+str(num)
                     choosing=False
     
-    #デッキ登録
+    #デッキ登録 仕様変更が必要。
     usingdeck1="DMP/GUI/decks/"+deckname1+".txt"
     with open(usingdeck1, "r", encoding="utf-8") as f:
         save[0] = f.read().splitlines()
@@ -84,7 +86,7 @@ def main():
     if len(save[14])>0 or len(save[15])>0:
         pygame.display.update()
         time.sleep(1)
-    sshield(screen,save)
+    sshield(screen)
     save=shieldplus(5,save,True)
     save=shieldplus(5,save,False)
     menu(screen)

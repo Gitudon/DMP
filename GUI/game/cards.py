@@ -51,10 +51,8 @@ def b_cs_001_cip(flag):
     return
 
 def b_s_002(save,flag):
-    if flag:
-        save[0]=func.draw(1,save,flag)
-    else:
-        save[1]=func.draw(1,save,flag)
+    save=func.draw(1,save,flag)
+    return save
 
 # 任意効果の実装：選択のためのボタンを描画する関数を実装
 
@@ -86,3 +84,72 @@ def d_c_005_cip(save,flag):
         save=func.bochiokuri(3,save,flag)
     return save
 
+def d_c_006_cip(save,flag):
+    return save
+
+def d_mr_001_cip(save,flag):
+    return save
+
+def d_s_001(save,flag):
+    save=func.bochiokuri(4,save,flag)
+    return save
+
+def d_tc_001_tip(save,flag):
+    a=True
+    if a:
+        save=func.bochiokuri(2,save,flag)
+    return save
+
+def g_s_001(save,flag):
+    return func.addmana(1,save,flag)
+
+def gbd_c_002_cip(save,flag):
+    a=True
+    if a:
+        save=func.draw(2,save,flag)
+    return save
+
+def rg_c_001_cip(save,flag):
+    save=func.addmana(1,save,flag)
+    if flag:
+        save[6][-1][6]=True
+        if 'dragon' in save[6][-1][1]:
+            save=func.addmana(1,save,flag)
+            save[6][-1][6]=True
+    else:
+        save[7][-1][6]=True
+        if 'dragon' in save[7][-1][1]:
+            save=func.addmana(1,save,flag)
+            save[7][-1][6]=True
+    return save
+
+def rg_s_001(save,flag):
+    if flag:
+        one=save[0][0]
+        two=save[0][1]
+        save[0]=save[0][2:]
+        if 'dragon' in one[2]:
+            one[6]=True
+            save[6].append(one)
+        else:
+            save[10].append(one)
+        if 'dragon' in two[2]:
+            two[6]=True
+            save[6].append(two)
+        else:
+            save[10].append(two)
+    else:
+        one=save[1][0]
+        two=save[1][1]
+        save[1]=save[1][2:]
+        if 'dragon' in one[2]:
+            one[6]=True
+            save[7].append(one)
+        else:
+            save[11].append(one)
+        if 'dragon' in two[2]:
+            two[6]=True
+            save[7].append(two)
+        else:
+            save[11].append(two)
+    return save

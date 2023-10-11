@@ -142,6 +142,10 @@ def check(a):
     print(b)
     return len(b)
 
+# 配列から要素を選んでほかの配列に移動させる関数
+def choice(save,flag,screen):
+    return save
+
 def draw(n,save,flag):
     if flag:
         for _ in range(n):
@@ -176,6 +180,27 @@ def bochiokuri(n,save,flag):
                 print("You can't put a card.")
     return save
 
+def addmana(n,save,flag):
+    if flag:
+        for _ in range(n):
+            if save[0]!=[]:
+                save[6].append(save[0][0])
+                if len(save[6][-1][4])>=2:
+                    save[6][-1][6]=True
+                save[0] = save[0][1:]
+            else:
+                print("You can't put a card.")
+    else:
+        for _ in range(n):
+            if save[1]!=[]:
+                save[7].append(save[1][1])
+                if len(save[7][-1][4])>=2:
+                    save[7][-1][6]=True
+                save[1] = save[1][1:]
+            else:
+                print("You can't put a card.")
+    return save
+
 def shieldplus(n,save,flag):
     if flag:
         for _ in range(n):
@@ -199,6 +224,7 @@ def showcards(cards,screen,flag):
     tmp=[]
     base=(100,100)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
+    # カードを配列として記録するので要変更
     for i in range(len(cards)):
         tmp.append("DMP/GUI/image/"+cards[i]+".jpg")
     for i in range(len(tmp)):
@@ -219,14 +245,19 @@ def showcards(cards,screen,flag):
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
 
+# 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
+def select(cards,screen,flag):
+    return
+
 def showcard(screen,cards):
     n=0
+    # カードを配列として記録するので要変更
     tmp=("DMP/GUI/image/"+cards[n]+".jpg")
     tmp=pygame.image.load(tmp)
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (525,90))
 
-def sshield(screen,save):
+def sshield(screen):
     for i in range(5):
         img = pygame.image.load("DMP/GUI/image/ura.jpg")
         img = pygame.transform.scale(img, (width, height))
@@ -284,9 +315,9 @@ def deckinfo(save,flag,screen):
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [upbase[0]+77,upbase[1]+107])
 
-def decklist(screen,num,flag):
+def decklist(screen,num):
     size=(510, 620)
-    font = pygame.font.SysFont("msgothic", 30)
+    # font = pygame.font.SysFont("msgothic", 30)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
     Pass="DMP/GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
