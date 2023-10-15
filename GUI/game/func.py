@@ -2,6 +2,8 @@ import random
 import pygame
 import time
 import sys
+import json
+import pickle
 
 #定数の設定
 width=100

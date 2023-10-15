@@ -2,6 +2,8 @@ import random
 import pygame
 import time
 import sys
+import json
+import pickle
 from game import func
 
 #定数の設定
@@ -113,12 +115,12 @@ def rg_c_001_cip(save,flag):
     save=func.addmana(1,save,flag)
     if flag:
         save[6][-1][6]=True
-        if 'dragon' in save[6][-1][1]:
+        if 'ドラゴン' in save[6][-1][2]:
             save=func.addmana(1,save,flag)
             save[6][-1][6]=True
     else:
         save[7][-1][6]=True
-        if 'dragon' in save[7][-1][1]:
+        if 'ドラゴン' in save[7][-1][2]:
             save=func.addmana(1,save,flag)
             save[7][-1][6]=True
     return save
@@ -128,12 +130,12 @@ def rg_s_001(save,flag):
         one=save[0][0]
         two=save[0][1]
         save[0]=save[0][2:]
-        if 'dragon' in one[2]:
+        if 'ドラゴン' in one[2]:
             one[6]=True
             save[6].append(one)
         else:
             save[10].append(one)
-        if 'dragon' in two[2]:
+        if 'ドラゴン' in two[2]:
             two[6]=True
             save[6].append(two)
         else:
@@ -142,12 +144,12 @@ def rg_s_001(save,flag):
         one=save[1][0]
         two=save[1][1]
         save[1]=save[1][2:]
-        if 'dragon' in one[2]:
+        if 'ドラゴン' in one[2]:
             one[6]=True
             save[7].append(one)
         else:
             save[11].append(one)
-        if 'dragon' in two[2]:
+        if 'ドラゴン' in two[2]:
             two[6]=True
             save[7].append(two)
         else:

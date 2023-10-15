@@ -1,6 +1,8 @@
 import pygame
 import sys
 import time
+import json
+import pickle
 from game.func import shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist
 from game import cards
 
@@ -19,8 +21,8 @@ def main():
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-    # カードを表す配列の形式 もしかしたら
-    # card = [name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
+    # カードを表す配列の形式
+    # card = [key, name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
     
     #デッキ選択
     screen.fill(fieldcolor)
@@ -62,15 +64,14 @@ def main():
     
     #デッキ登録 仕様変更が必要。
     usingdeck1="DMP/GUI/decks/"+deckname1+".txt"
-    with open(usingdeck1, "r", encoding="utf-8") as f:
-        save[0] = f.read().splitlines()
-        save[0]=list(map(str,save[0][0].split()))
+    f=open(usingdeck1, "rb")
+    save[0] = pickle.load(f)
     save[0] = shuffle(save[0])
     usingdeck2="DMP/GUI/decks/"+deckname2+".txt"
-    with open(usingdeck2, "r", encoding="utf-8") as f:
-        save[1] = f.read().splitlines()
-        save[1]=list(map(str,save[1][0].split()))
+    f=open(usingdeck2, "rb")
+    save[1] = pickle.load(f)
     save[1] = shuffle(save[1])
+    print(save[0])
     
     #シールド展開
     screen.fill(fieldcolor)
