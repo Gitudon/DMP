@@ -16,8 +16,6 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 # 動的に指定するための辞書
-Deck1={'deck0':decks1.deck0,"deck1":decks1.deck1}
-Deck2={'deck0':decks2.deck0,"deck1":decks2.deck1}
 card={}
 
 def main():
@@ -30,6 +28,8 @@ def main():
     # カードを表す配列の形式
     # card = [key, name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
     #デッキ選択
+    Deck1={'deck0':decks1.deck0,"deck1":decks1.deck1}
+    Deck2={'deck0':decks2.deck0,"deck1":decks2.deck1}
     screen.fill(fieldcolor)
     pygame.display.update()
     choosing=True
