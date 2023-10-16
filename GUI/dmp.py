@@ -30,6 +30,7 @@ def main():
     #デッキ選択
     Deck1={'deck0':decks1.deck0,"deck1":decks1.deck1}
     Deck2={'deck0':decks2.deck0,"deck1":decks2.deck1}
+    print(Deck1,Deck2)
     screen.fill(fieldcolor)
     pygame.display.update()
     choosing=True
