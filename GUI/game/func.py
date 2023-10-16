@@ -131,7 +131,7 @@ def move(a,b,i):
     a.remove(a[i])
     return [a,b]
 
-def shuffle(a):
+def Shuffle(a):
     sh=[]
     while len(a)!=0:
         b=random.choice(a)

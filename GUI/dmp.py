@@ -3,8 +3,10 @@ import sys
 import time
 import json
 import pickle
-from game.func import shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist
+from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist
 from game import cards
+from game import decks1
+from game import decks2
 
 #定数の設定
 width=100
@@ -13,6 +15,10 @@ field=(1550,900)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
+# 動的に指定するための辞書
+Deck1={'deck0':decks1.deck0,"deck1":decks1.deck1}
+Deck2={'deck0':decks2.deck0,"deck1":decks2.deck1}
+card={}
 
 def main():
     #初期設定だよ
@@ -23,7 +29,6 @@ def main():
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     # カードを表す配列の形式
     # card = [key, name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
-    
     #デッキ選択
     screen.fill(fieldcolor)
     pygame.display.update()
@@ -61,17 +66,11 @@ def main():
                 elif 780<=x<=1440 and 110<=y<=730:
                     deckname2="deck"+str(num)
                     choosing=False
-    
     #デッキ登録 仕様変更が必要。
-    usingdeck1="DMP/GUI/decks/"+deckname1+".txt"
-    f=open(usingdeck1, "rb")
-    save[0] = pickle.load(f)
-    save[0] = shuffle(save[0])
-    usingdeck2="DMP/GUI/decks/"+deckname2+".txt"
-    f=open(usingdeck2, "rb")
-    save[1] = pickle.load(f)
-    save[1] = shuffle(save[1])
-    print(save[0])
+    save[0]=Deck1.get(deckname1)
+    save[1]=Deck2.get(deckname2)
+    save[0]=Shuffle(save[0])
+    save[1]=Shuffle(save[1])
     
     #シールド展開
     screen.fill(fieldcolor)
@@ -153,7 +152,7 @@ def main():
                             elif 70<=y<=120:
                                 save[4]=sorted(save[4])
                             elif 130<=y<=180:
-                                save[4]=shuffle(save[4])
+                                save[4]=Shuffle(save[4])
                             elif 670<=y<=720:
                                 debug=True
                                 debugmenu(screen)
