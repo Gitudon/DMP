@@ -1,0 +1,4 @@
+カードの形式
+card = [key, name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
+たとえば「流星のガイアッシュ・カイザー」の場合
+card = ["gb_c_001", "流星のガイアッシュ・カイザー", ["ブルー・コマンド・ドラゴン","グリーン・コマンド・ドラゴン","ハンター"],6,8000,["g","b"],True,False,"c",["W-breaker"],False,False]
