@@ -9,14 +9,29 @@ card = ["gb_c_001", "流星のガイアッシュ・カイザー", ["ブルー・
     "name":"",
     "race":[],
     "cost":,
-    "mana":,
+    "mana":1,
     "power":,
-    "color":,
+    "color":[],
     "cipTF":,
-    "tapTF":,
-    "cardtype":,
+    "tapTF":false,
+    "cardtype":"",
     "keywordskills":[],
     "STTF":,
     "GSTF":
+}
+"":{
+    "key":"",
+    "name":["",""],
+    "race":[[],[]],
+    "cost":[],
+    "mana":1,
+    "power":[],
+    "color":[[],[]],
+    "cipTF":[],
+    "tapTF":false,
+    "cardtype":"",
+    "keywordskills":[[],[]],
+    "STTF":[],
+    "GSTF"[]:
 }
 ※TFとあるやつの値はブール値
