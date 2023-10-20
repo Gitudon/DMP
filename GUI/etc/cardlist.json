@@ -96,7 +96,7 @@
         "cost":[7,3],
         "mana":1,
         "power":[9000,null],
-        "color":[[""],[""]],
+        "color":[["g"],["g"]],
         "cipTF":[false,false],
         "alwaysTF":[false,false],
         "attackTF":[true,false],
