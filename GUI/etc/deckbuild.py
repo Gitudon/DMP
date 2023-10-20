@@ -6,7 +6,7 @@ deck=[]
 card=[]
 li=[]
 #ここに登録するデッキリストのパスを入れる
-with open('DMP/GUI/decks/decklist.txt','r',encoding='utf-8') as f:
+with open('DMP/GUI/decks/deck3.txt','r',encoding='utf-8') as f:
     li=f.read().split()
 for names in li:
     temp=loading[names]

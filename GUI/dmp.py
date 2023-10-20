@@ -17,7 +17,7 @@ upbase=(230, 155)
 downbase=(920, 602)
 # 動的に指定するための辞書
 card={}
-Deck={'deck0':decks.deck0,"deck1":decks.deck1}
+Deck={'deck0':decks.deck0,'deck1':decks.deck1,'deck2':decks.deck2,'deck3':decks.deck3,'deck4':decks.deck4,'deck5':decks.deck5,'deck6':decks.deck6,'deck7':decks.deck7,'deck8':decks.deck8,'deck9':decks.deck9,'deck10':decks.deck10,'deck11':decks.deck11,'deck12':decks.deck12,'deck13':decks.deck13,'deck14':decks.deck14,'deck15':decks.deck15,'deck16':decks.deck16,'deck17':decks.deck17,'deck18':decks.deck18,'deck19':decks.deck19,'deck20':decks.deck20,'deck21':decks.deck21,'deck22':decks.deck22,'deck23':decks.deck23,'deck24':decks.deck24,'deck25':decks.deck25,'deck26':decks.deck26,'deck27':decks.deck27,'deck28':decks.deck28,'deck29':decks.deck29,'deck30':decks.deck30}
 
 def main():
     #初期設定だよ
@@ -100,8 +100,17 @@ def main():
     qflag=False #手札のカードを見ている
     dflag=False #デッキ枚数を確認中
     debug=False
+    d1=True
+    d2=True
     #以下、ゲーム処理
     while True:
+        #山札切れ
+        if save[0]==[] and d1:
+            recover(save,screen,debug)
+            d1=False
+        if save[1]==[] and d2:
+            recover(save,screen,debug)
+            d2=False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

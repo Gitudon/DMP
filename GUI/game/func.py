@@ -24,7 +24,7 @@ def deck(screen,me,opposite):
         screen.blit(img2, upbase)
 
 def dimension(screen,me,opposite):
-    img = pygame.image.load("DMP/GUI/image/r_d_001.jpg")
+    img = pygame.image.load("DMP/GUI/image/r_ed_001.jpg")
     if len(me)>0:
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+20+width*2,downbase[1]))
@@ -228,7 +228,7 @@ def showcards(cards,screen,flag):
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
     # カードを配列として記録するので要変更
     for i in range(len(cards)):
-        tmp.append("DMP/GUI/image/"+cards[i]+".jpg")
+        tmp.append("DMP/GUI/image/"+cards[i][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
         tmp[i]=pygame.transform.scale(tmp[i], (w, h))
@@ -254,7 +254,7 @@ def select(cards,screen,flag):
 def showcard(screen,cards):
     n=0
     # カードを配列として記録するので要変更
-    tmp=("DMP/GUI/image/"+cards[n]+".jpg")
+    tmp=("DMP/GUI/image/"+cards[n][0]+".jpg")
     tmp=pygame.image.load(tmp)
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (525,90))
