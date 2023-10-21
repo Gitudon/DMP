@@ -14,7 +14,7 @@ upbase=(230, 155)
 downbase=(920, 602)
 
 def deck(screen,me,opposite):
-    img = pygame.image.load("DMP/GUI/image/ura.jpg")
+    img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
     if len(me)>0:
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, downbase)
@@ -34,7 +34,7 @@ def dimension(screen,me,opposite):
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]))
 
 def grdeck(screen,me,opposite):
-    img = pygame.image.load("DMP/GUI/image/grura.jpg")
+    img = pygame.image.load("DMP/GUI/image/uramen/grura.jpg")
     if len(me)>0:
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+20+width*2,downbase[1]+10+height))
@@ -261,7 +261,7 @@ def showcard(screen,cards):
 
 def sshield(screen):
     for i in range(5):
-        img = pygame.image.load("DMP/GUI/image/ura.jpg")
+        img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
         img = pygame.transform.scale(img, (width, height))
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
@@ -271,7 +271,7 @@ def sshield(screen):
         time.sleep(0.5)
 
 def shield(screen,flag,save):
-    img = pygame.image.load("DMP/GUI/image/ura.jpg")
+    img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
     if flag:
         for i in range(len(save[2])):
             img = pygame.transform.scale(img, (width, height))
