@@ -1,0 +1,1 @@
+Deck={'deck0':[],'deck1':[],'deck2':[],'deck3':[],'deck4':[],'deck5':[],'deck6':[],'deck7':[],'deck8':[],'deck9':[],'deck10':[],'deck11':[],'deck12':[],'deck13':[],'deck14':[],'deck15':[],'deck16':[],'deck17':[],'deck18':[],'deck19':[],'deck20':[],'deck21':[],'deck22':[],'deck23':[],'deck24':[],'deck25':[],'deck26':[],'deck27':[],'deck28':[],'deck29':[]}

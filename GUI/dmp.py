@@ -4,9 +4,12 @@ import time
 import json
 import pickle
 import copy
+import codecs
 from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist
 from game import cards
-from game import decks
+from game import carddic
+from game import deckdic
+from game import deckbuild
 
 #定数の設定
 width=100
@@ -16,19 +19,30 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 # 動的に指定するための辞書
-card={}
-Deck={'deck0':decks.deck0,'deck1':decks.deck1,'deck2':decks.deck2,'deck3':decks.deck3,'deck4':decks.deck4,'deck5':decks.deck5,'deck6':decks.deck6,'deck7':decks.deck7,'deck8':decks.deck8,'deck9':decks.deck9,'deck10':decks.deck10,'deck11':decks.deck11,'deck12':decks.deck12,'deck13':decks.deck13,'deck14':decks.deck14,'deck15':decks.deck15,'deck16':decks.deck16,'deck17':decks.deck17,'deck18':decks.deck18,'deck19':decks.deck19,'deck20':decks.deck20,'deck21':decks.deck21,'deck22':decks.deck22,'deck23':decks.deck23,'deck24':decks.deck24,'deck25':decks.deck25,'deck26':decks.deck26,'deck27':decks.deck27,'deck28':decks.deck28,'deck29':decks.deck29,'deck30':decks.deck30}
+card=carddic.card
+Deck=deckdic.Deck
 
+#タイトル画面
 def main():
+    #テキストファイルをもととしたデッキのビルド
+    for i in range(30):
+        path='DMP/GUI/decks/deck'+str(i)+'.txt'
+        name='deck'+str(i)
+        Deck[name]=deckbuild.build(path)
+    Duel()
+
+#デュエル実行
+def Duel():
+    print(Deck,file=codecs.open('DMP/GUI/etc/output.txt','w','utf-8'))
     #初期設定だよ
     pygame.init() 
     screen = pygame.display.set_mode(field) 
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-    # カードを表す配列の形式
-    # card = [key, name, race, cost, power, color, cipTF, tapTF, cardtype, keywordskills, STTF, GSTF]
     #デッキ選択
+    #登録されたデッキリストから選びたい
+    #自分で空きスロットに登録できるようにもしたい
     screen.fill(fieldcolor)
     pygame.display.update()
     choosing=True
@@ -134,7 +148,7 @@ def main():
                             elif 70<=y<=120:
                                 save[4]=sorted(save[4])
                             elif 130<=y<=180:
-                                save=cards.b_s_001(save,True)
+                                save=card["b_s_002"](save,True)
                             elif 190<=y<=240:
                                 fflag=False
                                 showcards(save[2],screen,True)
@@ -147,7 +161,7 @@ def main():
                             elif 730<=y<=780:
                                 dmphelp()
                             elif 790<=y<=840:
-                                main()
+                                Duel()
                             elif 850<=y<=900:
                                 pygame.quit()
                                 sys.exit()
@@ -168,7 +182,7 @@ def main():
                             elif 730<=y<=780:
                                 dmphelp()
                             elif 790<=y<=840:
-                                main()
+                                Duel()
                             elif 850<=y<=900:
                                 pygame.quit()
                                 sys.exit()
