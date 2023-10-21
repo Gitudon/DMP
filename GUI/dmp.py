@@ -21,9 +21,13 @@ downbase=(920, 602)
 # 動的に指定するための辞書
 card=carddic.card
 Deck=deckdic.Deck
+#実行ログのパス
+logpath='DMP/GUI/etc/log.txt'
 
 #タイトル画面
 def main():
+    #登録されたデッキリストから選びたい
+    #自分で空きスロットに登録できるようにもしたい
     #テキストファイルをもととしたデッキのビルド
     for i in range(30):
         path='DMP/GUI/decks/deck'+str(i)+'.txt'
@@ -33,7 +37,6 @@ def main():
 
 #デュエル実行
 def Duel():
-    print(Deck,file=codecs.open('DMP/GUI/etc/output.txt','w','utf-8'))
     #初期設定だよ
     pygame.init() 
     screen = pygame.display.set_mode(field) 
@@ -41,8 +44,6 @@ def Duel():
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     #デッキ選択
-    #登録されたデッキリストから選びたい
-    #自分で空きスロットに登録できるようにもしたい
     screen.fill(fieldcolor)
     pygame.display.update()
     choosing=True
@@ -84,7 +85,7 @@ def Duel():
     save[1]=copy.deepcopy(Deck.get(deckname2))
     save[0]=Shuffle(save[0])
     save[1]=Shuffle(save[1])
-    
+    print(save,file=codecs.open('DMP/GUI/etc/output.txt','w','utf-8'))
     #シールド展開
     screen.fill(fieldcolor)
     pygame.display.update()
