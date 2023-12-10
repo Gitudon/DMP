@@ -18,7 +18,7 @@ field=(1550,900)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
-# 動的に指定するための辞書
+#動的に指定するための辞書
 card=carddic.card
 Deck=deckdic.Deck
 #実行ログのパス
@@ -33,10 +33,11 @@ def main():
         path='DMP/GUI/decks/deck'+str(i)+'.txt'
         name='deck'+str(i)
         Deck[name]=deckbuild.build(path)
-    Duel()
+    #モード切り替え
+    mode=10
+    initalize(mode)
 
-#デュエル実行
-def Duel():
+def initalize(mode):
     #初期設定だよ
     pygame.init() 
     screen = pygame.display.set_mode(field) 
@@ -80,7 +81,6 @@ def Duel():
                 elif 780<=x<=1440 and 110<=y<=730:
                     deckname2="deck"+str(num)
                     choosing=False
-    #デッキ登録 仕様変更が必要。
     save[0]=copy.deepcopy(Deck.get(deckname1))
     save[1]=copy.deepcopy(Deck.get(deckname2))
     save[0]=Shuffle(save[0])
@@ -109,6 +109,22 @@ def Duel():
     #最初のドロー
     save=draw(5,save,True)
     save=draw(5,save,False)
+    if mode==1:
+        Easy(save,screen)
+    else:
+        Duel(save,screen)
+
+#簡易版デュエル実行
+def Easy():
+    pygame.init() 
+    screen = pygame.display.set_mode(field) 
+    pygame.display.set_caption("Duel Masters")
+    screen.fill(fieldcolor)
+    pygame.display.update()
+    
+
+#デュエル実行
+def Duel(save,screen):
     #表示フラグ
     fflag=True #フィールドを表示している
     tflag=False #手札全体を見ている
