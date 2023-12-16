@@ -32,6 +32,7 @@ def dimension(screen,me,opposite):
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]))
+    pygame.display.update()
 
 def grdeck(screen,me,opposite):
     img = pygame.image.load("DMP/GUI/image/uramen/grura.jpg")
@@ -42,6 +43,7 @@ def grdeck(screen,me,opposite):
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]-10-height))
+    pygame.display.update()
 
 def menu(screen):
     font = pygame.font.SysFont("msgothic", 30)
@@ -56,21 +58,29 @@ def menu(screen):
     gTxt = font.render("手札をシャッフル", True, (255,255,255))
     screen.blit(gTxt, [1265, 140])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,190,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 200])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,250,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 260])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,310,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 320])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,370,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 380])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 440])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 500])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 560])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 620])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
     gTxt = font.render("デバッグメニュー", True, (255,255,255))
     screen.blit(gTxt, [1265, 680])
@@ -83,6 +93,57 @@ def menu(screen):
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,850,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
+    pygame.display.update()
+
+def emenu(screen):
+    font = pygame.font.SysFont("msgothic", 30)
+    pygame.draw.rect(screen, (192,192,192), pygame.Rect(field[0]-300,0,300,field[1]))
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,10,280,50))
+    gTxt = font.render("手札を確認する", True, (255,255,255))
+    screen.blit(gTxt, [1265, 20])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,70,280,50))
+    gTxt = font.render("手札をソートする", True, (255,255,255))
+    screen.blit(gTxt, [1265, 80])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,130,280,50))
+    gTxt = font.render("手札をシャッフル", True, (255,255,255))
+    screen.blit(gTxt, [1265, 140])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,190,280,50))
+    gTxt = font.render("視点切り替え", True, (255,255,255))
+    screen.blit(gTxt, [1265, 200])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,250,280,50))
+    gTxt = font.render("1枚ドロー", True, (255,255,255))
+    screen.blit(gTxt, [1265, 260])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,310,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 320])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,370,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 380])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 440])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 500])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 560])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 620])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 680])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
+    gTxt = font.render("ヘルプを表示", True, (255,255,255))
+    screen.blit(gTxt, [1265, 740])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
+    gTxt = font.render("ゲームをリセット", True, (255,255,255))
+    screen.blit(gTxt, [1265, 800])
+    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,850,280,50))
+    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    screen.blit(gTxt, [1265, 860])
+    pygame.display.update()
 
 def debugmenu(screen):
     font = pygame.font.SysFont("msgothic", 30)
@@ -100,19 +161,26 @@ def debugmenu(screen):
     gTxt = font.render("シールド確認", True, (255,255,255))
     screen.blit(gTxt, [1265, 200])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,250,280,50))
-    
+    gTxt = font.render("視点切り替え", True, (255,255,255))
+    screen.blit(gTxt, [1265, 260])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,310,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 320])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,370,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 380])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 440])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 500])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 560])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
-    
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 620])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
     gTxt = font.render("通常メニュー", True, (255,255,255))
     screen.blit(gTxt, [1265, 680])
@@ -125,6 +193,7 @@ def debugmenu(screen):
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,850,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
+    pygame.display.update()
 
 def move(a,b,i):
     b.append(a[i])
@@ -246,6 +315,7 @@ def showcards(cards,screen,flag):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
+    pygame.display.update()
 
 # 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
 def select(cards,screen,flag):
@@ -258,6 +328,7 @@ def showcard(screen,cards):
     tmp=pygame.image.load(tmp)
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (525,90))
+    pygame.display.update()
 
 def sshield(screen):
     for i in range(5):
@@ -281,6 +352,7 @@ def shield(screen,flag,save):
         for i in range(len(save[3])):
             img2 = pygame.transform.scale(img2, (width, height))
             screen.blit(img2, ((upbase[0]+110)+width*i, upbase[1]))
+    pygame.display.update()
 
 def recover(save,screen,flag):
     screen.fill(fieldcolor)
@@ -289,10 +361,13 @@ def recover(save,screen,flag):
     grdeck(screen,save[14],save[15])
     shield(screen,True,save)
     shield(screen,False,save)
-    if flag:
+    if flag==1:
         debugmenu(screen)
-    else:
+    elif flag==2:
         menu(screen)
+    else:
+        emenu(screen)
+    pygame.display.update()
 
 #説明書を表示する。画像でいいのではないでしょうか。
 def dmphelp():
@@ -329,3 +404,11 @@ def decklist(screen,num):
     img2 = pygame.image.load(Pass)
     img2 = pygame.transform.scale(img2, size)
     screen.blit(img2, (830, 110))
+    pygame.display.update()
+
+def swap(save):
+    for i in range(len(save)//2):
+        tmp=(save[2*i+1])
+        save[2*i+1]=save[2*i]
+        save[2*i]=tmp
+    return save
