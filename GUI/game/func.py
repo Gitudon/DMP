@@ -23,6 +23,7 @@ def deck(screen,me,opposite):
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, upbase)
 
+#超次元ゾーンの表示。仮実装中
 def dimension(screen,me,opposite):
     img = pygame.image.load("DMP/GUI/image/r_ed_001.jpg")
     if len(me)>0:
@@ -386,6 +387,25 @@ def deckinfo(save,flag,screen):
     else:
         pygame.draw.rect(screen, (0,191,255), pygame.Rect(upbase[0]-10,upbase[1]+100,120,50))
         gTxt = font.render(str(len(save[1]))+"枚", True, (255,255,255))
+        screen.blit(gTxt, [upbase[0]+10,upbase[1]+110])
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(upbase[0]+80,upbase[1]+110,20,20))
+        font = pygame.font.SysFont("msgothic", 25)
+        gTxt = font.render("×", True, (255,255,255))
+        screen.blit(gTxt, [upbase[0]+77,upbase[1]+107])
+
+def grdeckinfo(save,flag,screen):
+    font = pygame.font.SysFont("msgothic", 30)
+    if flag:
+        pygame.draw.rect(screen, (0,191,255), pygame.Rect(downbase[0]+2*width+10,downbase[1]+110+height,120,50))
+        gTxt = font.render(str(len(save[14]))+"枚", True, (255,255,255))
+        screen.blit(gTxt, [downbase[0]+2*width+30,downbase[1]+120+height])
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(downbase[0]+2*width+100,downbase[1]+120+height,20,20))
+        font = pygame.font.SysFont("msgothic", 25)
+        gTxt = font.render("×", True, (255,255,255))
+        screen.blit(gTxt, [downbase[0]+77,downbase[1]+107])
+    else:
+        pygame.draw.rect(screen, (0,191,255), pygame.Rect(upbase[0]-10,upbase[1]+100,120,50))
+        gTxt = font.render(str(len(save[15]))+"枚", True, (255,255,255))
         screen.blit(gTxt, [upbase[0]+10,upbase[1]+110])
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(upbase[0]+80,upbase[1]+110,20,20))
         font = pygame.font.SysFont("msgothic", 25)

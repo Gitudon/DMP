@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap
+from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo
 from game import cards
 from game import carddic
 from game import deckdic
@@ -44,6 +44,9 @@ def initalize(mode):
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[1],[1],[1],[1]]
+    #アドバンス/オリジナルの選択
+    advance=True
+    
     #デッキ選択
     screen.fill(fieldcolor)
     pygame.display.update()
@@ -82,6 +85,12 @@ def initalize(mode):
                     choosing=False
     save[0]=copy.deepcopy(Deck.get(deckname1))
     save[1]=copy.deepcopy(Deck.get(deckname2))
+    #アドバンスかオリジナルだったりもするのでそれも判定する。
+    if advance:
+        temp=[]
+        
+        for cards in save[0]:
+            break
     #禁断がある場合はここではじく
     save[0]=Shuffle(save[0])
     save[1]=Shuffle(save[1])
@@ -111,7 +120,7 @@ def initalize(mode):
     if "d_z_001" in save[8]:
         save=draw(1,save,True)
     if "d_z_001" in save[9]:
-        save=draw(5,save,False)
+        save=draw(1,save,False)
     #実行モード切り替え
     if mode==1:
         Easy(save,screen)
@@ -154,7 +163,8 @@ def Easy(save,screen):
                             save=swap(save)
                             recover(save,screen,debug)
                         elif 250<=y<=300:
-                            save=card["b_s_002"](save,True)
+                            a="b_s_002"
+                            save=card[a](save,True)
                         elif 730<=y<=780:
                             dmphelp()
                         elif 790<=y<=840:
@@ -163,20 +173,30 @@ def Easy(save,screen):
                             pygame.quit()
                             sys.exit()
                     elif downbase[1]<=y<=downbase[1]+height:
+                        #自分側デッキ
                         if downbase[0]<=x<=downbase[0]+width:
                             deckinfo(save,True,screen)
                             dflag=True
                             fflag=False
-                        elif downbase[0]+width<=x<=field[0]-300:
+                        #自分側墓地
+                        elif downbase[0]+10+width<=x<=downbase[0]+2*width+10:
                             fflag=False
-                            showcards(save[7],screen,True)
                             tflag=True
+                            showcards(save[10],screen,True)
+                        #自分側超次元
+                        elif downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
+                            fflag=False
+                            tflag=True
+                            showcards(save[12],screen,True)
                     elif upbase[1]<=y<=upbase[1]+height:
                         if upbase[0]<=x<=upbase[0]+width:
                             deckinfo(save,False,screen)
                             dflag=True
                             fflag=False
-                        
+                        elif upbase[0]-10-width<=x<=upbase[0]-10:
+                            fflag=False
+                            tflag=True
+                            showcards(save[11],screen,True)
                 elif tflag:
                     if 1420<=x<=1440 and 110<=y<=130:
                         tflag=False
