@@ -1,6 +1,4 @@
-フォルダー パスの一覧:  ボリューム Windows10_Pro
-ボリューム シリアル番号は 9DAF-A6B0 です
-C:.
+.
 |   dmmemo.txt
 |   README.md
 |   tree.txt
