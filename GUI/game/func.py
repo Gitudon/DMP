@@ -13,6 +13,8 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 
+#似た機能の関数はクラスにしろ！
+
 def deck(screen,me,opposite):
     img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
     if len(me)>0:
@@ -46,6 +48,7 @@ def grdeck(screen,me,opposite):
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]-10-height))
     pygame.display.update()
 
+#メニューをクラスにしろ！
 def menu(screen):
     font = pygame.font.SysFont("msgothic", 30)
     pygame.draw.rect(screen, (192,192,192), pygame.Rect(field[0]-300,0,300,field[1]))
