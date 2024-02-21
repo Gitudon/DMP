@@ -1,7 +1,7 @@
 import json
 import codecs
 def build(path):
-    file=open('DMP/GUI/game/cardlist.json','r',encoding="utf_8")
+    file=open('GUI/game/cardlist.json','r',encoding="utf_8")
     loading=json.load(file)
     deck=[]
     card=[]
@@ -14,5 +14,5 @@ def build(path):
             card.append(temp[vals])
         deck.append(card)
         card=[]
-    print(deck,file=codecs.open('DMP/GUI/etc/output.txt','w','utf-8'))
+    print(deck,file=codecs.open('GUI/etc/output.txt','w','utf-8'))
     return deck

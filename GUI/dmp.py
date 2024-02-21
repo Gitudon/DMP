@@ -22,7 +22,7 @@ downbase=(920, 602)
 card=carddic.card
 Deck=deckdic.Deck
 #実行ログのパス
-logpath='DMP/GUI/etc/log.txt'
+logpath='GUI/etc/log.txt'
 
 #タイトル画面
 def main():
@@ -30,7 +30,7 @@ def main():
     #自分で空きスロットに登録できるようにもしたい
     #テキストファイルをもととしたデッキのビルド
     for i in range(30):
-        path='DMP/GUI/decks/deck'+str(i)+'.txt'
+        path='GUI/decks/deck'+str(i)+'.txt'
         name='deck'+str(i)
         Deck[name]=deckbuild.build(path)
     #モード切り替え
@@ -94,7 +94,7 @@ def initalize(mode):
     #禁断がある場合はここではじく
     save[0]=Shuffle(save[0])
     save[1]=Shuffle(save[1])
-    print(save,file=codecs.open('DMP/GUI/etc/output.txt','w','utf-8'))
+    print(save,file=codecs.open('GUI/etc/output.txt','w','utf-8'))
     #シールド展開
     screen.fill(fieldcolor)
     pygame.display.update()

@@ -16,7 +16,7 @@ downbase=(920, 602)
 #似た機能の関数はクラスにしろ！
 
 def deck(screen,me,opposite):
-    img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
+    img = pygame.image.load("GUI/image/uramen/ura.jpg")
     if len(me)>0:
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, downbase)
@@ -27,7 +27,7 @@ def deck(screen,me,opposite):
 
 #超次元ゾーンの表示。仮実装中
 def dimension(screen,me,opposite):
-    img = pygame.image.load("DMP/GUI/image/r_ed_001.jpg")
+    img = pygame.image.load("GUI/image/r_ed_001.jpg")
     if len(me)>0:
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+20+width*2,downbase[1]))
@@ -38,7 +38,7 @@ def dimension(screen,me,opposite):
     pygame.display.update()
 
 def grdeck(screen,me,opposite):
-    img = pygame.image.load("DMP/GUI/image/uramen/grura.jpg")
+    img = pygame.image.load("GUI/image/uramen/grura.jpg")
     if len(me)>0:
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+20+width*2,downbase[1]+10+height))
@@ -301,7 +301,7 @@ def showcards(cards,screen,flag):
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
     # カードを配列として記録するので要変更
     for i in range(len(cards)):
-        tmp.append("DMP/GUI/image/"+cards[i][0]+".jpg")
+        tmp.append("GUI/image/"+cards[i][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
         tmp[i]=pygame.transform.scale(tmp[i], (w, h))
@@ -328,7 +328,7 @@ def select(cards,screen,flag):
 def showcard(screen,cards):
     n=0
     # カードを配列として記録するので要変更
-    tmp=("DMP/GUI/image/"+cards[n][0]+".jpg")
+    tmp=("GUI/image/"+cards[n][0]+".jpg")
     tmp=pygame.image.load(tmp)
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (525,90))
@@ -336,7 +336,7 @@ def showcard(screen,cards):
 
 def sshield(screen):
     for i in range(5):
-        img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
+        img = pygame.image.load("GUI/image/uramen/ura.jpg")
         img = pygame.transform.scale(img, (width, height))
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
@@ -346,7 +346,7 @@ def sshield(screen):
         time.sleep(0.5)
 
 def shield(screen,flag,save):
-    img = pygame.image.load("DMP/GUI/image/uramen/ura.jpg")
+    img = pygame.image.load("GUI/image/uramen/ura.jpg")
     if flag:
         for i in range(len(save[2])):
             img = pygame.transform.scale(img, (width, height))
@@ -419,11 +419,11 @@ def decklist(screen,num):
     size=(510, 620)
     # font = pygame.font.SysFont("msgothic", 30)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
-    Pass="DMP/GUI/image/decks/deck"+str(num-1)+".jpeg"
+    Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
     img = pygame.transform.scale(img, size)
     screen.blit(img, (210, 110))
-    Pass="DMP/GUI/image/decks/deck"+str(num)+".jpeg"
+    Pass="GUI/image/decks/deck"+str(num)+".jpeg"
     img2 = pygame.image.load(Pass)
     img2 = pygame.transform.scale(img2, size)
     screen.blit(img2, (830, 110))
@@ -435,3 +435,8 @@ def swap(save):
         save[2*i+1]=save[2*i]
         save[2*i]=tmp
     return save
+
+def choose(screen,message):
+    flag=True
+    
+    return flag
