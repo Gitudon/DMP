@@ -56,8 +56,6 @@ def b_s_002(save,flag):
     save=func.draw(1,save,flag)
     return save
 
-# 任意効果の実装：選択のためのボタンを描画する関数を実装
-
 def bw_cs_001(save,flag):
     return func.draw(3,save,flag)
 

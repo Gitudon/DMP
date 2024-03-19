@@ -307,7 +307,7 @@ def showcards(cards,screen,flag):
     h=288
     tmp=[]
     base=(100,100)
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     # カードを配列として記録するので要変更
     for i in range(len(cards)):
         tmp.append("GUI/image/"+cards[i][0]+".jpg")
@@ -383,7 +383,9 @@ def recover(save,screen,flag):
     pygame.display.update()
 
 #説明書を表示する。画像でいいのではないでしょうか。
-def dmphelp():
+def dmphelp(screen):
+    base=(100,100)
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     return
 
 def deckinfo(save,flag,screen):
@@ -447,7 +449,10 @@ def swap(save):
 
 def choose(screen,message):
     flag=True
-    
+    base=(100,100)
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    tmp=[]
+    #messageを適切な長さで分割して複数行で表示する
     return flag
 
 #メッセージを表示するコンソールをメニューから見れるようにする

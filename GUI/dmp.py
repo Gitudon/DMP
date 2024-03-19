@@ -35,6 +35,7 @@ def main():
         Deck[name]=deckbuild.build(path)
     #モード切り替え
     mode=1
+    
     initalize(mode)
 
 def initalize(mode):
@@ -168,7 +169,7 @@ def Easy(save,screen,log):
                             a="b_s_002"
                             save=card[a](save,True)
                         elif 730<=y<=780:
-                            dmphelp()
+                            dmphelp(screen)
                         elif 790<=y<=840:
                             Easy(temp[0],temp[1],log)
                         elif 850<=y<=900:
@@ -275,7 +276,7 @@ def Duel(save,screen,log):
                                 debug=2
                                 menu(screen)
                             elif 730<=y<=780:
-                                dmphelp()
+                                dmphelp(screen)
                             elif 790<=y<=840:
                                 Duel(temp[0],temp[1],log)
                             elif 850<=y<=900:
@@ -298,7 +299,7 @@ def Duel(save,screen,log):
                                 debug=1
                                 debugmenu(screen)
                             elif 730<=y<=780:
-                                dmphelp()
+                                dmphelp(screen)
                             elif 790<=y<=840:
                                 Duel(temp[0],temp[1])
                             elif 850<=y<=900:
