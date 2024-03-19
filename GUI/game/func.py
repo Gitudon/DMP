@@ -8,10 +8,10 @@ import pickle
 #定数の設定
 width=100
 height=144
-field=(1550,900)
+field=(1550,1000)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
-downbase=(920, 602)
+downbase=(920, 696)
 
 #似た機能の関数はクラスにしろ！
 
@@ -422,11 +422,11 @@ def decklist(screen,num):
     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
     img = pygame.transform.scale(img, size)
-    screen.blit(img, (210, 110))
+    screen.blit(img, (210, 180))
     Pass="GUI/image/decks/deck"+str(num)+".jpeg"
     img2 = pygame.image.load(Pass)
     img2 = pygame.transform.scale(img2, size)
-    screen.blit(img2, (830, 110))
+    screen.blit(img2, (830, 180))
     pygame.display.update()
 
 def swap(save):
@@ -440,3 +440,8 @@ def choose(screen,message):
     flag=True
     
     return flag
+
+#メッセージを表示するコンソールをメニューから見れるようにする
+#各アクションの実行後、ログを残す
+
+#メッセージを受けとり、コンソールに表示する手続き

@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo
+from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose
 from game import cards
 from game import carddic
 from game import deckdic
@@ -14,10 +14,10 @@ from game import deckbuild
 #定数の設定
 width=100
 height=144
-field=(1550,900)
+field=(1550,1000)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
-downbase=(920, 602)
+downbase=(920, 696)
 #動的に指定するための辞書
 card=carddic.card
 Deck=deckdic.Deck
@@ -46,10 +46,11 @@ def initalize(mode):
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[1],[1],[1],[1]]
     #アドバンス/オリジナルの選択
     advance=True
-    
-    #デッキ選択
     screen.fill(fieldcolor)
     pygame.display.update()
+    
+    
+    #デッキ選択
     choosing=True
     num=1
     decklist(screen,num)

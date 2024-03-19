@@ -2592,6 +2592,24 @@
         "STTF":false,
         "GSTF":false
     },
+    "d_c_012":{
+        "key":"d_c_012",
+        "name":"忍蛇の聖沌 c0br4",
+        "race":["メカ・デル・ステラ","シノビ"],
+        "cost":6,
+        "mana":1,
+        "power":5000,
+        "color":["d"],
+        "cipTF":true,
+        "alwaysTF":false,
+        "attackTF":false,
+        "pigTF":false,
+        "tapTF":false,
+        "cardtype":"c",
+        "keywordskills":["Blocker"],
+        "STTF":true,
+        "GSTF":false
+    },
     "d_cs_001":{
         "key":"d_cs_001",
         "name":["龍頭星雲人","零誕祭(ゼロ・バースデイ)"],
