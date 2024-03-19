@@ -94,9 +94,12 @@ def menu(screen):
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
     gTxt = font.render("ゲームをリセット", True, (255,255,255))
     screen.blit(gTxt, [1265, 800])
-    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,850,280,50))
-    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
+    gTxt = font.render("ログを表示", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
+    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
+    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    screen.blit(gTxt, [1265, 920])
     pygame.display.update()
 
 def emenu(screen):
@@ -144,9 +147,12 @@ def emenu(screen):
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
     gTxt = font.render("ゲームをリセット", True, (255,255,255))
     screen.blit(gTxt, [1265, 800])
-    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,850,280,50))
-    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
+    gTxt = font.render("ログを表示", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
+    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
+    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    screen.blit(gTxt, [1265, 920])
     pygame.display.update()
 
 def debugmenu(screen):
@@ -194,9 +200,12 @@ def debugmenu(screen):
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
     gTxt = font.render("ゲームをリセット", True, (255,255,255))
     screen.blit(gTxt, [1265, 800])
-    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,850,280,50))
-    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
+    gTxt = font.render("ログを表示", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
+    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
+    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    screen.blit(gTxt, [1265, 920])
     pygame.display.update()
 
 def move(a,b,i):
@@ -443,5 +452,7 @@ def choose(screen,message):
 
 #メッセージを表示するコンソールをメニューから見れるようにする
 #各アクションの実行後、ログを残す
+def showlog(log):
+    return
 
 #メッセージを受けとり、コンソールに表示する手続き

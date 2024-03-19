@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose
+from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog
 from game import cards
 from game import carddic
 from game import deckdic
@@ -38,6 +38,7 @@ def main():
     initalize(mode)
 
 def initalize(mode):
+    log=[]
     #初期設定
     pygame.init() 
     screen = pygame.display.set_mode(field) 
@@ -124,12 +125,12 @@ def initalize(mode):
         save=draw(1,save,False)
     #実行モード切り替え
     if mode==1:
-        Easy(save,screen)
+        Easy(save,screen,log)
     else:
-        Duel(save,screen)
+        Duel(save,screen,log)
 
 #簡易版デュエル実行
-def Easy(save,screen):
+def Easy(save,screen,log):
     temp=[save,screen]
     emenu(screen)
     debug=3
@@ -169,8 +170,12 @@ def Easy(save,screen):
                         elif 730<=y<=780:
                             dmphelp()
                         elif 790<=y<=840:
-                            Easy(temp[0],temp[1])
+                            Easy(temp[0],temp[1],log)
                         elif 850<=y<=900:
+                            fflag=False
+                            showlog(log)
+                            tflag=True
+                        elif 910<=y<=960:
                             pygame.quit()
                             sys.exit()
                     elif downbase[1]<=y<=downbase[1]+height:
@@ -215,7 +220,7 @@ def Easy(save,screen):
             pygame.display.update()
 
 #デュエル実行
-def Duel(save,screen):
+def Duel(save,screen,log):
     #表示フラグ
     fflag=True #フィールドを表示している
     tflag=False #手札全体を見ている
@@ -272,8 +277,12 @@ def Duel(save,screen):
                             elif 730<=y<=780:
                                 dmphelp()
                             elif 790<=y<=840:
-                                Duel(temp[0],temp[1])
+                                Duel(temp[0],temp[1],log)
                             elif 850<=y<=900:
+                                fflag=False
+                                showlog(log)
+                                tflag=True
+                            elif 910<=y<=960:
                                 pygame.quit()
                                 sys.exit()
                         else:
@@ -293,6 +302,11 @@ def Duel(save,screen):
                             elif 790<=y<=840:
                                 Duel(temp[0],temp[1])
                             elif 850<=y<=900:
+                                showlog(log)
+                                fflag=False
+                                showlog(log)
+                                tflag=True
+                            elif 910<=y<=960:
                                 pygame.quit()
                                 sys.exit()
                     elif downbase[0]<=x<=downbase[0]+width and downbase[1]<=y<=downbase[1]+height:
