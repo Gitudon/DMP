@@ -442,12 +442,51 @@ def swap(save):
     return save
 
 def choose(screen,message):
-    flag=True
     base=(100,100)
+    font = pygame.font.SysFont("msgothic", 50)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    tmp=[]
+    font = pygame.font.SysFont("msgothic", 100)
+    pygame.draw.rect(screen, (255,0,0), pygame.Rect(base[0],base[1]+600,(field[0]-200)//2,200))
+    gTxt = font.render("は　い", True, (255,255,255))
+    screen.blit(gTxt, [base[0]+187,base[1]+650])
+    pygame.draw.rect(screen, (0,0,255), pygame.Rect(base[0]+(field[0]-200)//2,base[1]+600,(field[0]-200)//2,200))
+    gTxt = font.render("いいえ", True, (255,255,255))
+    screen.blit(gTxt, [base[0]+(field[0]-200)//2+187,base[1]+650])
     #messageを適切な長さで分割して複数行で表示する
-    return flag
+    tmp=[]
+    point=0
+    current=""
+    while len(message)>0:
+        c=message[0]
+        current+=c
+        if len(c)==len(c.encode()):
+            point+=0.5
+        else:
+            point+=1
+        message=message[1:]
+        if point>25 or c=="。" or c=="？":
+            tmp.append(current)
+            point=0
+            current=""
+    if current!="":
+        tmp.append(current)
+    font = pygame.font.SysFont("msgothic", 50)
+    for i in range(len(tmp)):
+        gTxt = font.render(tmp[i], True, (255,255,255))
+        screen.blit(gTxt, [base[0]+20,base[1]+10*(i+1)+50*i])
+    pygame.display.update()
+    while True:
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if base[1]+600<=y<=base[1]+800:
+                        if base[0]<=x<=base[0]+(field[0]-200)//2:
+                            return True
+                        elif base[0]+(field[0]-200)//2<x<=field[0]-100:
+                            return False
 
 #メッセージを表示するコンソールをメニューから見れるようにする
 #各アクションの実行後、ログを残す

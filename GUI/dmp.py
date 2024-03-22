@@ -33,12 +33,9 @@ def main():
         path='GUI/decks/deck'+str(i)+'.txt'
         name='deck'+str(i)
         Deck[name]=deckbuild.build(path)
-    #モード切り替え
-    mode=1
-    
-    initalize(mode)
+    initalize()
 
-def initalize(mode):
+def initalize():
     log=[]
     #初期設定
     pygame.init() 
@@ -46,12 +43,16 @@ def initalize(mode):
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]]]
-    #アドバンス/オリジナルの選択
-    advance=True
     screen.fill(fieldcolor)
     pygame.display.update()
-    
-    
+    #アドバンス/オリジナルの選択
+    advance=choose(screen,"フォーマットはアドバンスにしますか？")
+    screen.fill(fieldcolor)
+    pygame.display.update()
+    #実行モード切り替え
+    mode=choose(screen,"簡易モードで実行しますか？")
+    screen.fill(fieldcolor)
+    pygame.display.update()
     #デッキ選択
     choosing=True
     num=1
@@ -124,8 +125,7 @@ def initalize(mode):
         save=draw(1,save,True)
     if "d_z_001" in save[9]:
         save=draw(1,save,False)
-    #実行モード切り替え
-    if mode==1:
+    if mode==True:
         Easy(save,screen,log)
     else:
         Duel(save,screen,log)
