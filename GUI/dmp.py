@@ -45,7 +45,7 @@ def initalize(mode):
     screen = pygame.display.set_mode(field) 
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
-    save=[[],[],[],[],[],[],[],[],[],[],[],[],[1],[1],[1],[1]]
+    save=[[],[],[],[],[],[],[],[],[],[],[],[],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]]]
     #アドバンス/オリジナルの選択
     advance=True
     screen.fill(fieldcolor)
@@ -132,7 +132,7 @@ def initalize(mode):
 
 #簡易版デュエル実行
 def Easy(save,screen,log):
-    temp=[save,screen]
+    #temp=[save,screen]
     emenu(screen)
     debug=3
     fflag=True #フィールドを表示している
@@ -168,13 +168,16 @@ def Easy(save,screen,log):
                         elif 250<=y<=300:
                             a="b_s_002"
                             save=card[a](save,True)
+                        #追加の余地
                         elif 730<=y<=780:
+                            fflag=False
                             dmphelp(screen)
+                            tflag=True
                         elif 790<=y<=840:
-                            Easy(temp[0],temp[1],log)
+                            initalize(1)
                         elif 850<=y<=900:
                             fflag=False
-                            showlog(log)
+                            showlog(screen,log)
                             tflag=True
                         elif 910<=y<=960:
                             pygame.quit()
@@ -195,26 +198,51 @@ def Easy(save,screen,log):
                             fflag=False
                             tflag=True
                             showcards(save[12],screen,True)
+                    elif downbase[1]+height+10<=y<=downbase[1]+2*height+10:
+                        #自分側GRデッキ
+                        if downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
+                            fflag=False
+                            dflag=True
+                            grdeckinfo(save,True,screen)
+                        #自分側マナゾーン
+                        elif upbase[0]-20-2*width<=x<=downbase[0]+10+2*width:
+                            fflag=False
+                            tflag=True
+                            showcards(save[6],screen,True)
                     elif upbase[1]<=y<=upbase[1]+height:
+                        #相手側デッキ
                         if upbase[0]<=x<=upbase[0]+width:
                             deckinfo(save,False,screen)
                             dflag=True
                             fflag=False
+                        #相手側墓地
                         elif upbase[0]-10-width<=x<=upbase[0]-10:
                             fflag=False
                             tflag=True
                             showcards(save[11],screen,True)
+                        #相手側超次元
+                        elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
+                            fflag=False
+                            tflag=True
+                            showcards(save[13],screen,True)
+                    elif upbase[1]-height-10<=y<=upbase[1]-10:
+                        #相手側マナゾーン
+                        if upbase[0]-10-width<=x<=downbase[0]+3*width+20:
+                            fflag=False
+                            tflag=True
+                            showcards(save[7],screen,True)
+                        #相手側GRゾーン
+                        elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
+                            fflag=False
+                            dflag=True
+                            grdeckinfo(save,False,screen)
                 elif tflag:
                     if 1420<=x<=1440 and 110<=y<=130:
                         tflag=False
                         fflag=True
                         recover(save,screen,debug)
                 elif dflag:
-                    if downbase[0]+80<=x<=downbase[0]+100 and downbase[1]+110<=y<=downbase[1]+130:
-                        dflag=False
-                        fflag=True
-                        recover(save,screen,debug)
-                    elif upbase[0]+80<=x<=upbase[0]+100 and upbase[1]+110<=y<=upbase[1]+130:
+                    if (downbase[0]+80<=x<=downbase[0]+100 and downbase[1]+110<=y<=downbase[1]+130) or (upbase[0]+80<=x<=upbase[0]+100 and upbase[1]+110<=y<=upbase[1]+130) or (downbase[0]+2*width+100<=x<=downbase[0]+2*width+120 and downbase[1]+120+height<=y<=downbase[1]+140+height) or (upbase[0]+60-2*width<=x<=upbase[0]+80-2*width and upbase[1]-height+100<=y<=upbase[1]-height+120):
                         dflag=False
                         fflag=True
                         recover(save,screen,debug)
@@ -276,12 +304,14 @@ def Duel(save,screen,log):
                                 debug=2
                                 menu(screen)
                             elif 730<=y<=780:
+                                fflag=False
                                 dmphelp(screen)
+                                tflag=True
                             elif 790<=y<=840:
-                                Duel(temp[0],temp[1],log)
+                                initalize(2)
                             elif 850<=y<=900:
                                 fflag=False
-                                showlog(log)
+                                showlog(screen,log)
                                 tflag=True
                             elif 910<=y<=960:
                                 pygame.quit()
@@ -299,13 +329,14 @@ def Duel(save,screen,log):
                                 debug=1
                                 debugmenu(screen)
                             elif 730<=y<=780:
-                                dmphelp(screen)
-                            elif 790<=y<=840:
-                                Duel(temp[0],temp[1])
-                            elif 850<=y<=900:
-                                showlog(log)
                                 fflag=False
-                                showlog(log)
+                                dmphelp(screen)
+                                tflag=True
+                            elif 790<=y<=840:
+                                initalize(2)
+                            elif 850<=y<=900:
+                                fflag=False
+                                showlog(screen,log)
                                 tflag=True
                             elif 910<=y<=960:
                                 pygame.quit()

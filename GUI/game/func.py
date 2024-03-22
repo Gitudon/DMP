@@ -382,12 +382,6 @@ def recover(save,screen,flag):
         emenu(screen)
     pygame.display.update()
 
-#説明書を表示する。画像でいいのではないでしょうか。
-def dmphelp(screen):
-    base=(100,100)
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    return
-
 def deckinfo(save,flag,screen):
     font = pygame.font.SysFont("msgothic", 30)
     if flag:
@@ -416,15 +410,15 @@ def grdeckinfo(save,flag,screen):
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(downbase[0]+2*width+100,downbase[1]+120+height,20,20))
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
-        screen.blit(gTxt, [downbase[0]+77,downbase[1]+107])
+        screen.blit(gTxt, [downbase[0]+2*width+97,downbase[1]+117+height])
     else:
-        pygame.draw.rect(screen, (0,191,255), pygame.Rect(upbase[0]-10,upbase[1]+100,120,50))
+        pygame.draw.rect(screen, (0,191,255), pygame.Rect(upbase[0]-30-2*width,upbase[1]-height+90,120,50))
         gTxt = font.render(str(len(save[15]))+"枚", True, (255,255,255))
-        screen.blit(gTxt, [upbase[0]+10,upbase[1]+110])
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(upbase[0]+80,upbase[1]+110,20,20))
+        screen.blit(gTxt, [upbase[0]-10-2*width,upbase[1]-height+100])
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(upbase[0]+60-2*width,upbase[1]-height+100,20,20))
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
-        screen.blit(gTxt, [upbase[0]+77,upbase[1]+107])
+        screen.blit(gTxt, [upbase[0]+57-2*width,upbase[1]-height+97])
 
 def decklist(screen,num):
     size=(510, 620)
@@ -457,7 +451,25 @@ def choose(screen,message):
 
 #メッセージを表示するコンソールをメニューから見れるようにする
 #各アクションの実行後、ログを残す
-def showlog(log):
+def showlog(screen,log):
+    base=(100,100)
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
+    font = pygame.font.SysFont("msgothic", 25)
+    gTxt = font.render("×", True, (255,255,255))
+    screen.blit(gTxt, [1417,107])
+    pygame.display.update()
+    return
+
+#説明書を表示する。画像でいいのではないでしょうか。
+def dmphelp(screen):
+    base=(100,100)
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
+    font = pygame.font.SysFont("msgothic", 25)
+    gTxt = font.render("×", True, (255,255,255))
+    screen.blit(gTxt, [1417,107])
+    pygame.display.update()
     return
 
 #メッセージを受けとり、コンソールに表示する手続き
