@@ -5,8 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,move,check,deck,shield,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog
-from game import cards
+from game.func import Shuffle,showcards,draw,recover,deck,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone
 from game import carddic
 from game import deckdic
 from game import deckbuild
@@ -42,7 +41,7 @@ def initalize():
     screen = pygame.display.set_mode(field) 
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
-    save=[[],[],[],[],[],[],[],[],[],[],[],[],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]],[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False]]]
+    save=[[],[],[],[],[],[],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],True,True]],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],True,True]],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],False,[],[]]],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],False,[],[]]],[],[],[],[],[],[]]
     screen.fill(fieldcolor)
     pygame.display.update()
     #アドバンス/オリジナルの選択
@@ -87,17 +86,33 @@ def initalize():
                 elif 780<=x<=1440 and 110<=y<=730:
                     deckname2="deck"+str(num)
                     choosing=False
-    save[0]=copy.deepcopy(Deck.get(deckname1))
-    save[1]=copy.deepcopy(Deck.get(deckname2))
+    tmp1=copy.deepcopy(Deck.get(deckname1))
+    tmp2=copy.deepcopy(Deck.get(deckname2))
     #アドバンスかオリジナルだったりもするのでそれも判定する。
     if advance:
-        temp=[]
-        
-        for cards in save[0]:
-            break
-    #禁断がある場合はここではじく
+        for cards in tmp1:
+            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+                save[12].append(cards)
+            elif "_grc_" in cards[0]:
+                save[14].append(cards)
+            elif any(substring in cards[0] for substring in ["_k_", "_kf_", "_kc_","_z_","_zs_"]):
+                save[8].append(cards)
+            else:
+                save[0].append(cards)
+        for cards in tmp2:
+            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+                save[13].append(cards)
+            elif "_grc_" in cards[0]:
+                save[15].append(cards)
+            elif any(substring in cards[0] for substring in ["_k_", "_kf_","_kc_", "_z_","_zs_"]):
+                save[9].append(cards)
+            else:
+                save[1].append(cards)
     save[0]=Shuffle(save[0])
     save[1]=Shuffle(save[1])
+    if advance:
+        save[14]=Shuffle(save[14])
+        save[15]=Shuffle(save[15])
     print(save,file=codecs.open('GUI/etc/output.txt','w','utf-8'))
     #シールド展開
     screen.fill(fieldcolor)
@@ -111,7 +126,12 @@ def initalize():
     grdeck(screen,save[14],save[15])
     if len(save[14])>0 or len(save[15])>0:
         time.sleep(1)
-    #ここに禁断の処理
+    #ここにアドバンスの処理
+    if advance:
+        if "d_z_001" in save[8]:
+            save=draw(1,save,True)
+        if "d_z_001" in save[9]:
+            save=draw(1,save,False)
     
     #シールド展開
     sshield(screen)
@@ -120,11 +140,6 @@ def initalize():
     #最初のドロー
     save=draw(5,save,True)
     save=draw(5,save,False)
-    #ゼーロンドロー
-    if "d_z_001" in save[8]:
-        save=draw(1,save,True)
-    if "d_z_001" in save[9]:
-        save=draw(1,save,False)
     if mode==True:
         Easy(save,screen,log)
     else:
@@ -208,7 +223,7 @@ def Easy(save,screen,log):
                         elif upbase[0]-20-2*width<=x<=downbase[0]+10+2*width:
                             fflag=False
                             tflag=True
-                            showcards(save[6],screen,True)
+                            showmanazone(save[6],screen,True)
                     elif upbase[1]<=y<=upbase[1]+height:
                         #相手側デッキ
                         if upbase[0]<=x<=upbase[0]+width:
@@ -230,7 +245,7 @@ def Easy(save,screen,log):
                         if upbase[0]-10-width<=x<=downbase[0]+3*width+20:
                             fflag=False
                             tflag=True
-                            showcards(save[7],screen,True)
+                            showmanazone(save[7],screen,True)
                         #相手側GRゾーン
                         elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
                             fflag=False

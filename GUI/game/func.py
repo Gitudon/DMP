@@ -27,11 +27,12 @@ def deck(screen,me,opposite):
 
 #超次元ゾーンの表示。仮実装中
 def dimension(screen,me,opposite):
-    img = pygame.image.load("GUI/image/r_ed_001.jpg")
     if len(me)>0:
+        img = pygame.image.load("GUI/image/"+me[0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+20+width*2,downbase[1]))
     if len(opposite)>0:
+        img = pygame.image.load("GUI/image/"+opposite[0][0]+".jpg")
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]))
@@ -47,6 +48,68 @@ def grdeck(screen,me,opposite):
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]-10-height))
     pygame.display.update()
+
+#マナゾーンの表示。タップしてるかどうかもやれ
+def manazone(screen,me,opposite):
+    for i in range(len(me)):
+        if me[i][2]:
+            img = pygame.image.load("GUI/image/uramen/ura.jpg")
+        else:
+            img = pygame.image.load("GUI/image/"+me[i][0][0]+".jpg")
+        img = pygame.transform.scale(img, (width, height))
+        if me[i][1]:
+            img = pygame.transform.rotate(img, 270)
+            screen.blit(img, (downbase[0]+width-22-50*i,downbase[1]+32+height))
+        else:
+            img1 = pygame.transform.rotate(img, 180)
+            screen.blit(img1, (downbase[0]+width+10-50*i,downbase[1]+10+height))
+    for i in range(len(opposite)):
+        if opposite[i][2]:
+            img = pygame.image.load("GUI/image/uramen/ura.jpg")
+        else:
+            img = pygame.image.load("GUI/image/"+opposite[i][0][0]+".jpg")
+        img = pygame.transform.scale(img, (width, height))
+        if opposite[i][1]:
+            img = pygame.transform.rotate(img, 90)
+            screen.blit(img, (upbase[0]-width-22+50*i,upbase[1]+12-height))
+        else:
+            screen.blit(img, (upbase[0]-width-10+50*i,upbase[1]-10-height))
+    pygame.display.update()
+    return
+
+def battlezone(screen,me,opposite):
+    for i in range(len(me)):
+        img = pygame.image.load("GUI/image/"+me[i][0][0]+".jpg")
+        img = pygame.transform.scale(img, (width, height))
+        if me[i][1]:
+            img = pygame.transform.rotate(img, 270)
+            screen.blit(img, (downbase[0]+width-22-50*i,downbase[1]+32+height))
+        else:
+            img1 = pygame.transform.rotate(img, 180)
+            screen.blit(img1, (downbase[0]+width+10-50*i,downbase[1]+10+height))
+    for i in range(len(opposite)):
+        img = pygame.image.load("GUI/image/"+opposite[i][0][0]+".jpg")
+        img = pygame.transform.scale(img, (width, height))
+        if opposite[i][1]:
+            img = pygame.transform.rotate(img, 90)
+            screen.blit(img, (upbase[0]-width-22+50*i,upbase[1]+12-height))
+        else:
+            screen.blit(img, (upbase[0]-width-10+50*i,upbase[1]-10-height))
+    pygame.display.update()
+    return
+
+def graveyard(screen,me,opposite):
+    if len(me)>0:
+        img = pygame.image.load("GUI/image/"+me[0][0]+".jpg")
+        img = pygame.transform.scale(img, (width, height))
+        screen.blit(img, (downbase[0]+10+width,downbase[1]))
+    if len(opposite)>0:
+        img = pygame.image.load("GUI/image/"+opposite[0][0]+".jpg")
+        img2 = pygame.transform.rotate(img, 180)
+        img2 = pygame.transform.scale(img2, (width, height))
+        screen.blit(img2, (upbase[0]-10-width,upbase[1]))
+    pygame.display.update()
+    return
 
 #メニューをクラスにしろ！
 def menu(screen):
@@ -221,82 +284,205 @@ def Shuffle(a):
         a.remove(b)
     return sh
 
+def swap(save):
+    for i in range(len(save)//2):
+        tmp=(save[2*i+1])
+        save[2*i+1]=save[2*i]
+        save[2*i]=tmp
+    return save
+
 def check(a):
     b=sorted(a)
     print(b)
     return len(b)
 
-# 配列から要素を選んでほかの配列に移動させる関数
-def choice(save,flag,screen):
+def put(save,card,flag):
+    if flag:
+        save[8].append(card)
+    else:
+        save[9].append(card)
+    return save
+
+def summon(save,card,flag):
+    save=put(save,flag,card)
+    return save
+
+def gotodeck(save,flag,card,up):
+    if flag:
+        if up:
+            save[0]=[card]+save[0]
+        else:
+            save[0].append(card)
+    else:
+        if up:
+            save[1]=[card]+save[0]
+        else:
+            save[1].append(card)
+    return save
+
+def bounce(save,card,flag):
+    if flag:
+        if "_grc_" in card[0]:
+            save[14].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[12].append(card)
+        else:
+            save[4].append(card)
+    else:
+        if "_grc_" in card[0]:
+            save[15].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[13].append(card)
+        else:
+            save[5].append(card)
     return save
 
 def draw(n,save,flag):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
-                save[4].append(save[0][0])
+                save=bounce(save,save[0][0],flag)
                 save[0] = save[0][1:]
             else:
                 print("You can't draw a card.")
     else:
         for _ in range(n):
             if save[1]!=[]:
-                save[5].append(save[1][1])
+                save=bounce(save,save[1][0],flag)
                 save[1] = save[1][1:]
             else:
                 print("You can't draw a card.")
+    return save
+
+def putgrave(save,card,flag):
+    if flag:
+        if "_grc_" in card[0]:
+                save[14].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[12].append(card)
+        else:
+            save[10].append(card)
+    else:
+        if "_grc_" in card[0]:
+            save[15].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[13].append(card)
+        else:
+            save[11].append(card)
     return save
 
 def bochiokuri(n,save,flag):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
-                save[10].append(save[0][0])
+                save=putgrave(save,save[0][0],flag)
                 save[0] = save[0][1:]
             else:
                 print("You can't put a card.")
     else:
         for _ in range(n):
             if save[1]!=[]:
-                save[11].append(save[1][1])
+                save=putgrave(save,save[1][0],flag)
                 save[1] = save[1][1:]
             else:
                 print("You can't put a card.")
     return save
 
-def addmana(n,save,flag):
+def putmana(save,card,flag,crystal,zone):
+    if flag:
+        if "_grc_" in card[0]:
+            save[14].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[12].append(card)
+        else:
+            tmp=[[card],False,False]
+            tap=0
+            if zone:
+                if "_cs_" in card[0]:
+                    tap=len(card[6][0])
+                else:
+                    tap=len(card[6])
+            else:
+                if "_cs_" in card[0]:
+                    tap=max(len(card[6][0]),len(card[6][1]))
+                else:
+                    tap=len(card[6])
+            if tap>=2:
+                tmp[1]=True
+            if crystal:
+                tmp[2]=True
+            save[6].append(tmp)
+    else:
+        if "_grc_" in card[0]:
+            save[15].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[13].append(card)
+        else:
+            tmp=[[card],False,False]
+            tap=0
+            if zone:
+                if "_cs_" in card[0]:
+                    tap=len(card[6][0])
+                else:
+                    tap=len(card[6])
+            else:
+                if "_cs_" in card[0]:
+                    tap=max(len(card[6][0]),len(card[6][1]))
+                else:
+                    tap=len(card[6])
+            if tap>=2:
+                tmp[1]=True
+            if crystal:
+                tmp[2]=True
+            save[7].append(tmp)
+    return save
+
+def addmana(n,save,flag,crystal):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
-                save[6].append(save[0][0])
-                if len(save[6][-1][4])>=2:
-                    save[6][-1][6]=True
+                save=putmana(save,save[0][0],flag,crystal,False)
                 save[0] = save[0][1:]
             else:
                 print("You can't put a card.")
     else:
         for _ in range(n):
             if save[1]!=[]:
-                save[7].append(save[1][1])
-                if len(save[7][-1][4])>=2:
-                    save[7][-1][6]=True
+                save=putmana(save,save[1][0],flag,crystal,False)
                 save[1] = save[1][1:]
             else:
                 print("You can't put a card.")
+    return save
+
+def putshield(save,card,flag):
+    if flag:
+        if "_grc_" in card[0]:
+            save[14].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[12].append(card)
+        else:
+            save[2].append(card)
+    else:
+        if "_grc_" in card[0]:
+            save[15].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[13].append(card)
+        else:
+            save[3].append(card)
     return save
 
 def shieldplus(n,save,flag):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
-                save[2].append(save[0][0])
+                save=putshield(save,save[0][0],flag)
                 save[0] = save[0][1:]
             else:
                 print("You can't add a shield.")
     else:
         for _ in range(n):
             if save[1]!=[]:
-                save[3].append(save[1][1])
+                save=putshield(save,save[1][0],flag)
                 save[1] = save[1][1:]
             else:
                 print("You can't add a shield.")
@@ -313,6 +499,89 @@ def showcards(cards,screen,flag):
         tmp.append("GUI/image/"+cards[i][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
+        if cards[i][11]:
+            pixel = pygame.PixelArray(tmp[i])
+            for y in range(tmp[i].get_height()):
+                for x in range(tmp[i].get_width()):
+                    rgba = screen.unmap_rgb(pixel[x][y])
+                    gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
+                    pixel[x][y] = (gray,gray,gray)
+            del pixel
+        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
+        # 総枚数に応じて表示形式を変えたい
+        if i<=5:
+            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
+        elif 6<=i<=11:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
+        elif 12<=i<=17:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
+        else:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
+    if flag:
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
+        font = pygame.font.SysFont("msgothic", 25)
+        gTxt = font.render("×", True, (255,255,255))
+        screen.blit(gTxt, [1417,107])
+    pygame.display.update()
+
+def showmanazone(cards,screen,flag):
+    w=200
+    h=288
+    tmp=[]
+    base=(100,100)
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    # カードを配列として記録するので要変更
+    for i in range(len(cards)):
+        if cards[i][2]:
+            tmp.append("GUI/image/uramen/ura.jpg")
+        else:
+            tmp.append("GUI/image/"+cards[i][0][0]+".jpg")
+    for i in range(len(tmp)):
+        tmp[i]=pygame.image.load(tmp[i])
+        if cards[i][1]:
+            pixel = pygame.PixelArray(tmp[i])
+            for y in range(tmp[i].get_height()):
+                for x in range(tmp[i].get_width()):
+                    rgba = screen.unmap_rgb(pixel[x][y])
+                    gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
+                    pixel[x][y] = (gray,gray,gray)
+            del pixel
+        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
+        # 総枚数に応じて表示形式を変えたい
+        if i<=5:
+            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
+        elif 6<=i<=11:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
+        elif 12<=i<=17:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
+        else:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
+    if flag:
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
+        font = pygame.font.SysFont("msgothic", 25)
+        gTxt = font.render("×", True, (255,255,255))
+        screen.blit(gTxt, [1417,107])
+    pygame.display.update()
+
+def showbattlezone(cards,screen,flag):
+    w=200
+    h=288
+    tmp=[]
+    base=(100,100)
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    # カードを配列として記録するので要変更
+    for i in range(len(cards)):
+        tmp.append("GUI/image/"+cards[i][0]+".jpg")
+    for i in range(len(tmp)):
+        tmp[i]=pygame.image.load(tmp[i])
+        if cards[i][11]:
+            pixel = pygame.PixelArray(tmp[i])
+            for y in range(tmp[i].get_height()):
+                for x in range(tmp[i].get_width()):
+                    rgba = screen.unmap_rgb(pixel[x][y])
+                    gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
+                    pixel[x][y] = (gray,gray,gray)
+            del pixel
         tmp[i]=pygame.transform.scale(tmp[i], (w, h))
         # 総枚数に応じて表示形式を変えたい
         if i<=5:
@@ -374,6 +643,9 @@ def recover(save,screen,flag):
     grdeck(screen,save[14],save[15])
     shield(screen,True,save)
     shield(screen,False,save)
+    manazone(screen,save[6],save[7])
+    battlezone(screen,save[8],save[9])
+    graveyard(screen,save[10],save[11])
     if flag==1:
         debugmenu(screen)
     elif flag==2:
@@ -434,11 +706,7 @@ def decklist(screen,num):
     screen.blit(img2, (830, 180))
     pygame.display.update()
 
-def swap(save):
-    for i in range(len(save)//2):
-        tmp=(save[2*i+1])
-        save[2*i+1]=save[2*i]
-        save[2*i]=tmp
+def mekureid(save,n,flag):
     return save
 
 def choose(screen,message):
@@ -510,5 +778,3 @@ def dmphelp(screen):
     screen.blit(gTxt, [1417,107])
     pygame.display.update()
     return
-
-#メッセージを受けとり、コンソールに表示する手続き
