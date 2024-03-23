@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone
+from game.func import Shuffle,showcards,draw,recover,deck,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,put,expand
 from game import carddic
 from game import deckdic
 from game import deckbuild
@@ -38,10 +38,10 @@ def initalize():
     log=[]
     #初期設定
     pygame.init() 
-    screen = pygame.display.set_mode(field) 
+    screen = pygame.display.set_mode(field)
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
-    save=[[],[],[],[],[],[],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],True,True]],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],True,True]],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],False,[],[]]],[[['b_c_003', '水上第九院 シャコガイル', ['ムートピア'], 9, 1, 13000, ['b'], True, True, False, False, False, 'c', ['T-Breaker'], False, False],False,[],[]]],[],[],[],[],[],[]]
+    save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     screen.fill(fieldcolor)
     pygame.display.update()
     #アドバンス/オリジナルの選択
@@ -95,8 +95,8 @@ def initalize():
                 save[12].append(cards)
             elif "_grc_" in cards[0]:
                 save[14].append(cards)
-            elif any(substring in cards[0] for substring in ["_k_", "_kf_", "_kc_","_z_","_zs_"]):
-                save[8].append(cards)
+            elif any(substring in cards[0] for substring in ["_k_", "_kf_","_z_","_zs_"]):
+                expand(save,cards,True)
             else:
                 save[0].append(cards)
         for cards in tmp2:
@@ -104,8 +104,8 @@ def initalize():
                 save[13].append(cards)
             elif "_grc_" in cards[0]:
                 save[15].append(cards)
-            elif any(substring in cards[0] for substring in ["_k_", "_kf_","_kc_", "_z_","_zs_"]):
-                save[9].append(cards)
+            elif any(substring in cards[0] for substring in ["_k_", "_kf_", "_z_","_zs_"]):
+                expand(save,cards,False)
             else:
                 save[1].append(cards)
     save[0]=Shuffle(save[0])
@@ -150,10 +150,6 @@ def Easy(save,screen,log):
     #temp=[save,screen]
     emenu(screen)
     debug=3
-    fflag=True #フィールドを表示している
-    tflag=False #手札全体を見ている
-    qflag=False #手札のカードを見ている
-    dflag=False #デッキ枚数を確認中
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -167,218 +163,80 @@ def Easy(save,screen,log):
             #クリック操作
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if fflag:
-                    if 1260<=x<=1540:
-                        if 10<=y<=60:
-                            fflag=False
-                            showcards(save[4],screen,True)
-                            tflag=True
-                        elif 70<=y<=120:
-                            save[4]=sorted(save[4])
-                        elif 130<=y<=180:
-                            save[4]=Shuffle(save[4])
-                        elif 190<=y<=240:
-                            save=swap(save)
-                            recover(save,screen,debug)
-                        elif 250<=y<=300:
-                            a="b_s_002"
-                            save=card[a](save,True)
-                        #追加の余地
-                        elif 730<=y<=780:
-                            fflag=False
-                            dmphelp(screen)
-                            tflag=True
-                        elif 790<=y<=840:
-                            initalize(1)
-                        elif 850<=y<=900:
-                            fflag=False
-                            showlog(screen,log)
-                            tflag=True
-                        elif 910<=y<=960:
-                            pygame.quit()
-                            sys.exit()
-                    elif downbase[1]<=y<=downbase[1]+height:
-                        #自分側デッキ
-                        if downbase[0]<=x<=downbase[0]+width:
-                            deckinfo(save,True,screen)
-                            dflag=True
-                            fflag=False
-                        #自分側墓地
-                        elif downbase[0]+10+width<=x<=downbase[0]+2*width+10:
-                            fflag=False
-                            tflag=True
-                            showcards(save[10],screen,True)
-                        #自分側超次元
-                        elif downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
-                            fflag=False
-                            tflag=True
-                            showcards(save[12],screen,True)
-                    elif downbase[1]+height+10<=y<=downbase[1]+2*height+10:
-                        #自分側GRデッキ
-                        if downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
-                            fflag=False
-                            dflag=True
-                            grdeckinfo(save,True,screen)
-                        #自分側マナゾーン
-                        elif upbase[0]-20-2*width<=x<=downbase[0]+10+2*width:
-                            fflag=False
-                            tflag=True
-                            showmanazone(save[6],screen,True)
-                    elif upbase[1]<=y<=upbase[1]+height:
-                        #相手側デッキ
-                        if upbase[0]<=x<=upbase[0]+width:
-                            deckinfo(save,False,screen)
-                            dflag=True
-                            fflag=False
-                        #相手側墓地
-                        elif upbase[0]-10-width<=x<=upbase[0]-10:
-                            fflag=False
-                            tflag=True
-                            showcards(save[11],screen,True)
-                        #相手側超次元
-                        elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
-                            fflag=False
-                            tflag=True
-                            showcards(save[13],screen,True)
-                    elif upbase[1]-height-10<=y<=upbase[1]-10:
-                        #相手側マナゾーン
-                        if upbase[0]-10-width<=x<=downbase[0]+3*width+20:
-                            fflag=False
-                            tflag=True
-                            showmanazone(save[7],screen,True)
-                        #相手側GRゾーン
-                        elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
-                            fflag=False
-                            dflag=True
-                            grdeckinfo(save,False,screen)
-                elif tflag:
-                    if 1420<=x<=1440 and 110<=y<=130:
-                        tflag=False
-                        fflag=True
+                if 1260<=x<=1540:
+                    if 10<=y<=60:
+                        showcards(save,screen,True,4,debug)
+                    elif 70<=y<=120:
+                        save[4]=sorted(save[4])
+                    elif 130<=y<=180:
+                        save[4]=Shuffle(save[4])
+                    elif 190<=y<=240:
+                        save=swap(save)
                         recover(save,screen,debug)
-                elif dflag:
-                    if (downbase[0]+80<=x<=downbase[0]+100 and downbase[1]+110<=y<=downbase[1]+130) or (upbase[0]+80<=x<=upbase[0]+100 and upbase[1]+110<=y<=upbase[1]+130) or (downbase[0]+2*width+100<=x<=downbase[0]+2*width+120 and downbase[1]+120+height<=y<=downbase[1]+140+height) or (upbase[0]+60-2*width<=x<=upbase[0]+80-2*width and upbase[1]-height+100<=y<=upbase[1]-height+120):
-                        dflag=False
-                        fflag=True
-                        recover(save,screen,debug)
+                    elif 250<=y<=300:
+                        a="b_s_002"
+                        save=card[a](save,True)
+                    elif 310<=y<=360:
+                        showcards(save,screen,True,0,debug)
+                    elif 370<=y<=420:
+                        save[0]=Shuffle(save[0])
+                    elif 430<=y<=480:
+                        showcards(save,screen,True,2,debug)
+                    elif 730<=y<=780:
+                        dmphelp(screen)
+                    elif 790<=y<=840:
+                        initalize()
+                    elif 850<=y<=900:
+                        showlog(screen,log)
+                    elif 910<=y<=960:
+                        pygame.quit()
+                        sys.exit()
+                elif downbase[1]<=y<=downbase[1]+height:
+                    #自分側デッキ
+                    if downbase[0]<=x<=downbase[0]+width:
+                        deckinfo(save,True,screen,debug)
+                    #自分側墓地
+                    elif downbase[0]+10+width<=x<=downbase[0]+2*width+10:
+                        showcards(save,screen,True,10,debug)
+                    #自分側超次元
+                    elif downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
+                        showcards(save,screen,True,12,debug)
+                elif downbase[1]+height+10<=y<=downbase[1]+2*height+10:
+                    #自分側GRデッキ
+                    if downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
+                        grdeckinfo(save,True,screen,debug)
+                    #自分側マナゾーン
+                    elif upbase[0]-20-2*width<=x<=downbase[0]+10+2*width:
+                        showmanazone(save,screen,True,6,debug)
+                elif upbase[0]-2*(width+10)<=x<=downbase[0]+20+3*width:
+                    if downbase[1]-10-height<=y<=downbase[1]-10:
+                        #自分側バトルゾーン
+                        showbattlezone(save,screen,True,8,debug)
+                    elif upbase[1]+10+height<=y<=upbase[1]+10+2*height:
+                        #相手側バトルゾーン
+                        showbattlezone(save,screen,True,9,debug)
+                elif upbase[1]<=y<=upbase[1]+height:
+                    #相手側デッキ
+                    if upbase[0]<=x<=upbase[0]+width:
+                        deckinfo(save,False,screen,debug)
+                    #相手側墓地
+                    elif upbase[0]-10-width<=x<=upbase[0]-10:
+                        showcards(save,screen,True,11,debug)
+                    #相手側超次元
+                    elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
+                        showcards(save,screen,True,13,debug)
+                elif upbase[1]-height-10<=y<=upbase[1]-10:
+                    #相手側マナゾーン
+                    if upbase[0]-10-width<=x<=downbase[0]+3*width+20:
+                        showmanazone(save,screen,True,7,debug)
+                    #相手側GRゾーン
+                    elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
+                        grdeckinfo(save,False,screen,debug)
             pygame.display.update()
 
 #デュエル実行
 def Duel(save,screen,log):
-    #表示フラグ
-    fflag=True #フィールドを表示している
-    tflag=False #手札全体を見ている
-    qflag=False #手札のカードを見ている
-    dflag=False #デッキ枚数を確認中
-    debug=2
-    d1=True
-    d2=True
-    temp=[save,screen]
-    menu(screen)
-    #以下、ゲーム処理
-    while True:
-        #山札切れ
-        if save[0]==[] and d1:
-            recover(save,screen,debug)
-            d1=False
-        if save[1]==[] and d2:
-            recover(save,screen,debug)
-            d2=False
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            #ボタン操作
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-            #クリック操作
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if fflag:
-                    if 1260<=x<=1540:
-                        if debug==1:
-                            if 10<=y<=60:
-                                fflag=False
-                                showcards(save[4],screen,True)
-                                tflag=True
-                            elif 70<=y<=120:
-                                save[4]=sorted(save[4])
-                            elif 130<=y<=180:
-                                save=card["b_s_002"](save,True)
-                            elif 190<=y<=240:
-                                fflag=False
-                                showcards(save[2],screen,True)
-                                tflag=True
-                            elif 250<=y<=300:
-                                save=swap(save)
-                                recover(save,screen,debug)
-                                pygame.display.update()
-                            elif 670<=y<=720:
-                                debug=2
-                                menu(screen)
-                            elif 730<=y<=780:
-                                fflag=False
-                                dmphelp(screen)
-                                tflag=True
-                            elif 790<=y<=840:
-                                initalize(2)
-                            elif 850<=y<=900:
-                                fflag=False
-                                showlog(screen,log)
-                                tflag=True
-                            elif 910<=y<=960:
-                                pygame.quit()
-                                sys.exit()
-                        else:
-                            if 10<=y<=60:
-                                fflag=False
-                                showcards(save[4],screen,True)
-                                tflag=True
-                            elif 70<=y<=120:
-                                save[4]=sorted(save[4])
-                            elif 130<=y<=180:
-                                save[4]=Shuffle(save[4])
-                            elif 670<=y<=720:
-                                debug=1
-                                debugmenu(screen)
-                            elif 730<=y<=780:
-                                fflag=False
-                                dmphelp(screen)
-                                tflag=True
-                            elif 790<=y<=840:
-                                initalize(2)
-                            elif 850<=y<=900:
-                                fflag=False
-                                showlog(screen,log)
-                                tflag=True
-                            elif 910<=y<=960:
-                                pygame.quit()
-                                sys.exit()
-                    elif downbase[0]<=x<=downbase[0]+width and downbase[1]<=y<=downbase[1]+height:
-                        deckinfo(save,True,screen)
-                        dflag=True
-                        fflag=False
-                    elif upbase[0]<=x<=upbase[0]+width and upbase[1]<=y<=upbase[1]+height:
-                        deckinfo(save,False,screen)
-                        dflag=True
-                        fflag=False
-                elif tflag:
-                    if 1420<=x<=1440 and 110<=y<=130:
-                        tflag=False
-                        fflag=True
-                        recover(save,screen,debug)
-                elif dflag:
-                    if downbase[0]+80<=x<=downbase[0]+100 and downbase[1]+110<=y<=downbase[1]+130:
-                        dflag=False
-                        fflag=True
-                        recover(save,screen,debug)
-                    elif upbase[0]+80<=x<=upbase[0]+100 and upbase[1]+110<=y<=upbase[1]+130:
-                        dflag=False
-                        fflag=True
-                        recover(save,screen,debug)
-            pygame.display.update()
+    sys.exit()
 
 if __name__=="__main__":
     main()

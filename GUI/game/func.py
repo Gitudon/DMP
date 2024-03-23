@@ -13,8 +13,6 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 696)
 
-#似た機能の関数はクラスにしろ！
-
 def deck(screen,me,opposite):
     img = pygame.image.load("GUI/image/uramen/ura.jpg")
     if len(me)>0:
@@ -25,14 +23,13 @@ def deck(screen,me,opposite):
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, upbase)
 
-#超次元ゾーンの表示。仮実装中
 def dimension(screen,me,opposite):
     if len(me)>0:
-        img = pygame.image.load("GUI/image/"+me[0][0]+".jpg")
+        img = pygame.image.load("GUI/image/cards/"+me[0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+20+width*2,downbase[1]))
     if len(opposite)>0:
-        img = pygame.image.load("GUI/image/"+opposite[0][0]+".jpg")
+        img = pygame.image.load("GUI/image/cards/"+opposite[0][0]+".jpg")
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]))
@@ -49,13 +46,12 @@ def grdeck(screen,me,opposite):
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]-10-height))
     pygame.display.update()
 
-#マナゾーンの表示。タップしてるかどうかもやれ
 def manazone(screen,me,opposite):
     for i in range(len(me)):
         if me[i][2]:
             img = pygame.image.load("GUI/image/uramen/ura.jpg")
         else:
-            img = pygame.image.load("GUI/image/"+me[i][0][0]+".jpg")
+            img = pygame.image.load("GUI/image/cards/"+me[i][0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         if me[i][1]:
             img = pygame.transform.rotate(img, 270)
@@ -67,7 +63,7 @@ def manazone(screen,me,opposite):
         if opposite[i][2]:
             img = pygame.image.load("GUI/image/uramen/ura.jpg")
         else:
-            img = pygame.image.load("GUI/image/"+opposite[i][0][0]+".jpg")
+            img = pygame.image.load("GUI/image/cards/"+opposite[i][0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         if opposite[i][1]:
             img = pygame.transform.rotate(img, 90)
@@ -79,39 +75,97 @@ def manazone(screen,me,opposite):
 
 def battlezone(screen,me,opposite):
     for i in range(len(me)):
-        img = pygame.image.load("GUI/image/"+me[i][0][0]+".jpg")
+        if me[i][2]:
+            img = pygame.image.load("GUI/image/uramen/ura.jpg")
+        else:
+            img = pygame.image.load("GUI/image/cards/"+me[i][0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         if me[i][1]:
             img = pygame.transform.rotate(img, 270)
-            screen.blit(img, (downbase[0]+width-22-50*i,downbase[1]+32+height))
+            screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,downbase[1]-(height+10)+22))
         else:
-            img1 = pygame.transform.rotate(img, 180)
-            screen.blit(img1, (downbase[0]+width+10-50*i,downbase[1]+10+height))
+            screen.blit(img, (upbase[0]-20-width*2+(10+width)*i,downbase[1]-(height+10)))
     for i in range(len(opposite)):
-        img = pygame.image.load("GUI/image/"+opposite[i][0][0]+".jpg")
+        if opposite[i][2]:
+            img = pygame.image.load("GUI/image/uramen/ura.jpg")
+        else:
+            img = pygame.image.load("GUI/image/cards/"+opposite[i][0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         if opposite[i][1]:
             img = pygame.transform.rotate(img, 90)
-            screen.blit(img, (upbase[0]-width-22+50*i,upbase[1]+12-height))
+            screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,upbase[1]+(height+10)+22))
         else:
-            screen.blit(img, (upbase[0]-width-10+50*i,upbase[1]-10-height))
+            img1 = pygame.transform.rotate(img, 180)
+            screen.blit(img1, (upbase[0]-20-width*2+(10+width)*i,upbase[1]+(height+10)))
     pygame.display.update()
     return
 
 def graveyard(screen,me,opposite):
     if len(me)>0:
-        img = pygame.image.load("GUI/image/"+me[0][0]+".jpg")
+        img = pygame.image.load("GUI/image/cards/"+me[0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (downbase[0]+10+width,downbase[1]))
     if len(opposite)>0:
-        img = pygame.image.load("GUI/image/"+opposite[0][0]+".jpg")
+        img = pygame.image.load("GUI/image/cards/"+opposite[0][0]+".jpg")
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-10-width,upbase[1]))
     pygame.display.update()
     return
 
-#メニューをクラスにしろ！
+def emenu(screen):
+    font = pygame.font.SysFont("msgothic", 30)
+    pygame.draw.rect(screen, (192,192,192), pygame.Rect(field[0]-300,0,300,field[1]))
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,10,280,50))
+    gTxt = font.render("手札を確認する", True, (255,255,255))
+    screen.blit(gTxt, [1265, 20])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,70,280,50))
+    gTxt = font.render("手札をソートする", True, (255,255,255))
+    screen.blit(gTxt, [1265, 80])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,130,280,50))
+    gTxt = font.render("手札をシャッフル", True, (255,255,255))
+    screen.blit(gTxt, [1265, 140])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,190,280,50))
+    gTxt = font.render("視点切り替え", True, (255,255,255))
+    screen.blit(gTxt, [1265, 200])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,250,280,50))
+    gTxt = font.render("1枚ドロー", True, (255,255,255))
+    screen.blit(gTxt, [1265, 260])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,310,280,50))
+    gTxt = font.render("デッキを確認する", True, (255,255,255))
+    screen.blit(gTxt, [1265, 320])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,370,280,50))
+    gTxt = font.render("デッキをシャッフル", True, (255,255,255))
+    screen.blit(gTxt, [1265, 380])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
+    gTxt = font.render("シールドを確認する", True, (255,255,255))
+    screen.blit(gTxt, [1265, 440])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 500])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 560])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 620])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
+    gTxt = font.render("", True, (255,255,255))
+    screen.blit(gTxt, [1265, 680])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
+    gTxt = font.render("ヘルプを表示", True, (255,255,255))
+    screen.blit(gTxt, [1265, 740])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
+    gTxt = font.render("ゲームをリセット", True, (255,255,255))
+    screen.blit(gTxt, [1265, 800])
+    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
+    gTxt = font.render("ログを表示", True, (255,255,255))
+    screen.blit(gTxt, [1265, 860])
+    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
+    gTxt = font.render("ゲームを終了", True, (255,255,255))
+    screen.blit(gTxt, [1265, 920])
+    pygame.display.update()
+
 def menu(screen):
     font = pygame.font.SysFont("msgothic", 30)
     pygame.draw.rect(screen, (192,192,192), pygame.Rect(field[0]-300,0,300,field[1]))
@@ -150,59 +204,6 @@ def menu(screen):
     screen.blit(gTxt, [1265, 620])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
     gTxt = font.render("デバッグメニュー", True, (255,255,255))
-    screen.blit(gTxt, [1265, 680])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
-    gTxt = font.render("ヘルプを表示", True, (255,255,255))
-    screen.blit(gTxt, [1265, 740])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
-    gTxt = font.render("ゲームをリセット", True, (255,255,255))
-    screen.blit(gTxt, [1265, 800])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
-    gTxt = font.render("ログを表示", True, (255,255,255))
-    screen.blit(gTxt, [1265, 860])
-    pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
-    gTxt = font.render("ゲームを終了", True, (255,255,255))
-    screen.blit(gTxt, [1265, 920])
-    pygame.display.update()
-
-def emenu(screen):
-    font = pygame.font.SysFont("msgothic", 30)
-    pygame.draw.rect(screen, (192,192,192), pygame.Rect(field[0]-300,0,300,field[1]))
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,10,280,50))
-    gTxt = font.render("手札を確認する", True, (255,255,255))
-    screen.blit(gTxt, [1265, 20])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,70,280,50))
-    gTxt = font.render("手札をソートする", True, (255,255,255))
-    screen.blit(gTxt, [1265, 80])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,130,280,50))
-    gTxt = font.render("手札をシャッフル", True, (255,255,255))
-    screen.blit(gTxt, [1265, 140])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,190,280,50))
-    gTxt = font.render("視点切り替え", True, (255,255,255))
-    screen.blit(gTxt, [1265, 200])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,250,280,50))
-    gTxt = font.render("1枚ドロー", True, (255,255,255))
-    screen.blit(gTxt, [1265, 260])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,310,280,50))
-    gTxt = font.render("", True, (255,255,255))
-    screen.blit(gTxt, [1265, 320])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,370,280,50))
-    gTxt = font.render("", True, (255,255,255))
-    screen.blit(gTxt, [1265, 380])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
-    gTxt = font.render("", True, (255,255,255))
-    screen.blit(gTxt, [1265, 440])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
-    gTxt = font.render("", True, (255,255,255))
-    screen.blit(gTxt, [1265, 500])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
-    gTxt = font.render("", True, (255,255,255))
-    screen.blit(gTxt, [1265, 560])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
-    gTxt = font.render("", True, (255,255,255))
-    screen.blit(gTxt, [1265, 620])
-    pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
-    gTxt = font.render("", True, (255,255,255))
     screen.blit(gTxt, [1265, 680])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
     gTxt = font.render("ヘルプを表示", True, (255,255,255))
@@ -297,10 +298,19 @@ def check(a):
     return len(b)
 
 def put(save,card,flag):
+    tmp=[card,False,False,[],[],-1,1,0]
     if flag:
-        save[8].append(card)
+        save[8]+=tmp
     else:
-        save[9].append(card)
+        save[9]+=tmp
+    return save
+
+def expand(save,card,flag):
+    tmp=[card,False,False,[],[]]
+    if flag:
+        save[8]+=tmp
+    else:
+        save[9]+=tmp
     return save
 
 def summon(save,card,flag):
@@ -488,15 +498,29 @@ def shieldplus(n,save,flag):
                 print("You can't add a shield.")
     return save
 
-def showcards(cards,screen,flag):
+def seal(save,flag,key):
+    if flag:
+        tmp=save[0][0]
+        save[0]=save[0][1:]
+        save[8][key][2]=True
+        save[8][key][3].insert(0,tmp)
+    else:
+        tmp=save[1][0]
+        save[1]=save[1][1:]
+        save[9][key][2]=True
+        save[9][key][3].insert(0,tmp)
+    return save
+
+def showcards(save,screen,flag,key,debug):
     w=200
     h=288
     tmp=[]
     base=(100,100)
+    cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     # カードを配列として記録するので要変更
     for i in range(len(cards)):
-        tmp.append("GUI/image/"+cards[i][0]+".jpg")
+        tmp.append("GUI/image/cards/"+cards[i][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
         if cards[i][11]:
@@ -523,19 +547,32 @@ def showcards(cards,screen,flag):
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
     pygame.display.update()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
+                #ページ切り替え
+                #カード個別の処理(showcard呼び出し)
 
-def showmanazone(cards,screen,flag):
+def showmanazone(save,screen,flag,key,debug):
     w=200
     h=288
     tmp=[]
     base=(100,100)
+    cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     # カードを配列として記録するので要変更
     for i in range(len(cards)):
         if cards[i][2]:
             tmp.append("GUI/image/uramen/ura.jpg")
         else:
-            tmp.append("GUI/image/"+cards[i][0][0]+".jpg")
+            tmp.append("GUI/image/cards/"+cards[i][0][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
         if cards[i][1]:
@@ -562,19 +599,33 @@ def showmanazone(cards,screen,flag):
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
     pygame.display.update()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
 
-def showbattlezone(cards,screen,flag):
+def showbattlezone(save,screen,flag,key,debug):
     w=200
     h=288
     tmp=[]
     base=(100,100)
+    cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     # カードを配列として記録するので要変更
     for i in range(len(cards)):
-        tmp.append("GUI/image/"+cards[i][0]+".jpg")
+        if cards[i][2]:
+            tmp.append("GUI/image/uramen/ura.jpg")
+        else:
+            tmp.append("GUI/image/cards/"+cards[i][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
-        if cards[i][11]:
+        if cards[i][1]:
             pixel = pygame.PixelArray(tmp[i])
             for y in range(tmp[i].get_height()):
                 for x in range(tmp[i].get_width()):
@@ -598,6 +649,16 @@ def showbattlezone(cards,screen,flag):
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
     pygame.display.update()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
 
 # 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
 def select(cards,screen,flag):
@@ -653,8 +714,9 @@ def recover(save,screen,flag):
     else:
         emenu(screen)
     pygame.display.update()
+    return
 
-def deckinfo(save,flag,screen):
+def deckinfo(save,flag,screen,debug):
     font = pygame.font.SysFont("msgothic", 30)
     if flag:
         pygame.draw.rect(screen, (0,191,255), pygame.Rect(downbase[0]-10,downbase[1]+100,120,50))
@@ -664,6 +726,17 @@ def deckinfo(save,flag,screen):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [downbase[0]+77,downbase[1]+107])
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if (downbase[0]+80<=x<=downbase[0]+100 and downbase[1]+110<=y<=downbase[1]+130):
+                        recover(save,screen,debug)
+                        return
     else:
         pygame.draw.rect(screen, (0,191,255), pygame.Rect(upbase[0]-10,upbase[1]+100,120,50))
         gTxt = font.render(str(len(save[1]))+"枚", True, (255,255,255))
@@ -672,8 +745,19 @@ def deckinfo(save,flag,screen):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [upbase[0]+77,upbase[1]+107])
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if (upbase[0]+80<=x<=upbase[0]+100 and upbase[1]+110<=y<=upbase[1]+130):
+                        recover(save,screen,debug)
+                        return
 
-def grdeckinfo(save,flag,screen):
+def grdeckinfo(save,flag,screen,debug):
     font = pygame.font.SysFont("msgothic", 30)
     if flag:
         pygame.draw.rect(screen, (0,191,255), pygame.Rect(downbase[0]+2*width+10,downbase[1]+110+height,120,50))
@@ -683,6 +767,17 @@ def grdeckinfo(save,flag,screen):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [downbase[0]+2*width+97,downbase[1]+117+height])
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if (downbase[0]+2*width+100<=x<=downbase[0]+2*width+120 and downbase[1]+120+height<=y<=downbase[1]+140+height):
+                        recover(save,screen,debug)
+                        return
     else:
         pygame.draw.rect(screen, (0,191,255), pygame.Rect(upbase[0]-30-2*width,upbase[1]-height+90,120,50))
         gTxt = font.render(str(len(save[15]))+"枚", True, (255,255,255))
@@ -691,6 +786,17 @@ def grdeckinfo(save,flag,screen):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [upbase[0]+57-2*width,upbase[1]-height+97])
+        pygame.display.update()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if (upbase[0]+60-2*width<=x<=upbase[0]+80-2*width and upbase[1]-height+100<=y<=upbase[1]-height+120):
+                        recover(save,screen,debug)
+                        return
 
 def decklist(screen,num):
     size=(510, 620)
