@@ -21,6 +21,9 @@ def cardlist():
             dic[v['name']]=k
     with open('GUI/etc/out/out1.txt','w', encoding='utf-8') as o:
         print(dic, file=o)
+    with open('GUI/etc/out/cardname.txt','w', encoding='utf-8') as o:
+        for k in dic:
+            print(k,file=o)
 
 def carddic():
     file=open('GUI/game/cardlist.json','r',encoding="utf_8")

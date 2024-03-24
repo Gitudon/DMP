@@ -20,6 +20,8 @@ def main():
         if 0<=num<=29:
             with open('GUI/etc/out/listout.txt','w', encoding='utf-8') as o:
                 print(*deck,file=o)
+            with open('GUI/decks/deck'+str(num)+'.txt','w', encoding='utf-8') as o:
+                print(*deck,file=o)
             break
         else:
             print("存在しないスロット番号です。")

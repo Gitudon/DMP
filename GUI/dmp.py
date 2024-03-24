@@ -65,20 +65,20 @@ def initalize():
     #アドバンスかオリジナルだったりもするのでそれも判定する。
     if advance:
         for cards in tmp1:
-            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_","_rp_"]):
                 save[12].append(cards)
             elif "_grc_" in cards[0]:
                 save[14].append(cards)
-            elif any(substring in cards[0] for substring in ["_k_", "_kf_","_z_","_zs_"]):
+            elif any(substring in cards[0] for substring in ["_k_", "_kf_","_zg_","_zs_"]):
                 expand(save,cards,True)
             else:
                 save[0].append(cards)
         for cards in tmp2:
-            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_", "_rp_"]):
                 save[13].append(cards)
             elif "_grc_" in cards[0]:
                 save[15].append(cards)
-            elif any(substring in cards[0] for substring in ["_k_", "_kf_", "_z_","_zs_"]):
+            elif any(substring in cards[0] for substring in ["_k_", "_kf_", "_zg_","_zs_"]):
                 expand(save,cards,False)
             else:
                 save[1].append(cards)

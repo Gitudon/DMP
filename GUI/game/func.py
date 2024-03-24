@@ -799,6 +799,7 @@ def grdeckinfo(save,flag,screen,debug):
                         return
 
 def decklist(screen,flag):
+    max=11
     size=(510, 620)
     font = pygame.font.SysFont("msgothic", 50)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
@@ -838,14 +839,14 @@ def decklist(screen,flag):
                 elif 750<=y<=900:
                     if 100<=x<=100+(field[0]-200)//2:
                         if num==1:
-                            num=15
+                            num=max
                         else:
-                            num-=1
+                            num-=2
                     elif 100+(field[0]-200)//2<x<=field[0]-100:
-                        if num==15:
+                        if num==max:
                             num=1
                         else:
-                            num+=1
+                            num+=2
                     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
                     img = pygame.image.load(Pass)
                     img = pygame.transform.scale(img, size)
@@ -926,5 +927,5 @@ def dmphelp(screen):
     pygame.display.update()
     return
 
-def mekureid(save,n,flag):
+def mekureid(save,n,flag,key):
     return save
