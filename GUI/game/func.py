@@ -300,17 +300,17 @@ def check(a):
 def put(save,card,flag):
     tmp=[card,False,False,[],[],-1,1,0]
     if flag:
-        save[8]+=tmp
+        save[8].append(tmp)
     else:
-        save[9]+=tmp
+        save[9].append(tmp)
     return save
 
 def expand(save,card,flag):
     tmp=[card,False,False,[],[]]
     if flag:
-        save[8]+=tmp
+        save[8].append(tmp)
     else:
-        save[9]+=tmp
+        save[9].append(tmp)
     return save
 
 def summon(save,card,flag):
@@ -539,7 +539,7 @@ def showcards(save,screen,flag,key,debug):
             screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
         elif 12<=i<=17:
             screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
-        else:
+        elif 18<=i<=23:
             screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
     if flag:
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
@@ -798,10 +798,22 @@ def grdeckinfo(save,flag,screen,debug):
                         recover(save,screen,debug)
                         return
 
-def decklist(screen,num):
+def decklist(screen,flag):
     size=(510, 620)
-    # font = pygame.font.SysFont("msgothic", 30)
+    font = pygame.font.SysFont("msgothic", 50)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
+    if flag:
+        gTxt = font.render("自分のデッキを選択", True, (255,255,255))
+    else:
+        gTxt = font.render("相手のデッキを選択", True, (255,255,255))
+    screen.blit(gTxt, (550,110))
+    pygame.draw.rect(screen, (255,0,0), pygame.Rect(100,810,(field[0]-200)//2,90))
+    pygame.draw.rect(screen, (0,0,255), pygame.Rect(100+(field[0]-200)//2,810,(field[0]-200)//2,90))
+    gTxt = font.render("←", True, (255,255,255))
+    screen.blit(gTxt, (412,830))
+    gTxt = font.render("→", True, (255,255,255))
+    screen.blit(gTxt, (412+(field[0]-200)//2,830))
+    num=1
     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
     img = pygame.transform.scale(img, size)
@@ -811,9 +823,38 @@ def decklist(screen,num):
     img2 = pygame.transform.scale(img2, size)
     screen.blit(img2, (830, 180))
     pygame.display.update()
-
-def mekureid(save,n,flag):
-    return save
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 110<=y<=730:
+                    if 210<=x<=720:
+                        return "deck"+str(num-1)
+                    elif 830<=x<=1340:
+                        return "deck"+str(num)
+                elif 750<=y<=900:
+                    if 100<=x<=100+(field[0]-200)//2:
+                        if num==1:
+                            num=15
+                        else:
+                            num-=1
+                    elif 100+(field[0]-200)//2<x<=field[0]-100:
+                        if num==15:
+                            num=1
+                        else:
+                            num+=1
+                    Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
+                    img = pygame.image.load(Pass)
+                    img = pygame.transform.scale(img, size)
+                    screen.blit(img, (210, 180))
+                    Pass="GUI/image/decks/deck"+str(num)+".jpeg"
+                    img2 = pygame.image.load(Pass)
+                    img2 = pygame.transform.scale(img2, size)
+                    screen.blit(img2, (830, 180))
+                    pygame.display.update()
 
 def choose(screen,message):
     base=(100,100)
@@ -884,3 +925,6 @@ def dmphelp(screen):
     screen.blit(gTxt, [1417,107])
     pygame.display.update()
     return
+
+def mekureid(save,n,flag):
+    return save

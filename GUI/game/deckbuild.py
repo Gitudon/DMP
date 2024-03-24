@@ -14,5 +14,5 @@ def build(path):
             card.append(temp[vals])
         deck.append(card)
         card=[]
-    print(deck,file=codecs.open('GUI/etc/output.txt','w','utf-8'))
+    print(deck,file=codecs.open('GUI/etc/out/output2.txt','a','utf-8'))
     return deck

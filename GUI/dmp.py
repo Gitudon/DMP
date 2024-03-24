@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,menu,showcard,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,put,expand
+from game.func import Shuffle,showcards,draw,recover,deck,menu,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal
 from game import carddic
 from game import deckdic
 from game import deckbuild
@@ -53,39 +53,8 @@ def initalize():
     screen.fill(fieldcolor)
     pygame.display.update()
     #デッキ選択
-    choosing=True
-    num=1
-    decklist(screen,num)
-    pygame.display.update()
-    while choosing:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 210<=x<=720 and 110<=y<=730:
-                    deckname1="deck"+str(num-1)
-                    choosing=False
-                elif 830<=x<=1340 and 110<=y<=730:
-                    deckname1="deck"+str(num)
-                    choosing=False
-    choosing=True
-    num=1
-    decklist(screen,num)
-    while choosing:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 110<=x<=770 and 110<=y<=730:
-                    deckname2="deck"+str(num-1)
-                    choosing=False
-                elif 780<=x<=1440 and 110<=y<=730:
-                    deckname2="deck"+str(num)
-                    choosing=False
+    deckname1=decklist(screen,True)
+    deckname2=decklist(screen,False)
     tmp1=copy.deepcopy(Deck.get(deckname1))
     tmp2=copy.deepcopy(Deck.get(deckname2))
     #アドバンスかオリジナルだったりもするのでそれも判定する。
@@ -113,7 +82,7 @@ def initalize():
     if advance:
         save[14]=Shuffle(save[14])
         save[15]=Shuffle(save[15])
-    print(save,file=codecs.open('GUI/etc/output.txt','w','utf-8'))
+    print(save,file=codecs.open('GUI/etc/out/savelog.txt','w','utf-8'))
     #シールド展開
     screen.fill(fieldcolor)
     pygame.display.update()
@@ -127,12 +96,23 @@ def initalize():
     if len(save[14])>0 or len(save[15])>0:
         time.sleep(1)
     #ここにアドバンスの処理
-    if advance:
-        if "d_z_001" in save[8]:
+    if advance and save[8]!=[] and save[9]!=[]:
+        if "d_z_001" in save[8][0]:
             save=draw(1,save,True)
-        if "d_z_001" in save[9]:
+        elif "r_k_001" in save[8][0]:
+            for _ in range(6):
+                save=seal(save,True,0)
+        elif "rd_kf_001" in save[8][0]:
+            for _ in range(4):
+                save=seal(save,True,0)
+        if "d_z_001" in save[9][0]:
             save=draw(1,save,False)
-    
+        elif "r_k_001" in save[9][0]:
+            for _ in range(6):
+                save=seal(save,True,0)
+        elif "rd_kf_001" in save[9][0]:
+            for _ in range(4):
+                save=seal(save,True,0)
     #シールド展開
     sshield(screen)
     save=shieldplus(5,save,True)
@@ -147,9 +127,8 @@ def initalize():
 
 #簡易版デュエル実行
 def Easy(save,screen,log):
-    #temp=[save,screen]
-    emenu(screen)
     debug=3
+    recover(save,screen,debug)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -208,11 +187,12 @@ def Easy(save,screen,log):
                     #自分側マナゾーン
                     elif upbase[0]-20-2*width<=x<=downbase[0]+10+2*width:
                         showmanazone(save,screen,True,6,debug)
-                elif upbase[0]-2*(width+10)<=x<=downbase[0]+20+3*width:
-                    if downbase[1]-10-height<=y<=downbase[1]-10:
+                elif downbase[1]-10-height<=y<=downbase[1]-10:
+                    if upbase[0]-2*(width+10)<=x<=downbase[0]+20+3*width:
                         #自分側バトルゾーン
                         showbattlezone(save,screen,True,8,debug)
-                    elif upbase[1]+10+height<=y<=upbase[1]+10+2*height:
+                elif upbase[1]+10+height<=y<=upbase[1]+10+2*height:
+                    if upbase[0]-2*(width+10)<=x<=downbase[0]+20+3*width:
                         #相手側バトルゾーン
                         showbattlezone(save,screen,True,9,debug)
                 elif upbase[1]<=y<=upbase[1]+height:
