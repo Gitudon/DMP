@@ -1,5 +1,5 @@
 import json
-import codecs
+
 jsonfile="GUI/game/cardlist.json"
 
 def main():

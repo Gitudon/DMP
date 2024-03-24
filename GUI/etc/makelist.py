@@ -15,7 +15,14 @@ def main():
                 deck.append(value)
         else:
             print("カードが存在しません。")
-    print(*deck)
+    while True:
+        num=int(input("デッキのスロット番号を入力> "))
+        if 0<=num<=29:
+            with open('GUI/etc/out/listout.txt','w', encoding='utf-8') as o:
+                print(*deck,file=o)
+            break
+        else:
+            print("存在しないスロット番号です。")
 
 if __name__=="__main__":
     main()
