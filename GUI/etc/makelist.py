@@ -2,6 +2,7 @@
 import carddict
 
 #カード名と枚数を受け取って入力する
+#入力をリダイレクトしたい
 def main():
     deck=[]
     while True:

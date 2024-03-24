@@ -471,14 +471,16 @@ def putshield(save,card,flag):
         elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
             save[12].append(card)
         else:
-            save[2].append(card)
+            tmp=[card,True]
+            save[2].append(tmp)
     else:
         if "_grc_" in card[0]:
             save[15].append(card)
         elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
             save[13].append(card)
         else:
-            save[3].append(card)
+            tmp=[card,True]
+            save[3].append(tmp)
     return save
 
 def shieldplus(n,save,flag):
@@ -622,7 +624,7 @@ def showbattlezone(save,screen,flag,key,debug):
         if cards[i][2]:
             tmp.append("GUI/image/uramen/ura.jpg")
         else:
-            tmp.append("GUI/image/cards/"+cards[i][0]+".jpg")
+            tmp.append("GUI/image/cards/"+cards[i][0][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
         if cards[i][1]:
@@ -659,6 +661,47 @@ def showbattlezone(save,screen,flag,key,debug):
                 if 1420<=x<=1440 and 110<=y<=130:
                     recover(save,screen,debug)
                     return
+
+def showshield(save,screen,flag,key,debug):
+    w=200
+    h=288
+    tmp=[]
+    base=(100,100)
+    cards=save[key]
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    # debuhに応じて表裏を決める
+    for i in range(len(cards)):
+        tmp.append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+    for i in range(len(tmp)):
+        tmp[i]=pygame.image.load(tmp[i])
+        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
+        # 総枚数に応じて表示形式を変えたい
+        if i<=5:
+            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
+        elif 6<=i<=11:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
+        elif 12<=i<=17:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
+        elif 18<=i<=23:
+            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
+    if flag:
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
+        font = pygame.font.SysFont("msgothic", 25)
+        gTxt = font.render("×", True, (255,255,255))
+        screen.blit(gTxt, [1417,107])
+    pygame.display.update()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
+                #ページ切り替え
+                #カード個別の処理(showcard呼び出し)
 
 # 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
 def select(cards,screen,flag):
@@ -906,7 +949,7 @@ def choose(screen,message):
 
 #メッセージを表示するコンソールをメニューから見れるようにする
 #各アクションの実行後、ログを残す
-def showlog(screen,log):
+def showlog(screen,log,save,debug):
     base=(100,100)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
@@ -914,10 +957,19 @@ def showlog(screen,log):
     gTxt = font.render("×", True, (255,255,255))
     screen.blit(gTxt, [1417,107])
     pygame.display.update()
-    return
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
 
 #説明書を表示する。画像でいいのではないでしょうか。
-def dmphelp(screen):
+def dmphelp(screen,save,debug):
     base=(100,100)
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
@@ -925,7 +977,16 @@ def dmphelp(screen):
     gTxt = font.render("×", True, (255,255,255))
     screen.blit(gTxt, [1417,107])
     pygame.display.update()
-    return
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
 
 def mekureid(save,n,flag,key):
     return save

@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,menu,sshield,shieldplus,grdeck,dimension,deckinfo,debugmenu,dmphelp,decklist,emenu,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal
+from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,dmphelp,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield
 from game import carddic
 from game import deckdic
 from game import deckbuild
@@ -101,23 +101,24 @@ def initalize():
     if len(save[14])>0 or len(save[15])>0:
         time.sleep(1)
     #ここにアドバンスの処理
-    if advance and save[8]!=[] and save[9]!=[]:
-        if "d_z_001" in save[8][0]:
+    if advance and save[8]!=[]:
+        if "d_z_001" in save[8][0][0]:
             save=draw(1,save,True)
-        elif "r_k_001" in save[8][0]:
+        elif "r_k_001" in save[8][0][0]:
             for _ in range(6):
                 save=seal(save,True,0)
-        elif "rd_kf_001" in save[8][0]:
+        elif "rd_kf_001" in save[8][0][0]:
             for _ in range(4):
                 save=seal(save,True,0)
-        if "d_z_001" in save[9][0]:
+    if advance and save[9]!=[]:
+        if "d_z_001" in save[9][0][0]:
             save=draw(1,save,False)
-        elif "r_k_001" in save[9][0]:
+        elif "r_k_001" in save[9][0][0]:
             for _ in range(6):
-                save=seal(save,True,0)
-        elif "rd_kf_001" in save[9][0]:
+                save=seal(save,False,0)
+        elif "rd_kf_001" in save[9][0][0]:
             for _ in range(4):
-                save=seal(save,True,0)
+                save=seal(save,False,0)
     #シールド展開
     sshield(screen)
     save=shieldplus(5,save,True)
@@ -165,13 +166,13 @@ def Easy(save,screen,log):
                     elif 370<=y<=420:
                         save[0]=Shuffle(save[0])
                     elif 430<=y<=480:
-                        showcards(save,screen,True,2,debug)
+                        showshield(save,screen,True,2,debug)
                     elif 730<=y<=780:
-                        dmphelp(screen)
+                        dmphelp(screen,save,debug)
                     elif 790<=y<=840:
                         initalize()
                     elif 850<=y<=900:
-                        showlog(screen,log)
+                        showlog(screen,log,save,debug)
                     elif 910<=y<=960:
                         pygame.quit()
                         sys.exit()
