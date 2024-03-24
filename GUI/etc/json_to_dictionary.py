@@ -3,7 +3,7 @@ import codecs
 jsonfile="GUI/game/cardlist.json"
 
 def main():
-    flag=input("1:cardlist 2:carddic > ")
+    flag=int(input("1:cardlist 2:carddic > "))
     if flag==1:
         cardlist()
     else:

@@ -28,10 +28,15 @@ def main():
     #登録されたデッキリストから選びたい
     #自分で空きスロットに登録できるようにもしたい
     #テキストファイルをもととしたデッキのビルド
+    logger=[]
     for i in range(30):
         path='GUI/decks/deck'+str(i)+'.txt'
         name='deck'+str(i)
         Deck[name]=deckbuild.build(path)
+        logger.append(Deck[name])
+    with open('GUI/etc/out/deckout.txt','w', encoding='utf-8') as o:
+        for log in logger:
+            print(log, file=o)
     initalize()
 
 def initalize():

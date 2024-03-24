@@ -1,5 +1,6 @@
 import json
 import codecs
+
 def build(path):
     file=open('GUI/game/cardlist.json','r',encoding="utf_8")
     loading=json.load(file)
@@ -14,5 +15,4 @@ def build(path):
             card.append(temp[vals])
         deck.append(card)
         card=[]
-    print(deck,file=codecs.open('GUI/etc/out/output2.txt','a','utf-8'))
     return deck
