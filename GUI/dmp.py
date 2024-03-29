@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,dmphelp,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield
+from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,dmphelp,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon
 from game import carddic
 from game import deckdic
 from game import deckbuild
@@ -121,11 +121,6 @@ def initalize():
                 save=seal(save,False,0)
     #シールド展開
     sshield(screen)
-    save=shieldplus(5,save,True)
-    save=shieldplus(5,save,False)
-    #最初のドロー
-    save=draw(5,save,True)
-    save=draw(5,save,False)
     if mode==True:
         Easy(save,screen,log)
     else:
@@ -134,6 +129,11 @@ def initalize():
 #簡易版デュエル実行
 def Easy(save,screen,log):
     debug=3
+    save=shieldplus(5,save,True,screen,debug,False)
+    save=shieldplus(5,save,False,screen,debug,False)
+    #最初のドロー
+    save=draw(5,save,True)
+    save=draw(5,save,False)
     recover(save,screen,debug)
     while True:
         for event in pygame.event.get():
@@ -167,8 +167,18 @@ def Easy(save,screen,log):
                         save[0]=Shuffle(save[0])
                     elif 430<=y<=480:
                         showshield(save,screen,True,2,debug)
+                    elif 490<=y<=540:
+                        save=addmana(1,save,True,False,screen,debug)
+                    elif 550<=y<=600:
+                        save=bochiokuri(1,save,True,screen,debug)
+                    elif 610<=y<=660:
+                        tmp=save[0][0]
+                        save[0]=save[0][1:]
+                        save=gotodeck(save,True,tmp,False)
+                    elif 670<=y<=720:
+                        save=grsummon(1,save,True,screen,debug)
                     elif 730<=y<=780:
-                        dmphelp(screen,save,debug)
+                        save=shieldplus(1,save,True,screen,debug,True)
                     elif 790<=y<=840:
                         initalize()
                     elif 850<=y<=900:

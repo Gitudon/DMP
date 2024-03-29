@@ -141,19 +141,19 @@ def emenu(screen):
     gTxt = font.render("シールドを確認する", True, (255,255,255))
     screen.blit(gTxt, [1265, 440])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
-    gTxt = font.render("", True, (255,255,255))
+    gTxt = font.render("マナチャージする", True, (255,255,255))
     screen.blit(gTxt, [1265, 500])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
-    gTxt = font.render("", True, (255,255,255))
+    gTxt = font.render("山上を墓地送り", True, (255,255,255))
     screen.blit(gTxt, [1265, 560])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
-    gTxt = font.render("", True, (255,255,255))
+    gTxt = font.render("山上を山下へ", True, (255,255,255))
     screen.blit(gTxt, [1265, 620])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
-    gTxt = font.render("", True, (255,255,255))
+    gTxt = font.render("GR召喚", True, (255,255,255))
     screen.blit(gTxt, [1265, 680])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
-    gTxt = font.render("ヘルプを表示", True, (255,255,255))
+    gTxt = font.render("シールド追加", True, (255,255,255))
     screen.blit(gTxt, [1265, 740])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
     gTxt = font.render("ゲームをリセット", True, (255,255,255))
@@ -314,7 +314,22 @@ def expand(save,card,flag):
     return save
 
 def summon(save,card,flag):
-    save=put(save,flag,card)
+    return put(save,flag,card)
+
+def grsummon(n,save,flag,screen,debug):
+    for _ in range(n):
+        if flag:
+            if len(save[14])==0:
+                return save
+            card=save[14][0]
+            save[14]=save[14][1:]
+        else:
+            if len(save[15])==0:
+                return save
+            card=save[15][0]
+            save[15]=save[15][1:]
+        save=put(save,card,flag)
+    recover(save,screen,debug)
     return save
 
 def gotodeck(save,flag,card,up):
@@ -325,7 +340,7 @@ def gotodeck(save,flag,card,up):
             save[0].append(card)
     else:
         if up:
-            save[1]=[card]+save[0]
+            save[1]=[card]+save[1]
         else:
             save[1].append(card)
     return save
@@ -371,22 +386,23 @@ def putgrave(save,card,flag):
         elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
             save[12].append(card)
         else:
-            save[10].append(card)
+            save[10]=[card]+save[10]
     else:
         if "_grc_" in card[0]:
             save[15].append(card)
         elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
             save[13].append(card)
         else:
-            save[11].append(card)
+            save[11]=[card]+save[11]
     return save
 
-def bochiokuri(n,save,flag):
+def bochiokuri(n,save,flag,screen,debug):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
                 save=putgrave(save,save[0][0],flag)
                 save[0] = save[0][1:]
+                recover(save,screen,debug)
             else:
                 print("You can't put a card.")
     else:
@@ -394,6 +410,7 @@ def bochiokuri(n,save,flag):
             if save[1]!=[]:
                 save=putgrave(save,save[1][0],flag)
                 save[1] = save[1][1:]
+                recover(save,screen,debug)
             else:
                 print("You can't put a card.")
     return save
@@ -405,7 +422,7 @@ def putmana(save,card,flag,crystal,zone):
         elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
             save[12].append(card)
         else:
-            tmp=[[card],False,False]
+            tmp=[card,False,False]
             tap=0
             if zone:
                 if "_cs_" in card[0]:
@@ -447,12 +464,13 @@ def putmana(save,card,flag,crystal,zone):
             save[7].append(tmp)
     return save
 
-def addmana(n,save,flag,crystal):
+def addmana(n,save,flag,crystal,screen,debug):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
                 save=putmana(save,save[0][0],flag,crystal,False)
                 save[0] = save[0][1:]
+                recover(save,screen,debug)
             else:
                 print("You can't put a card.")
     else:
@@ -460,6 +478,7 @@ def addmana(n,save,flag,crystal):
             if save[1]!=[]:
                 save=putmana(save,save[1][0],flag,crystal,False)
                 save[1] = save[1][1:]
+                recover(save,screen,debug)
             else:
                 print("You can't put a card.")
     return save
@@ -483,7 +502,7 @@ def putshield(save,card,flag):
             save[3].append(tmp)
     return save
 
-def shieldplus(n,save,flag):
+def shieldplus(n,save,flag,screen,debug,mode):
     if flag:
         for _ in range(n):
             if save[0]!=[]:
@@ -498,6 +517,8 @@ def shieldplus(n,save,flag):
                 save[1] = save[1][1:]
             else:
                 print("You can't add a shield.")
+    if mode:
+        recover(save,screen,debug)
     return save
 
 def seal(save,flag,key):
@@ -512,6 +533,20 @@ def seal(save,flag,key):
         save[9][key][2]=True
         save[9][key][3].insert(0,tmp)
     return save
+
+# 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
+# クリック位置でどのカードか判断して返す
+def select(cards,screen,flag):
+    return
+
+def showcard(screen,cards):
+    n=0
+    # カードを配列として記録するので要変更
+    tmp=("GUI/image/"+cards[n][0]+".jpg")
+    tmp=pygame.image.load(tmp)
+    tmp=pygame.transform.scale(tmp, (500, 720))
+    screen.blit(tmp, (525,90))
+    pygame.display.update()
 
 def showcards(save,screen,flag,key,debug):
     w=200
@@ -702,19 +737,6 @@ def showshield(save,screen,flag,key,debug):
                     return
                 #ページ切り替え
                 #カード個別の処理(showcard呼び出し)
-
-# 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
-def select(cards,screen,flag):
-    return
-
-def showcard(screen,cards):
-    n=0
-    # カードを配列として記録するので要変更
-    tmp=("GUI/image/"+cards[n][0]+".jpg")
-    tmp=pygame.image.load(tmp)
-    tmp=pygame.transform.scale(tmp, (500, 720))
-    screen.blit(tmp, (525,90))
-    pygame.display.update()
 
 def sshield(screen):
     for i in range(5):
