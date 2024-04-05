@@ -548,26 +548,39 @@ def showcard(screen,cards):
     screen.blit(tmp, (525,90))
     pygame.display.update()
 
-def showcards(save,screen,flag,key,debug):
+def printcards(tmp,flag,screen,mode,cards):
     w=200
     h=288
-    tmp=[]
     base=(100,100)
-    cards=save[key]
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    # カードを配列として記録するので要変更
-    for i in range(len(cards)):
-        tmp.append("GUI/image/cards/"+cards[i][0]+".jpg")
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
-        if cards[i][11]:
-            pixel = pygame.PixelArray(tmp[i])
-            for y in range(tmp[i].get_height()):
-                for x in range(tmp[i].get_width()):
-                    rgba = screen.unmap_rgb(pixel[x][y])
-                    gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
-                    pixel[x][y] = (gray,gray,gray)
-            del pixel
+        if mode==1:
+            if cards[i][11]:
+                pixel = pygame.PixelArray(tmp[i])
+                for y in range(tmp[i].get_height()):
+                    for x in range(tmp[i].get_width()):
+                        rgba = screen.unmap_rgb(pixel[x][y])
+                        gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
+                        pixel[x][y] = (gray,gray,gray)
+                del pixel
+        elif mode==2:
+            if cards[i][1]:
+                pixel = pygame.PixelArray(tmp[i])
+                for y in range(tmp[i].get_height()):
+                    for x in range(tmp[i].get_width()):
+                        rgba = screen.unmap_rgb(pixel[x][y])
+                        gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
+                        pixel[x][y] = (gray,gray,gray)
+                del pixel
+        elif mode==3:
+            if cards[i][1]:
+                pixel = pygame.PixelArray(tmp[i])
+                for y in range(tmp[i].get_height()):
+                    for x in range(tmp[i].get_width()):
+                        rgba = screen.unmap_rgb(pixel[x][y])
+                        gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
+                        pixel[x][y] = (gray,gray,gray)
+                del pixel
         tmp[i]=pygame.transform.scale(tmp[i], (w, h))
         # 総枚数に応じて表示形式を変えたい
         if i<=5:
@@ -584,6 +597,27 @@ def showcards(save,screen,flag,key,debug):
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
     pygame.display.update()
+    return
+
+def showcards(save,screen,flag,key,debug):
+    tmp=[[],[],[],[]]
+    base=(100,100)
+    cards=save[key]
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    for i in range(len(cards)):
+        if i<=23:
+            tmp[0].append("GUI/image/cards/"+cards[i][0]+".jpg")
+        elif i<=47:
+            tmp[1].append("GUI/image/cards/"+cards[i][0]+".jpg")
+        elif i<=71:
+            tmp[2].append("GUI/image/cards/"+cards[i][0]+".jpg")
+        else:
+            tmp[3].append("GUI/image/cards/"+cards[i][0]+".jpg")
+    current=0
+    end=len(tmp[current])//4+1
+    if len(tmp[current])%4==0:
+        end-=1
+    printcards(tmp[current],flag,screen,1,cards)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -598,44 +632,36 @@ def showcards(save,screen,flag,key,debug):
                 #カード個別の処理(showcard呼び出し)
 
 def showmanazone(save,screen,flag,key,debug):
-    w=200
-    h=288
-    tmp=[]
+    tmp=[[],[],[],[]]
     base=(100,100)
     cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    # カードを配列として記録するので要変更
     for i in range(len(cards)):
-        if cards[i][2]:
-            tmp.append("GUI/image/uramen/ura.jpg")
+        if i<=23:
+            if cards[i][2]:
+                tmp[0].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[0].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        elif i<=47:
+            if cards[i][2]:
+                tmp[1].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[1].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        elif i<=71:
+            if cards[i][2]:
+                tmp[2].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[2].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
         else:
-            tmp.append("GUI/image/cards/"+cards[i][0][0]+".jpg")
-    for i in range(len(tmp)):
-        tmp[i]=pygame.image.load(tmp[i])
-        if cards[i][1]:
-            pixel = pygame.PixelArray(tmp[i])
-            for y in range(tmp[i].get_height()):
-                for x in range(tmp[i].get_width()):
-                    rgba = screen.unmap_rgb(pixel[x][y])
-                    gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
-                    pixel[x][y] = (gray,gray,gray)
-            del pixel
-        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
-        # 総枚数に応じて表示形式を変えたい
-        if i<=5:
-            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
-        elif 6<=i<=11:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
-        elif 12<=i<=17:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
-        else:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
-    if flag:
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
-        font = pygame.font.SysFont("msgothic", 25)
-        gTxt = font.render("×", True, (255,255,255))
-        screen.blit(gTxt, [1417,107])
-    pygame.display.update()
+            if cards[i][2]:
+                tmp[3].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[3].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+    current=0
+    end=len(tmp[current])//4+1
+    if len(tmp[current])%4==0:
+        end-=1
+    printcards(tmp[current],flag,screen,2,cards)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -646,46 +672,40 @@ def showmanazone(save,screen,flag,key,debug):
                 if 1420<=x<=1440 and 110<=y<=130:
                     recover(save,screen,debug)
                     return
+                #ページ切り替え
+                #カード個別の処理(showcard呼び出し)
 
 def showbattlezone(save,screen,flag,key,debug):
-    w=200
-    h=288
-    tmp=[]
+    tmp=[[],[],[],[]]
     base=(100,100)
     cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    # カードを配列として記録するので要変更
     for i in range(len(cards)):
-        if cards[i][2]:
-            tmp.append("GUI/image/uramen/ura.jpg")
+        if i<=23:
+            if cards[i][2]:
+                tmp[0].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[0].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        elif i<=47:
+            if cards[i][2]:
+                tmp[1].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[1].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        elif i<=71:
+            if cards[i][2]:
+                tmp[2].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[2].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
         else:
-            tmp.append("GUI/image/cards/"+cards[i][0][0]+".jpg")
-    for i in range(len(tmp)):
-        tmp[i]=pygame.image.load(tmp[i])
-        if cards[i][1]:
-            pixel = pygame.PixelArray(tmp[i])
-            for y in range(tmp[i].get_height()):
-                for x in range(tmp[i].get_width()):
-                    rgba = screen.unmap_rgb(pixel[x][y])
-                    gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
-                    pixel[x][y] = (gray,gray,gray)
-            del pixel
-        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
-        # 総枚数に応じて表示形式を変えたい
-        if i<=5:
-            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
-        elif 6<=i<=11:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
-        elif 12<=i<=17:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
-        else:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
-    if flag:
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
-        font = pygame.font.SysFont("msgothic", 25)
-        gTxt = font.render("×", True, (255,255,255))
-        screen.blit(gTxt, [1417,107])
-    pygame.display.update()
+            if cards[i][2]:
+                tmp[3].append("GUI/image/uramen/ura.jpg")
+            else:
+                tmp[3].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+    current=0
+    end=len(tmp[current])//4+1
+    if len(tmp[current])%4==0:
+        end-=1
+    printcards(tmp[current],flag,screen,3,cards)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -696,35 +716,28 @@ def showbattlezone(save,screen,flag,key,debug):
                 if 1420<=x<=1440 and 110<=y<=130:
                     recover(save,screen,debug)
                     return
+                #ページ切り替え
+                #カード個別の処理(showcard呼び出し)
 
 def showshield(save,screen,flag,key,debug):
-    w=200
-    h=288
-    tmp=[]
+    tmp=[[],[],[],[]]
     base=(100,100)
     cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    # debuhに応じて表裏を決める
     for i in range(len(cards)):
-        tmp.append("GUI/image/cards/"+cards[i][0][0]+".jpg")
-    for i in range(len(tmp)):
-        tmp[i]=pygame.image.load(tmp[i])
-        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
-        # 総枚数に応じて表示形式を変えたい
-        if i<=5:
-            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
-        elif 6<=i<=11:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
-        elif 12<=i<=17:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
-        elif 18<=i<=23:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
-    if flag:
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
-        font = pygame.font.SysFont("msgothic", 25)
-        gTxt = font.render("×", True, (255,255,255))
-        screen.blit(gTxt, [1417,107])
-    pygame.display.update()
+        if i<=23:
+            tmp[0].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        elif i<=47:
+            tmp[1].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        elif i<=71:
+            tmp[2].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+        else:
+            tmp[3].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+    current=0
+    end=len(tmp[current])//4+1
+    if len(tmp[current])%4==0:
+        end-=1
+    printcards(tmp[current],flag,screen,1,cards)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
