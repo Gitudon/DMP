@@ -10,24 +10,17 @@ from game import carddic
 from game import deckdic
 from game import deckbuild
 
-#定数の設定
 width=100
 height=144
 field=(1550,1000)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 696)
-#動的に指定するための辞書
 card=carddic.card
 Deck=deckdic.Deck
-#実行ログのパス
 logpath='GUI/etc/log.txt'
 
-#タイトル画面
 def main():
-    #登録されたデッキリストから選びたい
-    #自分で空きスロットに登録できるようにもしたい
-    #テキストファイルをもととしたデッキのビルド
     logger=[]
     for i in range(30):
         path='GUI/decks/deck'+str(i)+'.txt'
@@ -41,7 +34,6 @@ def main():
 
 def initalize():
     log=[]
-    #初期設定
     pygame.init() 
     screen = pygame.display.set_mode(field)
     pygame.display.set_caption("Duel Masters")
@@ -49,20 +41,16 @@ def initalize():
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     screen.fill(fieldcolor)
     pygame.display.update()
-    #アドバンス/オリジナルの選択
     advance=choose(screen,"フォーマットはアドバンスにしますか？")
     screen.fill(fieldcolor)
     pygame.display.update()
-    #実行モード切り替え
     mode=choose(screen,"簡易モードで実行しますか？")
     screen.fill(fieldcolor)
     pygame.display.update()
-    #デッキ選択
     deckname1=decklist(screen,True)
     deckname2=decklist(screen,False)
     tmp1=copy.deepcopy(Deck.get(deckname1))
     tmp2=copy.deepcopy(Deck.get(deckname2))
-    #アドバンスかオリジナルだったりもするのでそれも判定する。
     if advance:
         for cards in tmp1:
             if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_","_rp_"]):
@@ -88,7 +76,6 @@ def initalize():
         save[14]=Shuffle(save[14])
         save[15]=Shuffle(save[15])
     print(save,file=codecs.open('GUI/etc/out/savelog.txt','w','utf-8'))
-    #シールド展開
     screen.fill(fieldcolor)
     pygame.display.update()
     deck(screen,save[0],save[1])
@@ -100,7 +87,6 @@ def initalize():
     grdeck(screen,save[14],save[15])
     if len(save[14])>0 or len(save[15])>0:
         time.sleep(1)
-    #ここにアドバンスの処理
     if advance and save[8]!=[]:
         if "d_z_001" in save[8][0][0]:
             save=draw(1,save,True)
@@ -119,19 +105,16 @@ def initalize():
         elif "rd_kf_001" in save[9][0][0]:
             for _ in range(4):
                 save=seal(save,False,0)
-    #シールド展開
     sshield(screen)
     if mode==True:
         Easy(save,screen,log)
     else:
         Duel(save,screen,log)
 
-#簡易版デュエル実行
 def Easy(save,screen,log):
     debug=3
     save=shieldplus(5,save,True,screen,debug,False)
     save=shieldplus(5,save,False,screen,debug,False)
-    #最初のドロー
     save=draw(5,save,True)
     save=draw(5,save,False)
     recover(save,screen,debug)
@@ -140,12 +123,10 @@ def Easy(save,screen,log):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            #ボタン操作
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-            #クリック操作
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if 1260<=x<=1540:
@@ -235,4 +216,4 @@ def Duel(save,screen,log):
     sys.exit()
 
 if __name__=="__main__":
-    main()
+    main() 

@@ -599,6 +599,32 @@ def printcards(tmp,flag,screen,mode,cards):
     pygame.display.update()
     return
 
+def info(save,screen,debug):
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
+
+def page(save,screen,debug,tmp,end):
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    recover(save,screen,debug)
+                    return
+                #ページ切り替え
+                #カード個別の処理(showcard呼び出し)
+
 def showcards(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
     base=(100,100)
@@ -618,18 +644,8 @@ def showcards(save,screen,flag,key,debug):
     if len(tmp[current])%4==0:
         end-=1
     printcards(tmp[current],flag,screen,1,cards)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 1420<=x<=1440 and 110<=y<=130:
-                    recover(save,screen,debug)
-                    return
-                #ページ切り替え
-                #カード個別の処理(showcard呼び出し)
+    page(save,screen,debug,tmp,end)
+    return
 
 def showmanazone(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
@@ -662,18 +678,8 @@ def showmanazone(save,screen,flag,key,debug):
     if len(tmp[current])%4==0:
         end-=1
     printcards(tmp[current],flag,screen,2,cards)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 1420<=x<=1440 and 110<=y<=130:
-                    recover(save,screen,debug)
-                    return
-                #ページ切り替え
-                #カード個別の処理(showcard呼び出し)
+    page(save,screen,debug,tmp,end)
+    return
 
 def showbattlezone(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
@@ -706,18 +712,8 @@ def showbattlezone(save,screen,flag,key,debug):
     if len(tmp[current])%4==0:
         end-=1
     printcards(tmp[current],flag,screen,3,cards)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 1420<=x<=1440 and 110<=y<=130:
-                    recover(save,screen,debug)
-                    return
-                #ページ切り替え
-                #カード個別の処理(showcard呼び出し)
+    page(save,screen,debug,tmp,end)
+    return
 
 def showshield(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
@@ -738,18 +734,8 @@ def showshield(save,screen,flag,key,debug):
     if len(tmp[current])%4==0:
         end-=1
     printcards(tmp[current],flag,screen,1,cards)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 1420<=x<=1440 and 110<=y<=130:
-                    recover(save,screen,debug)
-                    return
-                #ページ切り替え
-                #カード個別の処理(showcard呼び出し)
+    page(save,screen,debug,tmp,end)
+    return
 
 def sshield(screen):
     for i in range(5):
@@ -875,6 +861,7 @@ def grdeckinfo(save,flag,screen,debug):
                     if (upbase[0]+60-2*width<=x<=upbase[0]+80-2*width and upbase[1]-height+100<=y<=upbase[1]-height+120):
                         recover(save,screen,debug)
                         return
+    return
 
 def decklist(screen,flag):
     max=11
@@ -992,16 +979,8 @@ def showlog(screen,log,save,debug):
     gTxt = font.render("×", True, (255,255,255))
     screen.blit(gTxt, [1417,107])
     pygame.display.update()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 1420<=x<=1440 and 110<=y<=130:
-                    recover(save,screen,debug)
-                    return
+    info(save,screen,debug)
+    return
 
 #説明書を表示する。画像でいいのではないでしょうか。
 def dmphelp(screen,save,debug):
@@ -1012,16 +991,8 @@ def dmphelp(screen,save,debug):
     gTxt = font.render("×", True, (255,255,255))
     screen.blit(gTxt, [1417,107])
     pygame.display.update()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if 1420<=x<=1440 and 110<=y<=130:
-                    recover(save,screen,debug)
-                    return
+    info(save,screen,debug)
+    return
 
 def mekureid(save,n,flag,key):
     return save
