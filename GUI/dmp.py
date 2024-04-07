@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,dmphelp,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon
+from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon,dmphelp
 from game import carddic
 from game import deckdic
 from game import deckbuild

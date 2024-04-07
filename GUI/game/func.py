@@ -539,9 +539,7 @@ def seal(save,flag,key):
 def select(cards,screen,flag):
     return
 
-def showcard(screen,cards):
-    n=0
-    # カードを配列として記録するので要変更
+def showcard(screen,cards,n):
     tmp=("GUI/image/"+cards[n][0]+".jpg")
     tmp=pygame.image.load(tmp)
     tmp=pygame.transform.scale(tmp, (500, 720))
@@ -882,7 +880,7 @@ def decklist(screen,flag):
     num=1
     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
-    img = pygame.transform.scale(img, size)
+    img = pygame.transform.scale(img, size) 
     screen.blit(img, (210, 180))
     Pass="GUI/image/decks/deck"+str(num)+".jpeg"
     img2 = pygame.image.load(Pass)
