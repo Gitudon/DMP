@@ -548,8 +548,16 @@ def showcard(screen,cards,n):
     pygame.display.update()
     return
 
-#左右の切り替えカーソル
-def lr(screen,flag):
+#左右の切り替えカーソルを表示する
+def lr(screen):
+    font = pygame.font.SysFont("msgothic", 50)
+    pygame.draw.rect(screen, (255,0,0), pygame.Rect(1370,280,70,300))
+    gTxt = font.render("→", True, (255,255,255))
+    screen.blit(gTxt, [1380,405])
+    pygame.draw.rect(screen, (0,0,255), pygame.Rect(1370,590,70,300))
+    gTxt = font.render("←", True, (255,255,255))
+    screen.blit(gTxt, [1380,715])
+    pygame.display.update()
     return
 
 def rect(screen,flag):
@@ -595,7 +603,6 @@ def printcards(tmp,screen,mode,cards):
                         pixel[x][y] = (gray,gray,gray)
                 del pixel
         tmp[i]=pygame.transform.scale(tmp[i], (w, h))
-        # 総枚数に応じて表示形式を変えたい
         if i<=5:
             screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
         elif 6<=i<=11:
@@ -620,6 +627,7 @@ def info(save,screen,debug):
                     return
 
 def page(save,screen,debug,tmp,end):
+    lr(screen)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
