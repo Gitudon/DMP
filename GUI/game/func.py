@@ -12,6 +12,7 @@ field=(1550,1000)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 696)
+base=(100,100)
 
 def deck(screen,me,opposite):
     img = pygame.image.load("GUI/image/uramen/ura.jpg")
@@ -545,11 +546,25 @@ def showcard(screen,cards,n):
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (525,90))
     pygame.display.update()
+    return
 
-def printcards(tmp,flag,screen,mode,cards):
+#左右の切り替えカーソル
+def lr(screen,flag):
+    return
+
+def rect(screen,flag):
+    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    if flag:
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
+        font = pygame.font.SysFont("msgothic", 25)
+        gTxt = font.render("×", True, (255,255,255))
+        screen.blit(gTxt, [1417,107])
+    pygame.display.update()
+    return
+
+def printcards(tmp,screen,mode,cards):
     w=200
     h=288
-    base=(100,100)
     for i in range(len(tmp)):
         tmp[i]=pygame.image.load(tmp[i])
         if mode==1:
@@ -589,11 +604,6 @@ def printcards(tmp,flag,screen,mode,cards):
             screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
         elif 18<=i<=23:
             screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
-    if flag:
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
-        font = pygame.font.SysFont("msgothic", 25)
-        gTxt = font.render("×", True, (255,255,255))
-        screen.blit(gTxt, [1417,107])
     pygame.display.update()
     return
 
@@ -625,9 +635,8 @@ def page(save,screen,debug,tmp,end):
 
 def showcards(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
-    base=(100,100)
     cards=save[key]
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    rect(screen,flag)
     for i in range(len(cards)):
         if i<=23:
             tmp[0].append("GUI/image/cards/"+cards[i][0]+".jpg")
@@ -641,15 +650,14 @@ def showcards(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],flag,screen,1,cards)
+    printcards(tmp[current],screen,1,cards)
     page(save,screen,debug,tmp,end)
     return
 
 def showmanazone(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
-    base=(100,100)
     cards=save[key]
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    rect(screen,flag)
     for i in range(len(cards)):
         if i<=23:
             if cards[i][2]:
@@ -675,15 +683,14 @@ def showmanazone(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],flag,screen,2,cards)
+    printcards(tmp[current],screen,2,cards)
     page(save,screen,debug,tmp,end)
     return
 
 def showbattlezone(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
-    base=(100,100)
     cards=save[key]
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    rect(screen,flag)
     for i in range(len(cards)):
         if i<=23:
             if cards[i][2]:
@@ -709,13 +716,13 @@ def showbattlezone(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],flag,screen,3,cards)
+    printcards(tmp[current],screen,3,cards)
     page(save,screen,debug,tmp,end)
     return
 
 def showshield(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
-    base=(100,100)
+    rect(screen,flag)
     cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     for i in range(len(cards)):
@@ -731,7 +738,7 @@ def showshield(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],flag,screen,1,cards)
+    printcards(tmp[current],screen,1,cards)
     page(save,screen,debug,tmp,end)
     return
 
@@ -749,7 +756,7 @@ def sshield(screen):
 def shield(screen,flag,save):
     img = pygame.image.load("GUI/image/uramen/ura.jpg")
     if flag:
-        for i in range(len(save[2])):
+        for i in range(len(save[2])): 
             img = pygame.transform.scale(img, (width, height))
             screen.blit(img, ((downbase[0]-110)-width*i, downbase[1]))
     else:
@@ -865,7 +872,7 @@ def decklist(screen,flag):
     max=11
     size=(510, 620)
     font = pygame.font.SysFont("msgothic", 50)
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(100,100,field[0]-200,field[1]-200))
+    rect(screen,False)
     if flag:
         gTxt = font.render("自分のデッキを選択", True, (255,255,255))
     else:
@@ -921,9 +928,8 @@ def decklist(screen,flag):
                     pygame.display.update()
 
 def choose(screen,message):
-    base=(100,100)
     font = pygame.font.SysFont("msgothic", 50)
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
+    rect(screen,False)
     font = pygame.font.SysFont("msgothic", 100)
     pygame.draw.rect(screen, (255,0,0), pygame.Rect(base[0],base[1]+600,(field[0]-200)//2,200))
     gTxt = font.render("は　い", True, (255,255,255))
@@ -970,25 +976,13 @@ def choose(screen,message):
 #メッセージを表示するコンソールをメニューから見れるようにする
 #各アクションの実行後、ログを残す
 def showlog(screen,log,save,debug):
-    base=(100,100)
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
-    font = pygame.font.SysFont("msgothic", 25)
-    gTxt = font.render("×", True, (255,255,255))
-    screen.blit(gTxt, [1417,107])
-    pygame.display.update()
+    rect(screen,True)
     info(save,screen,debug)
     return
 
 #説明書を表示する。画像でいいのではないでしょうか。
 def dmphelp(screen,save,debug):
-    base=(100,100)
-    pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
-    pygame.draw.rect(screen, (255,0,0), pygame.Rect(1420,110,20,20))
-    font = pygame.font.SysFont("msgothic", 25)
-    gTxt = font.render("×", True, (255,255,255))
-    screen.blit(gTxt, [1417,107])
-    pygame.display.update()
+    rect(screen,True)
     info(save,screen,debug)
     return
 
