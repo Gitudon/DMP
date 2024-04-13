@@ -548,7 +548,6 @@ def showcard(screen,cards,n):
     pygame.display.update()
     return
 
-#左右の切り替えカーソルを表示する
 def lr(screen):
     font = pygame.font.SysFont("msgothic", 50)
     pygame.draw.rect(screen, (255,0,0), pygame.Rect(1370,280,70,300))
@@ -639,6 +638,11 @@ def page(save,screen,debug,tmp,end):
                     recover(save,screen,debug)
                     return
                 #ページ切り替え
+                if 1370<=x<=1440:
+                    if 280<=y<=580:
+                        return #切り替え
+                    elif 590<=y<=890:
+                        return #切り替え
                 #カード個別の処理(showcard呼び出し)
 
 def showcards(save,screen,flag,key,debug):
