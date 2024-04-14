@@ -1259,8 +1259,8 @@
         "STTF":[false,false],
         "GSTF":[false,false]
     },
-    "g_ncs_010":{
-        "key":"g_ncs_010",
+    "g_cs_010":{
+        "key":"g_cs_010",
         "name":["地龍仙ロマネアース","仙なる大地"],
         "race":[["グランセクト"],[]],
         "cost":[8,6],

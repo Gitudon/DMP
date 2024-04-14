@@ -503,6 +503,25 @@ def putshield(save,card,flag):
             save[3].append(tmp)
     return save
 
+def putshield2(save,card,flag):
+    if flag:
+        if "_grc_" in card[0]:
+            save[14].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[12].append(card)
+        else:
+            tmp=[card,False]
+            save[2].append(tmp)
+    else:
+        if "_grc_" in card[0]:
+            save[15].append(card)
+        elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
+            save[13].append(card)
+        else:
+            tmp=[card,False]
+            save[3].append(tmp)
+    return save
+
 def shieldplus(n,save,flag,screen,debug,mode):
     if flag:
         for _ in range(n):
@@ -535,18 +554,19 @@ def seal(save,flag,key):
         save[9][key][3].insert(0,tmp)
     return save
 
-# 表示したカードを選択し、選択したカードがどれかという情報を返す関数select
-# クリック位置でどのカードか判断して返す
-def select(cards,screen,flag):
-    return
-
-def showcard(screen,cards,n):
-    tmp=("GUI/image/"+cards[n][0]+".jpg")
-    tmp=pygame.image.load(tmp)
+def showcard(screen,card,flag):
+    if flag:
+        tmp= pygame.image.load("GUI/image/uramen/ura.jpg")
+    else:
+        tmp=pygame.image.load("GUI/image/"+card[0][0]+".jpg")
     tmp=pygame.transform.scale(tmp, (500, 720))
-    screen.blit(tmp, (525,90))
+    screen.blit(tmp, (110,140))
     pygame.display.update()
     return
+
+def cardmenu(screen,key):
+    if key==2 or key==3:
+        return
 
 def lr(screen):
     font = pygame.font.SysFont("msgothic", 50)
@@ -569,47 +589,71 @@ def rect(screen,flag):
     pygame.display.update()
     return
 
-def printcards(tmp,screen,mode,cards):
+def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key):
+    rect(screen,True)
+    cardmenu(screen,key)
+    card=cards[cardkey]
+    #シールドの場合裏向きで表示
+    showcard(screen,card,flag) 
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1420<=x<=1440 and 110<=y<=130:
+                    page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
+                    return
+                #ここから下、個別処理
+                if key==2 or key==3:
+                    #更新して閉じる
+                    #page(save,screen,debug,tmp,current,end,flag,save[key],flag2,key)
+                    return
+
+def printcards(tmp,screen,mode,cards,flag):
     w=200
     h=288
+    rect(screen,flag)
+    t=[0]*len(tmp)
     for i in range(len(tmp)):
-        tmp[i]=pygame.image.load(tmp[i])
+        t[i]=pygame.image.load(tmp[i])
         if mode==1:
             if cards[i][11]:
-                pixel = pygame.PixelArray(tmp[i])
-                for y in range(tmp[i].get_height()):
-                    for x in range(tmp[i].get_width()):
+                pixel = pygame.PixelArray(t[i])
+                for y in range(t[i].get_height()):
+                    for x in range(t[i].get_width()):
                         rgba = screen.unmap_rgb(pixel[x][y])
                         gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
                         pixel[x][y] = (gray,gray,gray)
                 del pixel
         elif mode==2:
             if cards[i][1]:
-                pixel = pygame.PixelArray(tmp[i])
-                for y in range(tmp[i].get_height()):
-                    for x in range(tmp[i].get_width()):
+                pixel = pygame.PixelArray(t[i])
+                for y in range(t[i].get_height()):
+                    for x in range(t[i].get_width()):
                         rgba = screen.unmap_rgb(pixel[x][y])
                         gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
                         pixel[x][y] = (gray,gray,gray)
                 del pixel
         elif mode==3:
             if cards[i][1]:
-                pixel = pygame.PixelArray(tmp[i])
-                for y in range(tmp[i].get_height()):
-                    for x in range(tmp[i].get_width()):
+                pixel = pygame.PixelArray(t[i])
+                for y in range(t[i].get_height()):
+                    for x in range(t[i].get_width()):
                         rgba = screen.unmap_rgb(pixel[x][y])
                         gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
                         pixel[x][y] = (gray,gray,gray)
                 del pixel
-        tmp[i]=pygame.transform.scale(tmp[i], (w, h))
+        t[i]=pygame.transform.scale(t[i], (w, h))
         if i<=5:
-            screen.blit(tmp[i], (base[0]+10*(i+1)+w*i,base[1]+10))
+            screen.blit(t[i], (base[0]+10*(i+1)+w*i,base[1]+10))
         elif 6<=i<=11:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
+            screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
         elif 12<=i<=17:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
+            screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
         elif 18<=i<=23:
-            screen.blit(tmp[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
+            screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
     pygame.display.update()
     return
 
@@ -625,7 +669,7 @@ def info(save,screen,debug):
                     recover(save,screen,debug)
                     return
 
-def page(save,screen,debug,tmp,end):
+def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key):
     lr(screen)
     while True:
         for event in pygame.event.get():
@@ -637,18 +681,34 @@ def page(save,screen,debug,tmp,end):
                 if 1420<=x<=1440 and 110<=y<=130:
                     recover(save,screen,debug)
                     return
-                #ページ切り替え
                 if 1370<=x<=1440:
                     if 280<=y<=580:
-                        return #切り替え
+                        current+=1
+                        if current==4 or len(tmp[current])==0:
+                            current=0
+                        end=len(tmp[current])//4+1
+                        if len(tmp[current])%4==0:
+                            end-=1
+                        printcards(tmp[current],screen,flag,cards,flag2)
+                        page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
+                        return
                     elif 590<=y<=890:
-                        return #切り替え
-                #カード個別の処理(showcard呼び出し)
+                        current-=1
+                        if current==-1:
+                            current=3
+                            while len(tmp[current])==0:
+                                current-=1
+                        end=len(tmp[current])//4+1
+                        if len(tmp[current])%4==0:
+                            end-=1
+                        printcards(tmp[current],screen,flag,cards,flag2)
+                        page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
+                        return
+                #場所を特定してcardinfo
 
 def showcards(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
     cards=save[key]
-    rect(screen,flag)
     for i in range(len(cards)):
         if i<=23:
             tmp[0].append("GUI/image/cards/"+cards[i][0]+".jpg")
@@ -662,14 +722,13 @@ def showcards(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],screen,1,cards)
-    page(save,screen,debug,tmp,end)
+    printcards(tmp[current],screen,1,cards,flag)
+    page(save,screen,debug,tmp,current,end,1,cards,flag,key)
     return
 
 def showmanazone(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
     cards=save[key]
-    rect(screen,flag)
     for i in range(len(cards)):
         if i<=23:
             if cards[i][2]:
@@ -695,14 +754,13 @@ def showmanazone(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],screen,2,cards)
-    page(save,screen,debug,tmp,end)
+    printcards(tmp[current],screen,2,cards,flag)
+    page(save,screen,debug,tmp,current,end,2,cards,flag,key)
     return
 
 def showbattlezone(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
     cards=save[key]
-    rect(screen,flag)
     for i in range(len(cards)):
         if i<=23:
             if cards[i][2]:
@@ -728,30 +786,45 @@ def showbattlezone(save,screen,flag,key,debug):
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],screen,3,cards)
-    page(save,screen,debug,tmp,end)
+    printcards(tmp[current],screen,3,cards,flag)
+    page(save,screen,debug,tmp,current,end,3,cards,flag,key)
     return
 
 def showshield(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
-    rect(screen,flag)
     cards=save[key]
     pygame.draw.rect(screen, (0,0,0), pygame.Rect(base[0],base[1],field[0]-200,field[1]-200))
     for i in range(len(cards)):
         if i<=23:
-            tmp[0].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+            if cards[i][1]:
+                path="GUI/image/uramen/ura.jpg"
+            else:
+                path="GUI/image/cards/"+cards[i][0][0]+".jpg"
+            tmp[0].append(path)
         elif i<=47:
-            tmp[1].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+            if cards[i][1]:
+                path="GUI/image/uramen/ura.jpg"
+            else:
+                path="GUI/image/cards/"+cards[i][0][0]+".jpg"
+            tmp[1].append(path)
         elif i<=71:
-            tmp[2].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+            if cards[i][1]:
+                path="GUI/image/uramen/ura.jpg"
+            else:
+                path="GUI/image/cards/"+cards[i][0][0]+".jpg"
+            tmp[2].append(path)
         else:
-            tmp[3].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
+            if cards[i][1]:
+                path="GUI/image/uramen/ura.jpg"
+            else:
+                path="GUI/image/cards/"+cards[i][0][0]+".jpg"
+            tmp[3].append(path)
     current=0
     end=len(tmp[current])//4+1
     if len(tmp[current])%4==0:
         end-=1
-    printcards(tmp[current],screen,1,cards)
-    page(save,screen,debug,tmp,end)
+    printcards(tmp[current],screen,1,cards,flag)
+    page(save,screen,debug,tmp,current,end,4,cards,flag,key)
     return
 
 def sshield(screen):
