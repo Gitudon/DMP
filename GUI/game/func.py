@@ -554,11 +554,14 @@ def seal(save,flag,key):
         save[9][key][3].insert(0,tmp)
     return save
 
-def showcard(screen,card,flag):
+def showcard(screen,card,flag,key):
     if flag:
         tmp= pygame.image.load("GUI/image/uramen/ura.jpg")
     else:
-        tmp=pygame.image.load("GUI/image/"+card[0][0]+".jpg")
+        if key in [2,3,6,7,8,9]:
+            tmp=pygame.image.load("GUI/image/cards/"+card[0][0]+".jpg")
+        else:
+            tmp=pygame.image.load("GUI/image/cards/"+card[0]+".jpg")
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (110,140))
     pygame.display.update()
@@ -593,8 +596,8 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key):
     rect(screen,True)
     cardmenu(screen,key)
     card=cards[cardkey]
-    #シールドの場合裏向きで表示
-    showcard(screen,card,flag) 
+    #シールドが表向きかどうかでフラグを立てる
+    showcard(screen,card,False,key) 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -603,6 +606,8 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if 1420<=x<=1440 and 110<=y<=130:
+                    rect(screen,True)
+                    printcards(tmp[current],screen,flag,cards,flag2)
                     page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
                     return
                 #ここから下、個別処理
@@ -669,8 +674,10 @@ def info(save,screen,debug):
                     recover(save,screen,debug)
                     return
 
+#カードの切り替えがおかしい
 def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key):
     lr(screen)
+    cards=save[key]
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -686,8 +693,8 @@ def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key):
                         current+=1
                         if current==4 or len(tmp[current])==0:
                             current=0
-                        end=len(tmp[current])//4+1
-                        if len(tmp[current])%4==0:
+                        end=len(tmp[current])//6
+                        if len(tmp[current])%6==0:
                             end-=1
                         printcards(tmp[current],screen,flag,cards,flag2)
                         page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
@@ -698,13 +705,33 @@ def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key):
                             current=3
                             while len(tmp[current])==0:
                                 current-=1
-                        end=len(tmp[current])//4+1
-                        if len(tmp[current])%4==0:
+                        end=len(tmp[current])//6
+                        if len(tmp[current])%6==0:
                             end-=1
                         printcards(tmp[current],screen,flag,cards,flag2)
                         page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
                         return
-                #場所を特定してcardinfo
+                for i in range(end+1):
+                    if i==end:
+                        if 110+144*i<=y<=398+144*i:
+                            edge=len(tmp[current])%6-1
+                            if edge==-1:
+                                edge=6
+                            for j in range(edge+1):
+                                if 110+210*j<=x<=310+210*j:
+                                    cardkey=6*i+j
+                                    cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key)
+                                    return
+                    else:
+                        if 110+144*i<=y<=254+144*i:
+                            edge=len(tmp[current])%6
+                            if edge==0:
+                                edge=6
+                            for j in range(edge+1):
+                                if 110+210*j<=x<=310+210*j:
+                                    cardkey=6*i+j
+                                    cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key)
+                                    return
 
 def showcards(save,screen,flag,key,debug):
     tmp=[[],[],[],[]]
@@ -719,8 +746,8 @@ def showcards(save,screen,flag,key,debug):
         else:
             tmp[3].append("GUI/image/cards/"+cards[i][0]+".jpg")
     current=0
-    end=len(tmp[current])//4+1
-    if len(tmp[current])%4==0:
+    end=len(tmp[current])//6
+    if len(tmp[current])%6==0:
         end-=1
     printcards(tmp[current],screen,1,cards,flag)
     page(save,screen,debug,tmp,current,end,1,cards,flag,key)
@@ -751,8 +778,8 @@ def showmanazone(save,screen,flag,key,debug):
             else:
                 tmp[3].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
     current=0
-    end=len(tmp[current])//4+1
-    if len(tmp[current])%4==0:
+    end=len(tmp[current])//6
+    if len(tmp[current])%6==0:
         end-=1
     printcards(tmp[current],screen,2,cards,flag)
     page(save,screen,debug,tmp,current,end,2,cards,flag,key)
@@ -783,8 +810,8 @@ def showbattlezone(save,screen,flag,key,debug):
             else:
                 tmp[3].append("GUI/image/cards/"+cards[i][0][0]+".jpg")
     current=0
-    end=len(tmp[current])//4+1
-    if len(tmp[current])%4==0:
+    end=len(tmp[current])//6
+    if len(tmp[current])%6==0:
         end-=1
     printcards(tmp[current],screen,3,cards,flag)
     page(save,screen,debug,tmp,current,end,3,cards,flag,key)
@@ -820,8 +847,8 @@ def showshield(save,screen,flag,key,debug):
                 path="GUI/image/cards/"+cards[i][0][0]+".jpg"
             tmp[3].append(path)
     current=0
-    end=len(tmp[current])//4+1
-    if len(tmp[current])%4==0:
+    end=len(tmp[current])//6
+    if len(tmp[current])%6==0:
         end-=1
     printcards(tmp[current],screen,1,cards,flag)
     page(save,screen,debug,tmp,current,end,4,cards,flag,key)
