@@ -147,7 +147,7 @@ def Easy(save,screen,log):
                     elif 370<=y<=420:
                         save[0]=Shuffle(save[0])
                     elif 430<=y<=480:
-                        showshield(save,screen,True,2,debug)
+                        print()
                     elif 490<=y<=540:
                         save=addmana(1,save,True,False,screen,debug)
                     elif 550<=y<=600:
@@ -168,6 +168,9 @@ def Easy(save,screen,log):
                         pygame.quit()
                         sys.exit()
                 elif downbase[1]<=y<=downbase[1]+height:
+                    #自分側シールドゾーン
+                    if 10<=x<=downbase[0]-10:
+                        showshield(save,screen,True,2,debug)
                     #自分側デッキ
                     if downbase[0]<=x<=downbase[0]+width:
                         deckinfo(save,True,screen,debug)
@@ -193,6 +196,9 @@ def Easy(save,screen,log):
                         #相手側バトルゾーン
                         showbattlezone(save,screen,True,9,debug)
                 elif upbase[1]<=y<=upbase[1]+height:
+                    #相手側シールドゾーン
+                    if upbase[0]+width+10<=x<=downbase[0]+3*width+20:
+                        showshield(save,screen,True,3,debug)
                     #相手側デッキ
                     if upbase[0]<=x<=upbase[0]+width:
                         deckinfo(save,False,screen,debug)

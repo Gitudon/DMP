@@ -139,7 +139,7 @@ def emenu(screen):
     gTxt = font.render("デッキをシャッフル", True, (255,255,255))
     screen.blit(gTxt, [1265, 380])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
-    gTxt = font.render("シールドを確認する", True, (255,255,255))
+    gTxt = font.render("デッキの上を見る", True, (255,255,255))
     screen.blit(gTxt, [1265, 440])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
     gTxt = font.render("マナチャージする", True, (255,255,255))
@@ -555,8 +555,26 @@ def seal(save,flag,key):
     return save
 
 def showcard(screen,card,flag,key):
-    if flag:
+    if flag==1:
         tmp= pygame.image.load("GUI/image/uramen/ura.jpg")
+    elif flag==2:
+        tmp=pygame.image.load("GUI/image/cards/"+card[0][0]+".jpg")
+        pixels = pygame.PixelArray(tmp)
+        for y in range(tmp.get_height()):
+            for x in range(tmp.get_width()):
+                r, g, b, _ = screen.unmap_rgb(pixels[x][y])
+                gray = int((r + g + b) / 3)
+                pixels[x][y] = (gray, gray, gray)
+        del pixels
+    elif flag==3:
+        tmp=pygame.image.load("GUI/image/uramen/ura.jpg")
+        pixels = pygame.PixelArray(tmp)
+        for y in range(tmp.get_height()):
+            for x in range(tmp.get_width()):
+                r, g, b, _ = screen.unmap_rgb(pixels[x][y])
+                gray = int((r + g + b) / 3)
+                pixels[x][y] = (gray, gray, gray)
+        del pixels
     else:
         if key in [2,3,6,7,8,9]:
             tmp=pygame.image.load("GUI/image/cards/"+card[0][0]+".jpg")
@@ -568,8 +586,18 @@ def showcard(screen,card,flag,key):
     return
 
 def cardmenu(screen,key):
-    if key==2 or key==3:
-        return
+    font = pygame.font.SysFont("msgothic", 50)
+    #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415、構成カード1617
+    mode=[0,0,3,3,6,6,7,7,8,8,5,5,2,2,0,0,4,4]
+    n=mode[key]
+    for i in range(n):
+        txt=""
+        pygame.draw.rect(screen, (0,191,255), pygame.Rect(630,145+80*i,780,70))
+        gTxt = font.render(txt, True, (255,255,255))
+    # if key in [2,3]:
+    #     return
+    pygame.display.update()
+    return
 
 def lr(screen):
     font = pygame.font.SysFont("msgothic", 50)
@@ -596,8 +624,26 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key):
     rect(screen,True)
     cardmenu(screen,key)
     card=cards[cardkey]
-    #シールドが表向きかどうかでフラグを立てる
-    showcard(screen,card,False,key) 
+    if key in [2,3]:
+        if card[1]:
+            showcard(screen,card,1,key)
+        else:
+            showcard(screen,card,0,key)
+    elif key in [6,7]:
+        if card[1]:
+            if card[2]:
+                showcard(screen,card,3,key)
+            else:
+                showcard(screen,card,2,key)
+        else:
+            showcard(screen,card,0,key)
+    elif key in [8,9]:
+        if card[11]:
+            showcard(screen,card,2,key)
+        else:
+            showcard(screen,card,0,key)
+    else:
+        showcard(screen,card,0,key)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -611,10 +657,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key):
                     page(save,screen,debug,tmp,current,end,flag,cards,flag2,key)
                     return
                 #ここから下、個別処理
-                if key==2 or key==3:
-                    #更新して閉じる
-                    #page(save,screen,debug,tmp,current,end,flag,save[key],flag2,key)
-                    return
+                # if key==2 or key==3:
+                #     #更新して閉じる
+                #     rect(screen,True)
+                #     printcards(tmp[current],screen,flag,cards,flag2)
+                #     page(save,screen,debug,tmp,current,end,flag,save[key],flag2,key)
+                #     return
 
 def printcards(tmp,screen,mode,cards,flag):
     w=200
@@ -622,43 +670,41 @@ def printcards(tmp,screen,mode,cards,flag):
     rect(screen,flag)
     t=[0]*len(tmp)
     for i in range(len(tmp)):
+        flg=False
         t[i]=pygame.image.load(tmp[i])
+        t[i]=pygame.transform.scale(t[i], (w, h))
         if mode==1:
             if cards[i][11]:
-                pixel = pygame.PixelArray(t[i])
-                for y in range(t[i].get_height()):
-                    for x in range(t[i].get_width()):
-                        rgba = screen.unmap_rgb(pixel[x][y])
-                        gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
-                        pixel[x][y] = (gray,gray,gray)
-                del pixel
+                t[i]=pygame.transform.rotate(t[i], 90)
+                flg=True
         elif mode==2:
             if cards[i][1]:
-                pixel = pygame.PixelArray(t[i])
-                for y in range(t[i].get_height()):
-                    for x in range(t[i].get_width()):
-                        rgba = screen.unmap_rgb(pixel[x][y])
-                        gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
-                        pixel[x][y] = (gray,gray,gray)
-                del pixel
+                t[i]=pygame.transform.rotate(t[i], 90)
+                flg=True
         elif mode==3:
             if cards[i][1]:
-                pixel = pygame.PixelArray(t[i])
-                for y in range(t[i].get_height()):
-                    for x in range(t[i].get_width()):
-                        rgba = screen.unmap_rgb(pixel[x][y])
-                        gray = int((rgba[0] + rgba[1] + rgba[2]) / 3)
-                        pixel[x][y] = (gray,gray,gray)
-                del pixel
-        t[i]=pygame.transform.scale(t[i], (w, h))
+                t[i]=pygame.transform.rotate(t[i], 90)
+                flg=True
         if i<=5:
-            screen.blit(t[i], (base[0]+10*(i+1)+w*i,base[1]+10))
+            if flg:
+                screen.blit(t[i], (base[0]+10*(i+1)+w*i,base[1]+54))
+            else:
+                screen.blit(t[i], (base[0]+10*(i+1)+w*i,base[1]+10))
         elif 6<=i<=11:
-            screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
+            if flg:
+                screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+64+height))
+            else:
+                screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+20+height))
         elif 12<=i<=17:
-            screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
+            if flg:
+                screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+74+height*2))
+            else:
+                screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+30+height*2))
         elif 18<=i<=23:
-            screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
+            if flg:
+                screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+84+height*3))
+            else:
+                screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
     pygame.display.update()
     return
 
@@ -674,7 +720,6 @@ def info(save,screen,debug):
                     recover(save,screen,debug)
                     return
 
-#カードの切り替えがおかしい
 def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key):
     lr(screen)
     cards=save[key]
@@ -719,17 +764,14 @@ def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key):
                                 edge=6
                             for j in range(edge+1):
                                 if 110+210*j<=x<=310+210*j:
-                                    cardkey=6*i+j
+                                    cardkey=24*current+6*i+j
                                     cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key)
                                     return
                     else:
                         if 110+144*i<=y<=254+144*i:
-                            edge=len(tmp[current])%6
-                            if edge==0:
-                                edge=6
-                            for j in range(edge+1):
+                            for j in range(6):
                                 if 110+210*j<=x<=310+210*j:
-                                    cardkey=6*i+j
+                                    cardkey=24*current+6*i+j
                                     cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key)
                                     return
 
@@ -850,7 +892,7 @@ def showshield(save,screen,flag,key,debug):
     end=len(tmp[current])//6
     if len(tmp[current])%6==0:
         end-=1
-    printcards(tmp[current],screen,1,cards,flag)
+    printcards(tmp[current],screen,4,cards,flag)
     page(save,screen,debug,tmp,current,end,4,cards,flag,key)
     return
 
@@ -1084,6 +1126,17 @@ def choose(screen,message):
                             return True
                         elif base[0]+(field[0]-200)//2<x<=field[0]-100:
                             return False
+
+def maisu(screen):
+    #枚数を聞く
+    n=0
+    return n
+
+#枚数を聞き、その枚数分山札の上からカードを表示する 全カードに対して処理が終わるまでウィンドウは閉じないようにする
+def miru():
+    return
+
+
 
 #メッセージを表示するコンソールをメニューから見れるようにする
 #各アクションの実行後、ログを残す
