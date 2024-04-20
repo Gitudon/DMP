@@ -5,7 +5,7 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon,dmphelp
+from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon,number,miru,dmphelp
 from game import carddic
 from game import deckdic
 from game import deckbuild
@@ -113,8 +113,8 @@ def initalize():
 
 def Easy(save,screen,log):
     debug=3
-    save=shieldplus(5,save,True,screen,debug,False)
-    save=shieldplus(5,save,False,screen,debug,False)
+    save=shieldplus(5,save,True,screen,debug,False,True)
+    save=shieldplus(5,save,False,screen,debug,False,True)
     save=draw(5,save,True)
     save=draw(5,save,False)
     recover(save,screen,debug)
@@ -147,7 +147,8 @@ def Easy(save,screen,log):
                     elif 370<=y<=420:
                         save[0]=Shuffle(save[0])
                     elif 430<=y<=480:
-                        print()
+                        n=number(screen,"何枚確認しますか？")
+                        miru(save,screen,False,0,debug,n)
                     elif 490<=y<=540:
                         save=addmana(1,save,True,False,screen,debug)
                     elif 550<=y<=600:
@@ -155,11 +156,11 @@ def Easy(save,screen,log):
                     elif 610<=y<=660:
                         tmp=save[0][0]
                         save[0]=save[0][1:]
-                        save=gotodeck(save,True,tmp,False)
+                        save=gotodeck(save,tmp,True,False)
                     elif 670<=y<=720:
                         save=grsummon(1,save,True,screen,debug)
                     elif 730<=y<=780:
-                        save=shieldplus(1,save,True,screen,debug,True)
+                        save=shieldplus(1,save,True,screen,debug,True,True)
                     elif 790<=y<=840:
                         initalize()
                     elif 850<=y<=900:
