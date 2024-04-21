@@ -694,8 +694,6 @@ def cardinfo2(card,screen):
 def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,index):
     rect(screen,True)
     cardmenu(screen,key)
-    #ここがなんかおかしい
-    print(cardkey)
     if len(cards)==0:
         return
     card=cards[cardkey]
@@ -1256,7 +1254,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     save[key3][index][2]=False
                                     if save[key3][index][0][0]=="r_k_001":
                                         del save[key3][index]
-                                        kndn=['r_kc_001', '伝説の禁断 ドキンダムX', [], 99, 1, 99999, ['r'], True, True, False, False, True, 'kc', ['T-Breaker'], False, False]
+                                        kndn=['r_kc_001', '伝説の禁断 ドキンダムX', [], 99, None, 99999, ['r'], False, True, False, True, False, 'kc', ['T-Breaker'], False, False]
                                         save=put(save,kndn,player)
                                     elif  save[key3][index][0][0]=="rg_skf_001":
                                         del save[key3][index]
@@ -2001,8 +1999,7 @@ def mekureid(save,n,flag,key):
     return save
 
 def kndnbigbun(save,flag):
-    #ドルマゲドンが未実装
-    card=[]
+    card=['rd_skc_001', '終焉の禁断 ドルマゲドンX', [], 999, None, 999999, ['r','d'], False, True, False, True, False, 'skc', ['T-Breaker'], False, False]
     #禁断コアが未実装
     tmp=[card,False,False,[card],[],-1,1,0]
     if flag:
@@ -2012,7 +2009,7 @@ def kndnbigbun(save,flag):
     return save
 
 def zeronbantan(save,flag):
-    card=[]
+    card=['d_zc_001', '零龍', ['マスター・ドラゴンZ'], 0, None, 0, ['d'], False, True, False, True, False, 'zc', ['World-Breaker'], False, False]
     tmp=[card,False,False,[card],[],-1,1,0]
     if flag:
         save[8].append(tmp)

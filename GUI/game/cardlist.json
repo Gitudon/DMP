@@ -691,7 +691,7 @@
         "mana":null,
         "power":99999,
         "color":["r"],
-        "cipTF":true,
+        "cipTF":false,
         "alwaysTF":true,
         "attackTF":false,
         "pigTF":true,
