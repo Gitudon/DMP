@@ -53,20 +53,20 @@ def initalize():
     tmp2=copy.deepcopy(Deck.get(deckname2))
     if advance:
         for cards in tmp1:
-            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_","_rp_"]):
+            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_","_rp_", "_dsf_"]):
                 save[12].append(cards)
             elif "_grc_" in cards[0]:
                 save[14].append(cards)
-            elif any(substring in cards[0] for substring in ["_k_", "_kf_","_zg_","_zs_"]):
+            elif any(substring in cards[0] for substring in ["r_k_001", "_skf_","_zg_","_zs_"]):
                 expand(save,cards,True)
             else:
                 save[0].append(cards)
         for cards in tmp2:
-            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_", "_rp_"]):
+            if any(substring in cards[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_", "_rp_", "_dsf_"]):
                 save[13].append(cards)
             elif "_grc_" in cards[0]:
                 save[15].append(cards)
-            elif any(substring in cards[0] for substring in ["_k_", "_kf_", "_zg_","_zs_"]):
+            elif any(substring in cards[0] for substring in ["r_k_001", "_kf_", "_zg_","_zs_"]):
                 expand(save,cards,False)
             else:
                 save[1].append(cards)
@@ -98,7 +98,7 @@ def initalize():
         elif "r_k_001" in save[8][0][0]:
             for _ in range(6):
                 save=seal(save,True,0)
-        elif "rd_kf_001" in save[8][0][0]:
+        elif "rd_skf_001" in save[8][0][0]:
             for _ in range(4):
                 save=seal(save,True,0)
     if advance and save[9]!=[]:
@@ -107,7 +107,7 @@ def initalize():
         elif "r_k_001" in save[9][0][0]:
             for _ in range(6):
                 save=seal(save,False,0)
-        elif "rd_kf_001" in save[9][0][0]:
+        elif "rd_skf_001" in save[9][0][0]:
             for _ in range(4):
                 save=seal(save,False,0)
     sshield(screen)
@@ -138,15 +138,22 @@ def Easy(save,screen,log):
                     if 10<=y<=60:
                         showcards(save,screen,True,4,debug)
                     elif 70<=y<=120:
-                        save[4]=sorted(save[4])
-                    elif 130<=y<=180:
                         save[4]=Shuffle(save[4])
+                    elif 130<=y<=180:
+                        save=swap(save)
+                        mana_all="rg_c_004_cip"
+                        save=card[mana_all](save,True)
+                        untap_all="r_c_010_cip"
+                        save=card[untap_all](save,True)
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                        recover(save,screen,debug)
                     elif 190<=y<=240:
                         save=swap(save)
                         recover(save,screen,debug)
                     elif 250<=y<=300:
-                        a="b_s_002"
-                        save=card[a](save,True)
+                        mana_1="b_s_002"
+                        save=card[mana_1](save,True)
                     elif 310<=y<=360:
                         showcards(save,screen,True,0,debug)
                     elif 370<=y<=420:

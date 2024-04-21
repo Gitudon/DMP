@@ -14,6 +14,18 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 
+def r_c_010_cip(save,flag):
+    if flag:
+        for i in range(save[8]):
+            save[8][i][1]=True
+    else:
+        for i in range(save[9]):
+            save[9][i][1]=True
+    return save
+
+def g_s_001(save,flag):
+    return func.addmana(1,save,flag)
+
 def b_s_001(save,flag):
     return func.draw(2,save,flag)
 
@@ -56,9 +68,6 @@ def b_s_002(save,flag):
     save=func.draw(1,save,flag)
     return save
 
-def bw_cs_001(save,flag):
-    return func.draw(3,save,flag)
-
 def d_c_001_cip(save,flag):
     return func.bochiokuri(1,save,flag)
 
@@ -100,15 +109,6 @@ def d_tc_001_tip(save,flag):
         save=func.bochiokuri(2,save,flag)
     return save
 
-def g_s_001(save,flag):
-    return func.addmana(1,save,flag)
-
-def gbd_c_002_cip(save,flag):
-    a=True
-    if a:
-        save=func.draw(2,save,flag)
-    return save
-
 def rg_c_001_cip(save,flag):
     save=func.addmana(1,save,flag)
     if flag:
@@ -122,6 +122,14 @@ def rg_c_001_cip(save,flag):
             save=func.addmana(1,save,flag)
             save[7][-1][6]=True
     return save
+
+def rg_c_004_cip(save,flag):
+    if flag:
+        for i in range(len(save[6])):
+            save[6][i][1]=True
+    else:
+        for i in range(len(save[7])):
+            save[7][i][1]=True
 
 def rg_s_001(save,flag):
     if flag:
@@ -152,4 +160,13 @@ def rg_s_001(save,flag):
             save[7].append(two)
         else:
             save[11].append(two)
+    return save
+
+def bw_cs_001(save,flag):
+    return func.draw(3,save,flag)
+
+def gbd_c_002_cip(save,flag):
+    a=True
+    if a:
+        save=func.draw(2,save,flag)
     return save

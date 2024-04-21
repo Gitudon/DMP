@@ -9,6 +9,7 @@ def main():
     else:
         carddic()
 
+#カードが追加されるたびに動かす
 def cardlist():
     file=open('GUI/game/cardlist.json','r',encoding="utf_8")
     loading=json.load(file)
@@ -25,6 +26,8 @@ def cardlist():
         for k in dic:
             print(k,file=o)
 
+#cip、常在能力で分ける
+#手動で良くね
 def carddic():
     file=open('GUI/game/cardlist.json','r',encoding="utf_8")
     loading=json.load(file)
