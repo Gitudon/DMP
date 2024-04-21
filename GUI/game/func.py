@@ -1017,11 +1017,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     del cards[cardkey]
                                 elif i==5:
                                     #重ねる
+                                    #上見て重ねる処理が怪しい
                                     cards2=save[key-4]
                                     tmp2=tmpmake(cards2,2)
-                                    current=0
-                                    printcards(tmp2[current],screen,3,cards2,flag2)
-                                    key2=selectcard(tmp2,current,screen,3,cards2,flag2)
+                                    current2=0
+                                    printcards(tmp2[current2],screen,3,cards2,flag2)
+                                    key2=selectcard(tmp2,current2,screen,3,cards2,flag2)
                                     up=choose(screen,"上に重ねますか？")
                                     save=overlap(save,player,key2,card,up)
                                     del cards[cardkey]

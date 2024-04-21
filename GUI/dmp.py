@@ -70,6 +70,11 @@ def initalize():
                 expand(save,cards,False)
             else:
                 save[1].append(cards)
+    else:
+        for cards in tmp1:
+            save[0].append(cards)
+        for cards in tmp2:
+            save[1].append(cards)
     save[0]=Shuffle(save[0])
     save[1]=Shuffle(save[1])
     if advance:
