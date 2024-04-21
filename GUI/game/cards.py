@@ -16,11 +16,11 @@ downbase=(920, 602)
 
 def r_c_010_cip(save,flag):
     if flag:
-        for i in range(save[8]):
-            save[8][i][1]=True
+        for i in range(len(save[8])):
+            save[8][i][1]=False
     else:
-        for i in range(save[9]):
-            save[9][i][1]=True
+        for i in range(len(save[9])):
+            save[9][i][1]=False
     return save
 
 def g_s_001(save,flag):
@@ -126,10 +126,11 @@ def rg_c_001_cip(save,flag):
 def rg_c_004_cip(save,flag):
     if flag:
         for i in range(len(save[6])):
-            save[6][i][1]=True
+            save[6][i][1]=False
     else:
         for i in range(len(save[7])):
-            save[7][i][1]=True
+            save[7][i][1]=False
+    return save
 
 def rg_s_001(save,flag):
     if flag:

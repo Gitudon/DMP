@@ -2279,7 +2279,7 @@
         "alwaysTF":false,
         "attackTF":false,
         "pigTF":false,
-        "tapTF":[false,false],
+        "tapTF":false,
         "cardtype":"d2f",
         "keywordskills":[],
         "STTF":true,

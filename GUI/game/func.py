@@ -80,17 +80,18 @@ def battlezone(screen,me,opposite):
             img = pygame.image.load("GUI/image/uramen/ura.jpg")
         else:
             img = pygame.image.load("GUI/image/cards/"+me[i][0][0]+".jpg")
+        img = pygame.transform.scale(img, (width, height))
         if any(substring in me[i][0][0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_", "_zc_"]):
-            # img = pygame.transform.rotate(img, 90)
-            img = pygame.transform.scale(img, (height, width))
+            img = pygame.transform.rotate(img, 90)
+            if any(substring in me[i][0][0] for substring in ["_d2f_", "_sf_"]):
+                if me[i][5]:
+                    img = pygame.transform.rotate(img, 180)
             screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,downbase[1]-(height+10)+22))
         else:
             if me[i][1]:
                 img = pygame.transform.rotate(img, 270)
-                img = pygame.transform.scale(img, (width, height))
                 screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,downbase[1]-(height+10)+22))
             else:
-                img = pygame.transform.scale(img, (width, height))
                 screen.blit(img, (upbase[0]-20-width*2+(10+width)*i,downbase[1]-(height+10)))
     for i in range(len(opposite)):
         if opposite[i][2]:
@@ -99,15 +100,19 @@ def battlezone(screen,me,opposite):
             img = pygame.image.load("GUI/image/cards/"+opposite[i][0][0]+".jpg")
         img = pygame.transform.scale(img, (width, height))
         if any(substring in opposite[i][0][0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_", "_ds_"]):
-            img = pygame.transform.rotate(img, 270)
-            screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,downbase[1]-(height+10)+22))
+            img= pygame.transform.rotate(img, 270)
+            if any(substring in opposite[i][0][0] for substring in ["_d2f_", "_sf_"]):
+                if opposite[i][5]:
+                    img = pygame.transform.rotate(img, 180)
+            screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,upbase[1]+(height+10)+22))
         else:
+            img = pygame.transform.scale(img, (width, height))
             if opposite[i][1]:
                 img = pygame.transform.rotate(img, 90)
                 screen.blit(img, (upbase[0]-32-width*2+(10+width)*i,upbase[1]+(height+10)+22))
             else:
-                img1 = pygame.transform.rotate(img, 180)
-                screen.blit(img1, (upbase[0]-20-width*2+(10+width)*i,upbase[1]+(height+10)))
+                img = pygame.transform.rotate(img, 180)
+                screen.blit(img, (upbase[0]-20-width*2+(10+width)*i,upbase[1]+(height+10)))
     pygame.display.update()
     return
 
@@ -316,7 +321,7 @@ def put(save,card,flag):
     return save
 
 def expand(save,card,flag):
-    tmp=[card,False,False,[card],[],-1,1,0]
+    tmp=[card,False,False,[card],[],False]
     if flag:
         save[8].append(tmp)
     else:
@@ -437,12 +442,12 @@ def putmana(save,card,flag,crystal,zone):
             #zone:バトルゾーンからマナ送りか
             if zone:
                 if "_cs_" in card[0]:
-                    tap=len(card[6][0])
+                    tap=max(len(card[6][0]),len(card[6][1]))
                 else:
                     tap=len(card[6])
             else:
                 if "_cs_" in card[0]:
-                    tap=max(len(card[6][0]),len(card[6][1]))
+                    tap=len(card[6][0])
                 else:
                     tap=len(card[6])
             if tap>=2:
@@ -633,7 +638,7 @@ def cardmenu(screen,key):
     elif key in [6,7]:
         txts=["タップ/アンタップする","バトルゾーンに出す","手札に加える","墓地に置く","山札に送る","裏返す","重ねる","シールドゾーンに置く"]
     elif key in [8,9]:
-        txts=["タップ/アンタップする","手札に加える","マナゾーンに置く","墓地に置く","山札に送る","構成カードを表示する","封印する","超次元ゾーンに置く","シールドゾーンに置く"]
+        txts=["位相を変える","手札に加える","マナゾーンに置く","墓地に置く","山札に送る","構成カードを表示する","封印する","超次元ゾーンに置く","シールドゾーンに置く"]
     elif key in [10,11]:
         txts=["バトルゾーンに出す","手札に加える","マナゾーンに置く","山札に送る","重ねる","シールドゾーンに置く"]
     elif key in [12,13]:
@@ -689,6 +694,10 @@ def cardinfo2(card,screen):
 def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,index):
     rect(screen,True)
     cardmenu(screen,key)
+    #ここがなんかおかしい
+    print(cardkey)
+    if len(cards)==0:
+        return
     card=cards[cardkey]
     if key in [2,3]:
         if card[1]:
@@ -752,7 +761,8 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     del save[key][cardkey]
                                 elif i==3:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card[0],player,crystal,False)
                                     del save[key][cardkey]
                                 elif i==4:
@@ -762,7 +772,10 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     del save[key][cardkey]
                                 elif i==5:
                                     #バトルゾーンに出す
-                                    save=put(save,card[0],player)
+                                    if any(substring in card[0][0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card[0],player)
+                                    else:
+                                        save=put(save,card[0],player)
                                     del save[key][cardkey]
                                 elif i==6:
                                     #構成カードを表示する
@@ -785,12 +798,15 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                         for i in range(7):
                             if 145+80*i<=y<=215+80*i:
                                 if i==0:
-                                    #バトルゾーンに出す
-                                    save=put(save,card,player)
+                                    if any(substring in card[0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card,player)
+                                    else:
+                                        save=put(save,card,player)
                                     del save[key][cardkey]
                                 elif i==1:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card,player,crystal,False)
                                     del save[key][cardkey]
                                 elif i==2:
@@ -849,7 +865,10 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     save[key][cardkey][1]=not(save[key][cardkey][1])
                                 elif i==1:
                                     #バトルゾーンに出す
-                                    save=put(save,card[0],player)
+                                    if any(substring in card[0][0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card[0],player)
+                                    else:
+                                        save=put(save,card[0],player)
                                     del save[key][cardkey]
                                 elif i==2:
                                     #手札に加える
@@ -857,7 +876,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     del save[key][cardkey]
                                 elif i==3:
                                     #墓地に置く
-                                    save=putgrave(save,card[0],True)
+                                    save=putgrave(save,card[0],player)
                                     del save[key][cardkey]
                                 elif i==4:
                                     #山札に送る
@@ -906,8 +925,11 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                         for i in range(9):
                             if 145+80*i<=y<=215+80*i:
                                 if i==0:
-                                    #タップ/アンタップする
-                                    save[key][cardkey][1]=not(save[key][cardkey][1])
+                                    #位相を変える
+                                    if any(substring in save[key][cardkey][0][0] for substring in ["_d2f_",  "_sf_"]):
+                                        save[key][cardkey][5]=not(save[key][cardkey][5])
+                                    else:
+                                        save[key][cardkey][1]=not(save[key][cardkey][1])
                                 elif i==1:
                                     #手札に加える
                                     for i in range(len(card[3])):
@@ -916,7 +938,8 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                 elif i==2:
                                     #マナゾーンに置く
                                     for i in range(len(card[3])):
-                                        crystal=choose(screen,"水晶マナにしますか？"+"("+str(i+1)+"枚目)")
+                                        crystal=False
+                                        #crystal=choose(screen,"水晶マナにしますか？")
                                         save=putmana(save,card[3][i],player,crystal,True)
                                     del save[key][cardkey]
                                 elif i==3:
@@ -989,13 +1012,17 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                             if 145+80*i<=y<=215+80*i:
                                 if i==0:
                                     #バトルゾーンに出す
-                                    save=put(save,card,player)
+                                    if any(substring in card[0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card,player)
+                                    else:
+                                        save=put(save,card,player)
                                 elif i==1:
                                     #手札に加える
                                     save=bounce(save,card,player)
                                 elif i==2:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card,player,crystal,False)
                                 elif i==3:
                                     #山札に送る
@@ -1039,13 +1066,17 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                             if 145+80*i<=y<=215+80*i:
                                 if i==0:
                                     #バトルゾーンに出す
-                                    save=put(save,card,player)
+                                    if any(substring in card[0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card,player)
+                                    else:
+                                        save=put(save,card,player)
                                 elif i==1:
                                     #手札に加える
                                     save=bounce(save,card,player)
                                 elif i==2:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card,player,crystal,False)
                                 elif i==3:
                                     #墓地に置く
@@ -1087,8 +1118,9 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     save=bounce(save,card,player)
                                 elif i==2:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
-                                    save=putmana(save,card,player,crystal,False)
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
+                                    save=putmana(save,card,player,crystal,True)
                                 elif i==3:
                                     #墓地に置く
                                     save=putgrave(save,card,True)
@@ -1124,13 +1156,17 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                             if 145+80*i<=y<=215+80*i:
                                 if i==0:
                                     #バトルゾーンに出す
-                                    save=put(save,card,player)
+                                    if any(substring in card[0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card,player)
+                                    else:
+                                        save=put(save,card,player)
                                 elif i==1:
                                     #手札に加える
                                     save=bounce(save,card,player)
                                 elif i==2:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card,player,crystal,False)
                                 elif i==3:
                                     #墓地に置く
@@ -1181,7 +1217,8 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     save=bounce(save,card[0],player)
                                 elif i==1:
                                     #マナゾーンに置く
-                                    crystal=choose(screen,"水晶マナにしますか？")
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card[0],player,crystal,False)
                                 elif i==2:
                                     #墓地に置く
@@ -1229,28 +1266,26 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
 def printcards(tmp,screen,mode,cards,flag):
     w=200
     h=288
+    #Dスイッチの処理→カードの状態？
+    #mode:1-showcards,2-showmanazone,3-showbattlezone,4-showshield
     rect(screen,flag)
     t=[0]*len(tmp)
     for i in range(len(tmp)):
         flg=False
         t[i]=pygame.image.load(tmp[i])
-        if any(substring in cards[i][0][0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_", "_zc_"]):
-            t[i]=pygame.transform.scale(t[i], (h, w))
-            flg=True
-        else:
-            t[i]=pygame.transform.scale(t[i], (w, h))
-            if mode==1:
-                if cards[i][11]:
-                    t[i]=pygame.transform.rotate(t[i], 270)
-                    flg=True
-            elif mode==2:
-                if cards[i][1]:
-                    t[i]=pygame.transform.rotate(t[i], 270)
-                    flg=True
-            elif mode==3:
-                if cards[i][1]:
-                    t[i]=pygame.transform.rotate(t[i], 270)
-                    flg=True
+        t[i]=pygame.transform.scale(t[i], (w, h))
+        if mode==1:
+            if cards[i][11]:
+                t[i]=pygame.transform.rotate(t[i], 270)
+                flg=True
+        elif mode==2:
+            if cards[i][1]:
+                t[i]=pygame.transform.rotate(t[i], 270)
+                flg=True
+        elif mode==3:
+            if cards[i][1]:
+                t[i]=pygame.transform.rotate(t[i], 270)
+                flg=True
         if i<=5:
             if flg:
                 screen.blit(t[i], (base[0]+10*(i+1)+w*i,base[1]+54))
