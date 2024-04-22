@@ -1160,8 +1160,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         save=putshield(save,card,player,surface)
                                 del save[key3][index][3][cardkey]
                                 #退化
-                                if cardkey==0:
+                                if cardkey==0 and len(save[key3][index][3])>0:
                                     save[key3][index][0]=save[key3][index][3][0]
+                                #零龍卍誕
+                                if save[key3][index][0][0]=="d_zg_001":
+                                    if len(save[key3][index][3])==5:
+                                        zeronbantan(save,player)
                                 return
                     if key in [18,19]:
                         for i in range(7):
