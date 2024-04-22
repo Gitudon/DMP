@@ -1166,6 +1166,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                 if save[key3][index][0][0]=="d_zg_001":
                                     if len(save[key3][index][3])==5:
                                         zeronbantan(save,player)
+                                        del save[key3][index]
                                 return
                     if key in [18,19]:
                         for i in range(7):
