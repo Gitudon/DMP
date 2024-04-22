@@ -447,7 +447,13 @@ def putmana(save,card,flag,crystal,zone):
                     tap=len(card[6])
             else:
                 if "_cs_" in card[0]:
-                    tap=len(card[6][0])
+                    buf=[]
+                    for a in card[6][0]:
+                        buf.append(a)
+                    for b in card[6][1]:
+                        buf.append(b)
+                    u_buf=list(set(buf))
+                    tap=len(u_buf)
                 else:
                     tap=len(card[6])
             if tap>=2:
@@ -1183,8 +1189,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     save=gotodeck(save,card,player,up)
                                 elif i==5:
                                     #重ねる
-                                    #上見て重ねる処理が怪しい
-                                    cards2=save[key-4]
+                                    cards2=save[key-10]
                                     tmp2=tmpmake(cards2,2)
                                     current2=0
                                     printcards(tmp2[current2],screen,3,cards2,flag2)
