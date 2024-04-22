@@ -855,12 +855,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                         up=choose(screen,"上に重ねますか？")
                                         if up:
-                                            surface=choose("裏向きですか？")
+                                            surface=choose(screen,"裏向きですか？")
                                         else:
                                             surface=True
                                         save=overlap2(save,player,key2,card,up,surface)
                                     else:
-                                        surface=choose("裏向きですか？")
+                                        surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card,player,surface)
                                     del save[key][cardkey]
                                 cards=save[key]
@@ -919,12 +919,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                         up=choose(screen,"上に重ねますか？")
                                         if up:
-                                            surface=choose("裏向きですか？")
+                                            surface=choose(screen,"裏向きですか？")
                                         else:
                                             surface=True
                                         save=overlap2(save,player,key2,card[0],up,surface)
                                     else:
-                                        surface=choose("裏向きですか？")
+                                        surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card[0],player,surface)
                                     del save[key][cardkey]
                                 cards=save[key]
@@ -1006,7 +1006,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                             key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                             up=choose(screen,"上に重ねますか？"+"("+str(i+1)+"枚目)")
                                             if up:
-                                                surface=choose("裏向きですか？")
+                                                surface=choose(screen,"裏向きですか？")
                                             else:
                                                 surface=True
                                             save=overlap2(save,player,key2,card[3][i],up,surface)
@@ -1060,12 +1060,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                         up=choose(screen,"上に重ねますか？")
                                         if up:
-                                            surface=choose("裏向きですか？")
+                                            surface=choose(screen,"裏向きですか？")
                                         else:
                                             surface=True
                                         save=overlap2(save,player,key2,card,up,surface)
                                     else:
-                                        surface=choose("裏向きですか？")
+                                        surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card,player,surface)
                                 del save[key][cardkey]
                                 cards=save[key]
@@ -1151,12 +1151,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                         up=choose(screen,"上に重ねますか？")
                                         if up:
-                                            surface=choose("裏向きですか？")
+                                            surface=choose(screen,"裏向きですか？")
                                         else:
                                             surface=True
                                         save=overlap2(save,player,key2,card,up,surface)
                                     else:
-                                        surface=choose("裏向きですか？")
+                                        surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card,player,surface)
                                 del save[key3][index][3][cardkey]
                                 #退化
@@ -1207,12 +1207,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                         up=choose(screen,"上に重ねますか？")
                                         if up:
-                                            surface=choose("裏向きですか？")
+                                            surface=choose(screen,"裏向きですか？")
                                         else:
                                             surface=True
                                         save=overlap2(save,player,key2,card,up,surface)
                                     else:
-                                        surface=choose("裏向きですか？")
+                                        surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card,player,surface)
                                 del cards[cardkey]
                                 tmp=tmpmake(cards,0)
@@ -1249,12 +1249,12 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
                                         up=choose(screen,"上に重ねますか？")
                                         if up:
-                                            surface=choose("裏向きですか？")
+                                            surface=choose(screen,"裏向きですか？")
                                         else:
                                             surface=True
                                         save=overlap2(save,player,key2,card[0],up,surface)
                                     else:
-                                        surface=choose("裏向きですか？")
+                                        surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card[0],player,surface)
                                 elif i==5:
                                     #見る
@@ -1571,6 +1571,7 @@ def sshield(screen):
         pygame.display.update()
         time.sleep(0.5)
 
+#表向きカードが考慮されていませんよ
 def shield(screen,flag,save):
     img = pygame.image.load("GUI/image/uramen/ura.jpg")
     if flag:
