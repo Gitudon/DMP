@@ -175,7 +175,7 @@ def emenu(screen):
     gTxt = font.render("ゲームをリセット", True, (255,255,255))
     screen.blit(gTxt, [1265, 800])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
-    gTxt = font.render("ログを表示", True, (255,255,255))
+    gTxt = font.render("追加ターン", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
@@ -694,7 +694,15 @@ def cardinfo2(card,screen):
 def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,index):
     rect(screen,True)
     cardmenu(screen,key)
-    if len(cards)==0:
+    # if len(cards)==0:
+    #     return
+    # if cardkey==6:
+    #     if len(cards)<6:
+    #         return
+    #print(cardkey)
+    #ここで範囲外参照が発生している。原因調査中
+    #暫定的に、範囲外参照を防ぐことで対処
+    if cardkey>=len(cards):
         return
     card=cards[cardkey]
     if key in [2,3]:

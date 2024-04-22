@@ -175,7 +175,13 @@ def Easy(save,screen,log):
                     elif 790<=y<=840:
                         initalize()
                     elif 850<=y<=900:
-                        showlog(screen,log,save,debug)
+                        mana_all="rg_c_004_cip"
+                        save=card[mana_all](save,True)
+                        untap_all="r_c_010_cip"
+                        save=card[untap_all](save,True)
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                        recover(save,screen,debug)
                     elif 910<=y<=960:
                         pygame.quit()
                         sys.exit()
