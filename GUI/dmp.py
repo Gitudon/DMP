@@ -18,7 +18,6 @@ upbase=(230, 155)
 downbase=(920, 696)
 card=carddic.card
 Deck=deckdic.Deck
-logpath='GUI/etc/log.txt'
 
 def main():
     logger=[]
@@ -80,7 +79,7 @@ def initalize():
     if advance:
         save[14]=Shuffle(save[14])
         save[15]=Shuffle(save[15])
-    print(save,file=codecs.open('GUI/etc/out/savelog.txt','w','utf-8'))
+    # print(save,file=codecs.open('GUI/etc/out/savelog.txt','w','utf-8'))
     screen.fill(fieldcolor)
     pygame.display.update()
     deck(screen,save[0],save[1])
