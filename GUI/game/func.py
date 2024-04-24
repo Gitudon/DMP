@@ -1744,13 +1744,16 @@ def decklist(screen,flag,advance):
                         return "deck"+str(num)
                 elif 750<=y<=900:
                     if 100<=x<=100+(field[0]-200)//2:
-                        if num==1:
+                        if num==1 or num==31:
                             num=max
                         else:
                             num-=2
                     elif 100+(field[0]-200)//2<x<=field[0]-100:
                         if num==max:
-                            num=1
+                            if advance:
+                                num=31
+                            else:
+                                num=1
                         else:
                             num+=2
                     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"

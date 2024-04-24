@@ -12,6 +12,7 @@ def main():
         if cardlist[i][:(len(cardlist[i])-1)]=="z":
             break
         key=cardlist[i][:(len(cardlist[i])-1)]
+        print(key)
         i+=1
         if key in carddict.dic:
             value=carddict.dic[key]
