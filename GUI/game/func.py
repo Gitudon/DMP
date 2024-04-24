@@ -467,7 +467,7 @@ def putmana(save,card,flag,crystal,zone):
         elif any(substring in card[0] for substring in ["_d_", "_dw_", "_df_", "_dc_", "_ds_", "_ed_"]):
             save[13].append(card)
         else:
-            tmp=[[card],False,False]
+            tmp=[card,False,False]
             tap=0
             if zone:
                 if "_cs_" in card[0]:
@@ -476,7 +476,13 @@ def putmana(save,card,flag,crystal,zone):
                     tap=len(card[6])
             else:
                 if "_cs_" in card[0]:
-                    tap=max(len(card[6][0]),len(card[6][1]))
+                    buf=[]
+                    for a in card[6][0]:
+                        buf.append(a)
+                    for b in card[6][1]:
+                        buf.append(b)
+                    u_buf=list(set(buf))
+                    tap=len(u_buf)
                 else:
                     tap=len(card[6])
             if tap>=2:
@@ -906,7 +912,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     printcards(tmp2[current2],screen,3,cards2,flag2)
                                     key2=selectcard(tmp2,current2,screen,3,cards2,flag2)
                                     up=choose(screen,"上に重ねますか？")
-                                    save=overlap(save,player,key2,card,up)
+                                    save=overlap(save,player,key2,card[0],up)
                                     del save[key][cardkey]
                                 elif i==7:
                                     #シールドゾーンに置く
@@ -1129,13 +1135,14 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     #手札に加える
                                     save=bounce(save,card,player)
                                 elif i==2:
+                                    #敵の構成カードをマナ送りにしたときにバグる
                                     #マナゾーンに置く
                                     crystal=False
                                     #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card,player,crystal,True)
                                 elif i==3:
                                     #墓地に置く
-                                    save=putgrave(save,card,True)
+                                    save=putgrave(save,card,player)
                                 elif i==4:
                                     #山札に送る
                                     up=choose(screen,"デッキの上に置きますか？")
