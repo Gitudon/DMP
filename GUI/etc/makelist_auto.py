@@ -7,13 +7,11 @@ def main():
     deck=[]
     f=open('GUI/etc/in/listinput.txt','r', encoding='utf-8')
     cardlist=f.readlines()
-    print(cardlist)
     i=0
     while True:
         if cardlist[i][:(len(cardlist[i])-1)]=="z":
             break
         key=cardlist[i][:(len(cardlist[i])-1)]
-        print(key)
         i+=1
         if key in carddict.dic:
             value=carddict.dic[key]

@@ -1703,7 +1703,7 @@ def decklist(screen,flag,advance):
     if advance:
         max=30+3
     else:
-        max=11
+        max=13
     size=(510, 620)
     font = pygame.font.SysFont("msgothic", 50)
     rect(screen,False)
