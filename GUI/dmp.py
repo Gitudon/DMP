@@ -20,19 +20,6 @@ card=carddic.card
 Deck=deckdic.Deck
 
 def main():
-    logger=[]
-    for i in range(30):
-        path='GUI/decks/deck'+str(i)+'.txt'
-        name='deck'+str(i)
-        Deck[name]=deckbuild.build(path)
-        logger.append(Deck[name])
-    with open('GUI/etc/out/deckout.txt','w', encoding='utf-8') as o:
-        for log in logger:
-            print(log, file=o)
-    initalize()
-
-def initalize():
-    log=[]
     pygame.init() 
     screen = pygame.display.set_mode(field)
     pygame.display.set_caption("Duel Masters")
@@ -46,8 +33,22 @@ def initalize():
     mode=choose(screen,"簡易モードで実行しますか？")
     screen.fill(fieldcolor)
     pygame.display.update()
-    deckname1=decklist(screen,True)
-    deckname2=decklist(screen,False)
+    logger=[]
+    deck_max=30
+    for i in range(deck_max):
+        if advance:
+            path='GUI/decks/deck'+str(i)+'.txt'
+            name='deck'+str(i)
+        else:
+            path='GUI/decks/deck'+str(i+30)+'.txt'
+            name='deck'+str(i+30)
+        Deck[name]=deckbuild.build(path)
+        logger.append(Deck[name])
+    with open('GUI/etc/out/deckout.txt','w', encoding='utf-8') as o:
+        for log in logger:
+            print(log, file=o)
+    deckname1=decklist(screen,True,advance)
+    deckname2=decklist(screen,False,advance)
     tmp1=copy.deepcopy(Deck.get(deckname1))
     tmp2=copy.deepcopy(Deck.get(deckname2))
     if advance:
@@ -110,12 +111,13 @@ def initalize():
             for _ in range(4):
                 save=seal(save,False,0)
     sshield(screen)
+    log=[]
     if mode==True:
-        Easy(save,screen,log)
+        Easy(save,screen)
     else:
         Duel(save,screen,log)
 
-def Easy(save,screen,log):
+def Easy(save,screen):
     debug=3
     save=shieldplus(5,save,True,screen,debug,False,True)
     save=shieldplus(5,save,False,screen,debug,False,True)
@@ -173,7 +175,7 @@ def Easy(save,screen,log):
                     elif 730<=y<=780:
                         save=shieldplus(1,save,True,screen,debug,True,True)
                     elif 790<=y<=840:
-                        initalize()
+                        main()
                     elif 850<=y<=900:
                         mana_all="rg_c_004_cip"
                         save=card[mana_all](save,True)

@@ -189,10 +189,10 @@ def menu(screen):
     gTxt = font.render("手札を確認する", True, (255,255,255))
     screen.blit(gTxt, [1265, 20])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,70,280,50))
-    gTxt = font.render("手札をソートする", True, (255,255,255))
+    gTxt = font.render("手札をシャッフル", True, (255,255,255))
     screen.blit(gTxt, [1265, 80])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,130,280,50))
-    gTxt = font.render("手札をシャッフル", True, (255,255,255))
+    gTxt = font.render("ターンエンド", True, (255,255,255))
     screen.blit(gTxt, [1265, 140])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,190,280,50))
     gTxt = font.render("", True, (255,255,255))
@@ -1698,8 +1698,12 @@ def grdeckinfo(save,flag,screen,debug):
                         recover(save,screen,debug)
                         return
 
-def decklist(screen,flag):
-    max=11
+def decklist(screen,flag,advance):
+    #リスト追加したら更新して
+    if advance:
+        max=30+3
+    else:
+        max=11
     size=(510, 620)
     font = pygame.font.SysFont("msgothic", 50)
     rect(screen,False)
@@ -1715,6 +1719,8 @@ def decklist(screen,flag):
     gTxt = font.render("→", True, (255,255,255))
     screen.blit(gTxt, (412+(field[0]-200)//2,830))
     num=1
+    if advance:
+        num+=30
     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
     img = pygame.transform.scale(img, size) 
