@@ -5,27 +5,28 @@ import carddict
 #入力をリダイレクト
 def main():
     deck=[]
+    f=open('GUI/etc/in/listinput.txt','r', encoding='utf-8')
+    cardlist=f.readlines()
+    print(cardlist)
+    i=0
     while True:
-        key=input("カード名を入力/終了なら'z'と入力> ")
-        if key=="z":
+        if cardlist[i][:(len(cardlist[i])-1)]=="z":
             break
+        key=cardlist[i][:(len(cardlist[i])-1)]
+        print(key)
+        i+=1
         if key in carddict.dic:
             value=carddict.dic[key]
-            num=int(input("枚数を入力> "))
+            num=int(cardlist[i][:len(cardlist[i])-1])
             for _ in range(num):
                 deck.append(value)
         else:
             print("カードが存在しません。")
-    while True:
-        num=int(input("デッキのスロット番号を入力> "))
-        if 0<=num<=29:
-            with open('GUI/etc/out/listout.txt','w', encoding='utf-8') as o:
-                print(*deck,file=o)
-            with open('GUI/decks/deck'+str(num)+'.txt','w', encoding='utf-8') as o:
-                print(*deck,file=o)
-            break
-        else:
-            print("存在しないスロット番号です。")
+        i+=1
+    i+=1
+    num=cardlist[i]
+    with open('GUI/decks/deck'+str(num)+'.txt','w', encoding='utf-8') as o:
+        print(*deck,file=o)
 
 if __name__=="__main__":
     main()
