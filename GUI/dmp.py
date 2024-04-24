@@ -37,11 +37,11 @@ def main():
     deck_max=30
     for i in range(deck_max):
         if advance:
-            path='GUI/decks/deck'+str(i)+'.txt'
-            name='deck'+str(i)
-        else:
             path='GUI/decks/deck'+str(i+30)+'.txt'
             name='deck'+str(i+30)
+        else:
+            path='GUI/decks/deck'+str(i)+'.txt'
+            name='deck'+str(i)
         Deck[name]=deckbuild.build(path)
         logger.append(Deck[name])
     with open('GUI/etc/out/deckout.txt','w', encoding='utf-8') as o:
