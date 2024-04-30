@@ -124,7 +124,15 @@ def Easy(save,screen):
     save=draw(5,save,True)
     save=draw(5,save,False)
     recover(save,screen,debug)
+    deckflag1=True
+    deckflag2=True
     while True:
+        if len(save[0])==0 and deckflag1:
+            recover(save,screen,debug)
+            deckflag1=False
+        if len(save[1])==0 and deckflag2:
+            recover(save,screen,debug)
+            deckflag2=False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -167,13 +175,11 @@ def Easy(save,screen):
                     elif 550<=y<=600:
                         save=bochiokuri(1,save,True,screen,debug)
                     elif 610<=y<=660:
-                        tmp=save[0][0]
-                        save[0]=save[0][1:]
-                        save=gotodeck(save,tmp,True,False)
+                        save=shieldplus(1,save,True,screen,debug,True,True)
                     elif 670<=y<=720:
                         save=grsummon(1,save,True,screen,debug)
-                    elif 730<=y<=780:
-                        save=shieldplus(1,save,True,screen,debug,True,True)
+                    # elif 730<=y<=780:
+                        
                     elif 790<=y<=840:
                         main()
                     elif 850<=y<=900:

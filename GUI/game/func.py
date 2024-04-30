@@ -163,13 +163,13 @@ def emenu(screen):
     gTxt = font.render("山上を墓地送り", True, (255,255,255))
     screen.blit(gTxt, [1265, 560])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
-    gTxt = font.render("山上を山下へ", True, (255,255,255))
+    gTxt = font.render("シールド追加", True, (255,255,255))
     screen.blit(gTxt, [1265, 620])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
     gTxt = font.render("GR召喚", True, (255,255,255))
     screen.blit(gTxt, [1265, 680])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
-    gTxt = font.render("シールド追加", True, (255,255,255))
+    gTxt = font.render("", True, (255,255,255))
     screen.blit(gTxt, [1265, 740])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
     gTxt = font.render("ゲームをリセット", True, (255,255,255))
@@ -441,12 +441,12 @@ def putmana(save,card,flag,crystal,zone):
             tap=0
             #zone:バトルゾーンからマナ送りか
             if zone:
-                if "_cs_" in card[0]:
+                if any(substring in card[0] for substring in ["_cs_", "_ncs_", "_ss_"]):
                     tap=max(len(card[6][0]),len(card[6][1]))
                 else:
                     tap=len(card[6])
             else:
-                if "_cs_" in card[0]:
+                if any(substring in card[0] for substring in ["_cs_", "_ncs_", "_ss_"]):
                     buf=[]
                     for a in card[6][0]:
                         buf.append(a)
@@ -470,12 +470,12 @@ def putmana(save,card,flag,crystal,zone):
             tmp=[card,False,False]
             tap=0
             if zone:
-                if "_cs_" in card[0]:
+                if any(substring in card[0] for substring in ["_cs_", "_ncs_", "_ss_"]):
                     tap=len(card[6][0])
                 else:
                     tap=len(card[6])
             else:
-                if "_cs_" in card[0]:
+                if any(substring in card[0] for substring in ["_cs_", "_ncs_", "_ss_"]):
                     buf=[]
                     for a in card[6][0]:
                         buf.append(a)
@@ -641,9 +641,11 @@ def showcard(screen,card,flag,key):
 def cardmenu(screen,key):
     font = pygame.font.SysFont("msgothic", 50)
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415、構成カード1617見てるカード1819封印カード2021
-    mode=[0,0,7,7,7,7,8,8,9,9,6,6,6,6,0,0,6,6,7,7,6,6]
+    mode=[7,7,7,7,7,7,8,8,9,9,6,6,6,6,0,0,6,6,7,7,6,6]
     n=mode[key]
-    if key in [2,3]:
+    if key in [0,1]:
+        txts=["バトルゾーンに出す","手札に加える","マナゾーンに置く","墓地に置く","重ねる","超次元ゾーンに置く","シールドゾーンに置く"]
+    elif key in [2,3]:
         txts=["手札に加える","裏返す","墓地に置く","マナゾーンに置く","山札に送る","バトルゾーンに出す","構成カードを表示する"]
     elif key in [4,5]:
         txts=["バトルゾーンに出す","マナゾーンに置く","墓地に置く","山札に送る","重ねる","超次元ゾーンに置く","シールドゾーンに置く"]
@@ -704,18 +706,12 @@ def cardinfo2(card,screen):
                     return
 
 def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,index):
-    rect(screen,True)
-    cardmenu(screen,key)
-    # if len(cards)==0:
-    #     return
-    # if cardkey==6:
-    #     if len(cards)<6:
-    #         return
-    #print(cardkey)
     #ここで範囲外参照が発生している。原因調査中
     #暫定的に、範囲外参照を防ぐことで対処
     if cardkey>=len(cards):
         return
+    rect(screen,True)
+    cardmenu(screen,key)
     card=cards[cardkey]
     if key in [2,3]:
         if card[1]:
@@ -763,7 +759,64 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                         player=True
                     else:
                         player=False
-                    if key in [2,3]:
+                    if key in [0,1]:
+                        for i in range(7):
+                            if 145+80*i<=y<=215+80*i:
+                                if i==0:
+                                    #バトルゾーンに出す
+                                    if any(substring in card[0] for substring in ["_d2f_", "_df_", "_drf_", "_dgf_", "_sf_", "_skf_", "_kf_", "_dmf", "_hf", "_dsf_", "_mf_", "_t2f_", "_ff_", "_lf_","_k_"]):
+                                        save=expand(save,card,player)
+                                    else:
+                                        save=put(save,card,player)
+                                elif i==1:
+                                    #手札に加える
+                                    save=bounce(save,card,player)
+                                elif i==2:
+                                    #マナゾーンに置く
+                                    crystal=False
+                                    #crystal=choose(screen,"水晶マナにしますか？")
+                                    save=putmana(save,card,player,crystal,False)
+                                elif i==3:
+                                    #墓地に置く
+                                    save=putgrave(save,card,True)
+                                elif i==4:
+                                    #重ねる
+                                    cards2=save[key+8]
+                                    tmp2=tmpmake(cards2,2)
+                                    current2=0
+                                    printcards(tmp2[current2],screen,3,cards2,flag2)
+                                    key2=selectcard(tmp2,current2,screen,3,cards2,flag2)
+                                    up=choose(screen,"上に重ねますか？")
+                                    save=overlap(save,player,key2,card,up)
+                                elif i==5:
+                                    #超次元ゾーンに置く
+                                    save=putdimension(save,card,player)
+                                elif i==6:
+                                    #シールドゾーンに置く
+                                    over=choose(screen,"重ねますか？")
+                                    if over:
+                                        cards2=save[key-2]
+                                        tmp2=tmpmake(cards2,3)
+                                        current2=0
+                                        printcards(tmp2[current2],screen,4,cards2,flag2)
+                                        key2=selectcard(tmp2,current2,screen,4,cards2,flag2)
+                                        up=choose(screen,"上に重ねますか？")
+                                        if up:
+                                            surface=choose(screen,"裏向きですか？")
+                                        else:
+                                            surface=True
+                                        save=overlap2(save,player,key2,card,up,surface)
+                                    else:
+                                        surface=choose(screen,"裏向きですか？")
+                                        save=putshield(save,card,player,surface)
+                                del save[key][cardkey]
+                                cards=save[key]
+                                tmp=tmpmake(cards,0)
+                                rect(screen,True)
+                                printcards(tmp[current],screen,flag,cards,flag2)
+                                page(save,screen,debug,tmp,current,end,flag,save[key],flag2,key,index)
+                                return
+                    elif key in [2,3]:
                         for i in range(7):
                             if 145+80*i<=y<=215+80*i:
                                 if i==0:
@@ -820,22 +873,18 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                         save=expand(save,card,player)
                                     else:
                                         save=put(save,card,player)
-                                    del save[key][cardkey]
                                 elif i==1:
                                     #マナゾーンに置く
                                     crystal=False
                                     #crystal=choose(screen,"水晶マナにしますか？")
                                     save=putmana(save,card,player,crystal,False)
-                                    del save[key][cardkey]
                                 elif i==2:
                                     #墓地に置く
                                     save=putgrave(save,card,True)
-                                    del save[key][cardkey]
                                 elif i==3:
                                     #山札に送る
                                     up=choose(screen,"デッキの上に置きますか？")
                                     save=gotodeck(save,card,player,up)
-                                    del save[key][cardkey]
                                 elif i==4:
                                     #重ねる
                                     cards2=save[key+4]
@@ -845,11 +894,9 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     key2=selectcard(tmp2,current2,screen,3,cards2,flag2)
                                     up=choose(screen,"上に重ねますか？")
                                     save=overlap(save,player,key2,card,up)
-                                    del save[key][cardkey]
                                 elif i==5:
                                     #超次元ゾーンに置く
                                     save=putdimension(save,card,player)
-                                    del save[key][cardkey]
                                 elif i==6:
                                     #シールドゾーンに置く
                                     over=choose(screen,"重ねますか？")
@@ -868,7 +915,7 @@ def cardinfo(cardkey,save,screen,debug,tmp,current,end,flag,cards,flag2,key,inde
                                     else:
                                         surface=choose(screen,"裏向きですか？")
                                         save=putshield(save,card,player,surface)
-                                    del save[key][cardkey]
+                                del save[key][cardkey]
                                 cards=save[key]
                                 tmp=tmpmake(cards,0)
                                 rect(screen,True)
@@ -1434,7 +1481,7 @@ def page(save,screen,debug,tmp,current,end,flag,cards,flag2,key,index):
                         if 110+144*i<=y<=398+144*i:
                             edge=len(tmp[current])%6-1
                             if edge==-1:
-                                edge=6
+                                edge=5
                             for j in range(edge+1):
                                 if 110+210*j<=x<=310+210*j:
                                     cardkey=24*current+6*i+j
@@ -1488,7 +1535,7 @@ def page2(save,screen,debug,tmp,current,end,flag,cards,flag2,key,index):
                         if 110+144*i<=y<=398+144*i:
                             edge=len(tmp[current])%6-1
                             if edge==-1:
-                                edge=6
+                                edge=5
                             for j in range(edge+1):
                                 if 110+210*j<=x<=310+210*j:
                                     cardkey=24*current+6*i+j
