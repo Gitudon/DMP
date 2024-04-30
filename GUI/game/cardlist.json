@@ -2285,6 +2285,24 @@
         "STTF":false,
         "GSTF":false
     },
+    "b_c_024":{
+        "key":"b_c_024",
+        "name":"終止の時計 ザ・ミュート",
+        "race":["マジック・アウトレイジMAX"],
+        "cost":3,
+        "mana":1,
+        "power":3000,
+        "color":["b"],
+        "cipTF":true,
+        "alwaysTF":false,
+        "attackTF":false,
+        "pigTF":false,
+        "tapTF":false,
+        "cardtype":"c",
+        "keywordskills":["ST-Plus"],
+        "STTF":true,
+        "GSTF":false
+    },
     "b_cs_001":{
         "key":"b_cs_001",
         "name":["機術士ディール","「本日のラッキーナンバー！」"],
