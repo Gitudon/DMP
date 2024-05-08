@@ -37,8 +37,8 @@ def main():
     deck_max=50
     for i in range(deck_max):
         if advance:
-            path='GUI/decks/deck'+str(i+50)+'.txt'
-            name='deck'+str(i+50)
+            path='GUI/decks/deck'+str(i+deck_max)+'.txt'
+            name='deck'+str(i+deck_max)
         else:
             path='GUI/decks/deck'+str(i)+'.txt'
             name='deck'+str(i)
