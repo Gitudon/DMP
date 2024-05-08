@@ -1,4 +1,4 @@
 txt=""
-for i in range(30,60):
+for i in range(60,100):
     txt+="'deck"+str(i)+"':[],"
 print(txt)

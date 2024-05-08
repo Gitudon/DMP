@@ -1747,8 +1747,9 @@ def grdeckinfo(save,flag,screen,debug):
 
 def decklist(screen,flag,advance):
     #リスト追加したら更新して
+    deckrange=50
     if advance:
-        max=30+3
+        max=deckrange+3
     else:
         max=13
     size=(510, 620)
@@ -1767,7 +1768,7 @@ def decklist(screen,flag,advance):
     screen.blit(gTxt, (412+(field[0]-200)//2,830))
     num=1
     if advance:
-        num+=30
+        num+=deckrange
     Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
     img = pygame.image.load(Pass)
     img = pygame.transform.scale(img, size) 
@@ -1791,14 +1792,14 @@ def decklist(screen,flag,advance):
                         return "deck"+str(num)
                 elif 750<=y<=900:
                     if 100<=x<=100+(field[0]-200)//2:
-                        if num==1 or num==31:
+                        if num==1 or num==deckrange+1:
                             num=max
                         else:
                             num-=2
                     elif 100+(field[0]-200)//2<x<=field[0]-100:
                         if num==max:
                             if advance:
-                                num=31
+                                num=deckrange+1
                             else:
                                 num=1
                         else:
