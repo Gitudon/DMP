@@ -34,7 +34,7 @@ def main():
     screen.fill(fieldcolor)
     pygame.display.update()
     logger=[]
-    deck_max=50
+    deck_max=100
     for i in range(deck_max):
         if advance:
             path='GUI/decks/deck'+str(i+deck_max)+'.txt'

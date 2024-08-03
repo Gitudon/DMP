@@ -1747,7 +1747,7 @@ def grdeckinfo(save,flag,screen,debug):
 
 def decklist(screen,flag,advance):
     #リスト追加したら更新して
-    deckrange=50
+    deckrange=100
     if advance:
         max=deckrange+3
     else:
