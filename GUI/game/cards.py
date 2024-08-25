@@ -14,6 +14,8 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 
+#クラスにした方が良いんじゃないか
+
 def r_c_010_cip(save,flag):
     if flag:
         for i in range(len(save[8])):

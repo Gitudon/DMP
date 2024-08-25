@@ -248,4 +248,4 @@ def Duel(save,screen,log):
     sys.exit()
 
 if __name__=="__main__":
-    main() 
+    main()
