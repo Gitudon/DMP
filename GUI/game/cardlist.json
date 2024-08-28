@@ -5096,7 +5096,24 @@
         "STTF":false,
         "GSTF":false
     },
-    
+    "b_c_038":{
+        "key":"b_c_038",
+        "name":"神帝マニ",
+        "race":["ゴッド","オリジン"],
+        "cost":4,
+        "mana":1,
+        "power":4000,
+        "color":["b"],
+        "cipTF":false,
+        "alwaysTF":true,
+        "attackTF":false,
+        "pigTF":false,
+        "tapTF":false,
+        "cardtype":"c",
+        "keywordskills":["God-Link"],
+        "STTF":false,
+        "GSTF":false
+    },
     "b_cs_001":{
         "key":"b_cs_001",
         "name":["機術士ディール","「本日のラッキーナンバー！」"],
