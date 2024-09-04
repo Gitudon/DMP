@@ -2078,21 +2078,11 @@ def miru(save,screen,flag,key,debug,n):
     page2(save,screen,debug,tmp,current,end,0,cards,flag,key2,-1)
     return
 
-#メッセージを表示するコンソールをメニューから見れるようにする
-#各アクションの実行後、ログを残す
-def showlog(screen,log,save,debug):
-    rect(screen,True)
-    info(save,screen,debug)
-    return
-
 #説明書を表示する。画像でいいのではないでしょうか。
 def dmphelp(screen,save,debug):
     rect(screen,True)
     info(save,screen,debug)
     return
-
-def mekureid(save,n,flag,key):
-    return save
 
 def kndnbigbun(save,flag):
     card=['rd_skc_001', '終焉の禁断 ドルマゲドンX', [], 999, None, 999999, ['r','d'], False, True, False, True, False, 'skc', ['T-Breaker'], False, False]

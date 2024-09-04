@@ -5,10 +5,13 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon,number,miru,dmphelp
+from game.func import *
 from game import carddic
 from game import deckdic
 from game import deckbuild
+from game.auto import *
+from game.cards import *
+from game.battle import *
 
 width=100
 height=144

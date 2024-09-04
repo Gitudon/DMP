@@ -1,4 +1,4 @@
-from game import func
+from func import *
 import random
 import pygame
 import time
