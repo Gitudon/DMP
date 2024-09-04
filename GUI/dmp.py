@@ -34,6 +34,7 @@ def main():
     screen.fill(fieldcolor)
     pygame.display.update()
     logger=[]
+    deckimg=[]
     deck_max=100
     for i in range(deck_max):
         if advance:
@@ -47,8 +48,16 @@ def main():
     with open('GUI/etc/out/deckout.txt','w', encoding='utf-8') as o:
         for log in logger:
             print(log, file=o)
-    deckname1=decklist(screen,True,advance)
-    deckname2=decklist(screen,False,advance)
+            if log!=[]:
+                tmp=[]
+                for cards in log:
+                    c=cards[0]
+                    if any(substring in c for substring in ["gb_d_001","_ds_","_dc_","_ed_"]):
+                        continue
+                    tmp.append(cards[0])
+                deckimg.append(tmp)
+    deckname1=decklist(screen,True,advance,deckimg)
+    deckname2=decklist(screen,False,advance,deckimg)
     tmp1=copy.deepcopy(Deck.get(deckname1))
     tmp2=copy.deepcopy(Deck.get(deckname2))
     if advance:
@@ -248,4 +257,4 @@ def Duel(save,screen,log):
     sys.exit()
 
 if __name__=="__main__":
-    main() 
+    main()
