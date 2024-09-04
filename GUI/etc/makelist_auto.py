@@ -26,6 +26,7 @@ def main():
     num=cardlist[i]
     with open('GUI/decks/deck'+str(num)+'.txt','w', encoding='utf-8') as o:
         print(*deck,file=o)
+    print(len(deck))
 
 if __name__=="__main__":
     main()
