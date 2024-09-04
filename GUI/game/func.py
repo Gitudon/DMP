@@ -1745,14 +1745,17 @@ def grdeckinfo(save,flag,screen,debug):
                         recover(save,screen,debug)
                         return
 
-def decklist(screen,flag,advance):
+def decklist(screen,flag,advance,deckimg):
+    #size=(500, 620)
     #リスト追加したら更新して
-    deckrange=100
     if advance:
-        max=deckrange+3
+        card=(50,72)
+        div=10
+        max=5
     else:
-        max=13
-    size=(510, 620)
+        card=(62.5,124)
+        div=8
+        max=23
     font = pygame.font.SysFont("msgothic", 50)
     rect(screen,False)
     if flag:
@@ -1767,16 +1770,22 @@ def decklist(screen,flag,advance):
     gTxt = font.render("→", True, (255,255,255))
     screen.blit(gTxt, (412+(field[0]-200)//2,830))
     num=1
-    if advance:
-        num+=deckrange
-    Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
-    img = pygame.image.load(Pass)
-    img = pygame.transform.scale(img, size) 
-    screen.blit(img, (210, 180))
-    Pass="GUI/image/decks/deck"+str(num)+".jpeg"
-    img2 = pygame.image.load(Pass)
-    img2 = pygame.transform.scale(img2, size)
-    screen.blit(img2, (830, 180))
+    #なおす
+    RootPass="GUI/image/cards/"
+    pygame.draw.rect(screen, (255,255,255), pygame.Rect(200,180,500,620))
+    pygame.draw.rect(screen, (255,255,255), pygame.Rect(850,180,500,620))
+    for i in range(len(deckimg[num-1])):
+        cardpass=deckimg[num-1][i]
+        Pass=RootPass+cardpass+".jpg"
+        img = pygame.image.load(Pass)
+        img = pygame.transform.scale(img, card)
+        screen.blit(img, (200+card[0]*(i%div), 180+card[1]*(i//div)))
+    for i in range(len(deckimg[num])):
+        cardpass=deckimg[num][i]
+        Pass=RootPass+cardpass+".jpg"
+        img = pygame.image.load(Pass)
+        img = pygame.transform.scale(img, card)
+        screen.blit(img, (850+card[0]*(i%div), 180+card[1]*(i//div)))
     pygame.display.update()
     while True:
         for event in pygame.event.get():
@@ -1786,32 +1795,36 @@ def decklist(screen,flag,advance):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if 110<=y<=730:
-                    if 210<=x<=720:
+                    if 200<=x<=700:
                         return "deck"+str(num-1)
-                    elif 830<=x<=1340:
+                    elif 850<=x<=1350:
                         return "deck"+str(num)
                 elif 750<=y<=900:
                     if 100<=x<=100+(field[0]-200)//2:
-                        if num==1 or num==deckrange+1:
+                        if num==1:
                             num=max
                         else:
                             num-=2
                     elif 100+(field[0]-200)//2<x<=field[0]-100:
                         if num==max:
-                            if advance:
-                                num=deckrange+1
-                            else:
-                                num=1
+                            num=1
                         else:
                             num+=2
-                    Pass="GUI/image/decks/deck"+str(num-1)+".jpeg"
-                    img = pygame.image.load(Pass)
-                    img = pygame.transform.scale(img, size)
-                    screen.blit(img, (210, 180))
-                    Pass="GUI/image/decks/deck"+str(num)+".jpeg"
-                    img2 = pygame.image.load(Pass)
-                    img2 = pygame.transform.scale(img2, size)
-                    screen.blit(img2, (830, 180))
+                    #なおす
+                    pygame.draw.rect(screen, (255,255,255), pygame.Rect(200,180,500,620))
+                    pygame.draw.rect(screen, (255,255,255), pygame.Rect(850,180,500,620))
+                    for i in range(len(deckimg[num-1])):
+                        cardpass=deckimg[num-1][i]
+                        Pass=RootPass+cardpass+".jpg"
+                        img = pygame.image.load(Pass)
+                        img = pygame.transform.scale(img, card)
+                        screen.blit(img, (200+card[0]*(i%div), 180+card[1]*(i//div)))
+                    for i in range(len(deckimg[num])):
+                        cardpass=deckimg[num][i]
+                        Pass=RootPass+cardpass+".jpg"
+                        img = pygame.image.load(Pass)
+                        img = pygame.transform.scale(img, card)
+                        screen.blit(img, (850+card[0]*(i%div), 180+card[1]*(i//div)))
                     pygame.display.update()
 
 def choose(screen,message):

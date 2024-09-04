@@ -12977,8 +12977,8 @@
         "STTF":[false,true],
         "GSTF":[false,false]
     },
-    "rg_dc_001":{
-        "key":"rg_dc_001",
+    "rg_drc_001":{
+        "key":"rg_drc_001",
         "name":"蒼き王道 ドギラゴン超",
         "race":["メガ・コマンド・ドラゴン","超化獣"],
         "cost":6,
@@ -12990,7 +12990,7 @@
         "attackTF":[false,false],
         "pigTF":[false,false],
         "tapTF":false,
-        "cardtype":"c",
+        "cardtype":"drc",
         "keywordskills":[["W-Breaker","Hyper"],["T-Breaker"]],
         "STTF":false,
         "GSTF":false
@@ -15137,8 +15137,8 @@
         "STTF":[false,false],
         "GSTF":[false,false]
     },
-    "bw_dc_001":{
-        "key":"bw_dc_001",
+    "bw_drc_001":{
+        "key":"bw_drc_001",
         "name":"精霊超王 H・アルカディアス",
         "race":["エンジェル・コマンド","超化獣"],
         "cost":6,
@@ -15150,7 +15150,7 @@
         "attackTF":[false,false],
         "pigTF":[false,false],
         "tapTF":false,
-        "cardtype":"dc",
+        "cardtype":"drc",
         "keywordskills":[["Blocker","Justdiver","W-Breaker","Hyper"],["T-Breaker"]],
         "STTF":false,
         "GSTF":false
