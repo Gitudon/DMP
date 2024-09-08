@@ -1748,6 +1748,7 @@ def grdeckinfo(save,flag,screen,debug):
 def decklist(screen,flag,advance,deckimg):
     #size=(500, 620)
     #リスト追加したら更新して
+    kirikae=100
     if advance:
         card=(50,72)
         div=10
@@ -1796,8 +1797,12 @@ def decklist(screen,flag,advance,deckimg):
                 x, y = event.pos
                 if 110<=y<=730:
                     if 200<=x<=700:
+                        if advance:
+                            num+=kirikae
                         return "deck"+str(num-1)
                     elif 850<=x<=1350:
+                        if advance:
+                            num+=kirikae
                         return "deck"+str(num)
                 elif 750<=y<=900:
                     if 100<=x<=100+(field[0]-200)//2:
