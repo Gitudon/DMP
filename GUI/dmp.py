@@ -23,7 +23,7 @@ card=carddic.card
 Deck=deckdic.Deck
 
 def main():
-    pygame.init() 
+    pygame.init()
     screen = pygame.display.set_mode(field)
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
@@ -263,9 +263,6 @@ def Duel(save,screen,log):
     recover(save,screen,debug)
     deckflag1=True
     deckflag2=True
-    
-    
-    
     while True:
         if len(save[0])==0 and deckflag1:
             recover(save,screen,debug)
