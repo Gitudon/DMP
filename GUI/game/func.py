@@ -136,46 +136,46 @@ def emenu(screen):
     gTxt = font.render("手札を確認する", True, (255,255,255))
     screen.blit(gTxt, [1265, 20])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,70,280,50))
-    gTxt = font.render("手札をシャッフル", True, (255,255,255))
+    gTxt = font.render("デッキの上を見る", True, (255,255,255))
     screen.blit(gTxt, [1265, 80])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,130,280,50))
-    gTxt = font.render("ターンエンド", True, (255,255,255))
+    gTxt = font.render("デッキを確認する", True, (255,255,255))
     screen.blit(gTxt, [1265, 140])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,190,280,50))
-    gTxt = font.render("視点切り替え", True, (255,255,255))
+    gTxt = font.render("1枚ドロー", True, (255,255,255))
     screen.blit(gTxt, [1265, 200])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,250,280,50))
-    gTxt = font.render("1枚ドロー", True, (255,255,255))
+    gTxt = font.render("マナチャージする", True, (255,255,255))
     screen.blit(gTxt, [1265, 260])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,310,280,50))
-    gTxt = font.render("デッキを確認する", True, (255,255,255))
+    gTxt = font.render("山上を墓地送り", True, (255,255,255))
     screen.blit(gTxt, [1265, 320])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,370,280,50))
-    gTxt = font.render("デッキをシャッフル", True, (255,255,255))
+    gTxt = font.render("シールド追加", True, (255,255,255))
     screen.blit(gTxt, [1265, 380])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,430,280,50))
-    gTxt = font.render("デッキの上を見る", True, (255,255,255))
+    gTxt = font.render("GR召喚", True, (255,255,255))
     screen.blit(gTxt, [1265, 440])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,490,280,50))
-    gTxt = font.render("マナチャージする", True, (255,255,255))
+    gTxt = font.render("デッキをシャッフル", True, (255,255,255))
     screen.blit(gTxt, [1265, 500])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,550,280,50))
-    gTxt = font.render("山上を墓地送り", True, (255,255,255))
+    gTxt = font.render("視点切り替え", True, (255,255,255))
     screen.blit(gTxt, [1265, 560])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,610,280,50))
-    gTxt = font.render("シールド追加", True, (255,255,255))
+    gTxt = font.render("ターンエンド", True, (255,255,255))
     screen.blit(gTxt, [1265, 620])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,670,280,50))
-    gTxt = font.render("GR召喚", True, (255,255,255))
+    gTxt = font.render("追加ターン", True, (255,255,255))
     screen.blit(gTxt, [1265, 680])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,730,280,50))
     gTxt = font.render("", True, (255,255,255))
     screen.blit(gTxt, [1265, 740])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,790,280,50))
-    gTxt = font.render("ゲームをリセット", True, (255,255,255))
+    gTxt = font.render("", True, (255,255,255))
     screen.blit(gTxt, [1265, 800])
     pygame.draw.rect(screen, (0,191,255), pygame.Rect(1260,850,280,50))
-    gTxt = font.render("追加ターン", True, (255,255,255))
+    gTxt = font.render("ゲームをリセット", True, (255,255,255))
     screen.blit(gTxt, [1265, 860])
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
@@ -235,6 +235,7 @@ def menu(screen):
     screen.blit(gTxt, [1265, 920])
     pygame.display.update()
 
+#いい感じに変更する
 def debugmenu(screen):
     font = pygame.font.SysFont("msgothic", 30)
     pygame.draw.rect(screen, (192,192,192), pygame.Rect(field[0]-300,0,300,field[1]))
@@ -1748,6 +1749,7 @@ def grdeckinfo(save,flag,screen,debug):
 def decklist(screen,flag,advance,deckimg):
     #size=(500, 620)
     #リスト追加したら更新して
+    kirikae=100
     if advance:
         card=(50,72)
         div=10
@@ -1796,8 +1798,12 @@ def decklist(screen,flag,advance,deckimg):
                 x, y = event.pos
                 if 110<=y<=730:
                     if 200<=x<=700:
+                        if advance:
+                            num+=kirikae
                         return "deck"+str(num-1)
                     elif 850<=x<=1350:
+                        if advance:
+                            num+=kirikae
                         return "deck"+str(num)
                 elif 750<=y<=900:
                     if 100<=x<=100+(field[0]-200)//2:
@@ -2078,21 +2084,11 @@ def miru(save,screen,flag,key,debug,n):
     page2(save,screen,debug,tmp,current,end,0,cards,flag,key2,-1)
     return
 
-#メッセージを表示するコンソールをメニューから見れるようにする
-#各アクションの実行後、ログを残す
-def showlog(screen,log,save,debug):
-    rect(screen,True)
-    info(save,screen,debug)
-    return
-
 #説明書を表示する。画像でいいのではないでしょうか。
 def dmphelp(screen,save,debug):
     rect(screen,True)
     info(save,screen,debug)
     return
-
-def mekureid(save,n,flag,key):
-    return save
 
 def kndnbigbun(save,flag):
     card=['rd_skc_001', '終焉の禁断 ドルマゲドンX', [], 999, None, 999999, ['r','d'], False, True, False, True, False, 'skc', ['T-Breaker'], False, False]

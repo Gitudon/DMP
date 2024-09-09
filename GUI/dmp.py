@@ -5,10 +5,13 @@ import json
 import pickle
 import copy
 import codecs
-from game.func import Shuffle,showcards,draw,recover,deck,sshield,shieldplus,grdeck,dimension,deckinfo,decklist,swap,grdeckinfo,choose,showlog,showmanazone,showbattlezone,expand,seal,showshield,addmana,bochiokuri,gotodeck,grsummon,number,miru,dmphelp
+from game.func import *
 from game import carddic
 from game import deckdic
 from game import deckbuild
+from game.auto import *
+from game.cards import *
+from game.battle import *
 
 width=100
 height=144
@@ -156,48 +159,47 @@ def Easy(save,screen):
                     if 10<=y<=60:
                         showcards(save,screen,True,4,debug)
                     elif 70<=y<=120:
-                        save[4]=Shuffle(save[4])
-                    elif 130<=y<=180:
-                        save=swap(save)
-                        mana_all="rg_c_004_cip"
-                        save=card[mana_all](save,True)
-                        untap_all="r_c_010_cip"
-                        save=card[untap_all](save,True)
-                        draw_1="b_s_002"
-                        save=card[draw_1](save,True)
-                        recover(save,screen,debug)
-                    elif 190<=y<=240:
-                        save=swap(save)
-                        recover(save,screen,debug)
-                    elif 250<=y<=300:
-                        mana_1="b_s_002"
-                        save=card[mana_1](save,True)
-                    elif 310<=y<=360:
-                        showcards(save,screen,True,0,debug)
-                    elif 370<=y<=420:
-                        save[0]=Shuffle(save[0])
-                    elif 430<=y<=480:
                         n=number(screen,"何枚確認しますか？")
                         miru(save,screen,False,0,debug,n)
-                    elif 490<=y<=540:
+                    elif 130<=y<=180:
+                        showcards(save,screen,True,0,debug)
+                    elif 190<=y<=240:
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                    elif 250<=y<=300:
                         save=addmana(1,save,True,False,screen,debug)
-                    elif 550<=y<=600:
+                    elif 310<=y<=360:
                         save=bochiokuri(1,save,True,screen,debug)
-                    elif 610<=y<=660:
+                    elif 370<=y<=420:
                         save=shieldplus(1,save,True,screen,debug,True,True)
-                    elif 670<=y<=720:
+                    elif 430<=y<=480:
                         save=grsummon(1,save,True,screen,debug)
-                    # elif 730<=y<=780:
-                    elif 790<=y<=840:
-                        main()
-                    elif 850<=y<=900:
-                        mana_all="rg_c_004_cip"
-                        save=card[mana_all](save,True)
-                        untap_all="r_c_010_cip"
-                        save=card[untap_all](save,True)
+                    elif 490<=y<=540:
+                        save[0]=Shuffle(save[0])
+                    elif 550<=y<=600:
+                        save=swap(save)
+                        recover(save,screen,debug)
+                    elif 610<=y<=660:
+                        save=swap(save)
+                        mana_all="rg_c_004"
+                        save=card[mana_all](save,True,"cip")
+                        untap_all="r_c_010"
+                        save=card[untap_all](save,True,"cip")
                         draw_1="b_s_002"
                         save=card[draw_1](save,True)
                         recover(save,screen,debug)
+                    elif 670<=y<=720:
+                        mana_all="rg_c_004"
+                        save=card[mana_all](save,True,"cip")
+                        untap_all="r_c_010"
+                        save=card[untap_all](save,True,"cip")
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                        recover(save,screen,debug)
+                    # elif 730<=y<=780:
+                    # elif 790<=y<=840:
+                    elif 850<=y<=900:
+                        main()
                     elif 910<=y<=960:
                         pygame.quit()
                         sys.exit()
@@ -253,7 +255,131 @@ def Easy(save,screen):
 
 #デュエル実行
 def Duel(save,screen,log):
-    sys.exit()
+    debug=1
+    save=shieldplus(5,save,True,screen,debug,False,True)
+    save=shieldplus(5,save,False,screen,debug,False,True)
+    save=draw(5,save,True)
+    save=draw(5,save,False)
+    recover(save,screen,debug)
+    deckflag1=True
+    deckflag2=True
+    
+    
+    
+    while True:
+        if len(save[0])==0 and deckflag1:
+            recover(save,screen,debug)
+            deckflag1=False
+        if len(save[1])==0 and deckflag2:
+            recover(save,screen,debug)
+            deckflag2=False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if 1260<=x<=1540:
+                    if 10<=y<=60:
+                        showcards(save,screen,True,4,debug)
+                    elif 70<=y<=120:
+                        n=number(screen,"何枚確認しますか？")
+                        miru(save,screen,False,0,debug,n)
+                    elif 130<=y<=180:
+                        showcards(save,screen,True,0,debug)
+                    elif 190<=y<=240:
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                    elif 250<=y<=300:
+                        save=addmana(1,save,True,False,screen,debug)
+                    elif 310<=y<=360:
+                        save=bochiokuri(1,save,True,screen,debug)
+                    elif 370<=y<=420:
+                        save=shieldplus(1,save,True,screen,debug,True,True)
+                    elif 430<=y<=480:
+                        save=grsummon(1,save,True,screen,debug)
+                    elif 490<=y<=540:
+                        save[0]=Shuffle(save[0])
+                    elif 550<=y<=600:
+                        save=swap(save)
+                        recover(save,screen,debug)
+                    elif 610<=y<=660:
+                        save=swap(save)
+                        mana_all="rg_c_004"
+                        save=card[mana_all](save,True,"cip")
+                        untap_all="r_c_010"
+                        save=card[untap_all](save,True,"cip")
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                        recover(save,screen,debug)
+                    elif 670<=y<=720:
+                        mana_all="rg_c_004"
+                        save=card[mana_all](save,True,"cip")
+                        untap_all="r_c_010"
+                        save=card[untap_all](save,True,"cip")
+                        draw_1="b_s_002"
+                        save=card[draw_1](save,True)
+                        recover(save,screen,debug)
+                    # elif 730<=y<=780:
+                    # elif 790<=y<=840:
+                    elif 850<=y<=900:
+                        main()
+                    elif 910<=y<=960:
+                        pygame.quit()
+                        sys.exit()
+                elif downbase[1]<=y<=downbase[1]+height:
+                    #自分側シールドゾーン
+                    if 10<=x<=downbase[0]-10:
+                        showshield(save,screen,True,2,debug)
+                    #自分側デッキ
+                    if downbase[0]<=x<=downbase[0]+width:
+                        deckinfo(save,True,screen,debug)
+                    #自分側墓地
+                    elif downbase[0]+10+width<=x<=downbase[0]+2*width+10:
+                        showcards(save,screen,True,10,debug)
+                    #自分側超次元
+                    elif downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
+                        showcards(save,screen,True,12,debug)
+                elif downbase[1]+height+10<=y<=downbase[1]+2*height+10:
+                    #自分側GRデッキ
+                    if downbase[0]+20+2*width<=x<=downbase[0]+3*width+20:
+                        grdeckinfo(save,True,screen,debug)
+                    #自分側マナゾーン
+                    elif upbase[0]-20-2*width<=x<=downbase[0]+10+2*width:
+                        showmanazone(save,screen,True,6,debug)
+                elif downbase[1]-10-height<=y<=downbase[1]-10:
+                    if upbase[0]-2*(width+10)<=x<=downbase[0]+20+3*width:
+                        #自分側バトルゾーン
+                        showbattlezone(save,screen,True,8,debug)
+                elif upbase[1]+10+height<=y<=upbase[1]+10+2*height:
+                    if upbase[0]-2*(width+10)<=x<=downbase[0]+20+3*width:
+                        #相手側バトルゾーン
+                        showbattlezone(save,screen,True,9,debug)
+                elif upbase[1]<=y<=upbase[1]+height:
+                    #相手側シールドゾーン
+                    if upbase[0]+width+10<=x<=downbase[0]+3*width+20:
+                        showshield(save,screen,True,3,debug)
+                    #相手側デッキ
+                    if upbase[0]<=x<=upbase[0]+width:
+                        deckinfo(save,False,screen,debug)
+                    #相手側墓地
+                    elif upbase[0]-10-width<=x<=upbase[0]-10:
+                        showcards(save,screen,True,11,debug)
+                    #相手側超次元
+                    elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
+                        showcards(save,screen,True,13,debug)
+                elif upbase[1]-height-10<=y<=upbase[1]-10:
+                    #相手側マナゾーン
+                    if upbase[0]-10-width<=x<=downbase[0]+3*width+20:
+                        showmanazone(save,screen,True,7,debug)
+                    #相手側GRゾーン
+                    elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
+                        grdeckinfo(save,False,screen,debug)
+            pygame.display.update()
 
 if __name__=="__main__":
     main()
