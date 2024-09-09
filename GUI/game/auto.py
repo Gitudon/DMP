@@ -4,8 +4,8 @@ import time
 import sys
 import json
 import pickle
-from func import *
-from cards import *
+from game.func import *
+from game.cards import *
 
 #定数の設定
 width=100
