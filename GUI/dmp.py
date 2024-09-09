@@ -188,7 +188,6 @@ def Easy(save,screen):
                     elif 670<=y<=720:
                         save=grsummon(1,save,True,screen,debug)
                     # elif 730<=y<=780:
-                        
                     elif 790<=y<=840:
                         main()
                     elif 850<=y<=900:
