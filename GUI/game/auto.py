@@ -25,3 +25,7 @@ def showlog(screen,log,save,debug):
 
 def mekureid(save,n,flag,key):
     return save
+
+#カードを選択する
+def choosecard(save,screen,zone):
+    return
