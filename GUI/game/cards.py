@@ -14,6 +14,29 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 
+def r_c_001(me,mode):
+    return
+
+def r_c_002(save,flag,mode):
+    if mode=="cip":
+        # マナをフリーズさせる
+        return save
+    if mode=="attack":
+        # マナをフリーズさせる
+        return
+
+def r_c_003():
+    return
+
+def r_c_004():
+    return
+
+def r_c_005(save,flag,mode,screen):
+    if mode=="cip":
+        # バトル効果
+        battle=func.choose(screen,"バトル効果を発動しますか？")
+        return
+
 def r_c_010(save,flag,mode):
     if mode=="cip":
         if flag:
