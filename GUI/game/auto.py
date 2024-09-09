@@ -29,3 +29,34 @@ def mekureid(save,n,flag,key):
 #カードを選択する
 def choosecard(save,screen,zone):
     return
+
+def gachinko_judge(save,screen,my_seigen,your_seigen):
+    if save[0]==[] or my_seigen:
+        mycost=0
+        mycard=""
+    else:
+        me=save[0][0]
+        mycost=me[3]
+        mycard=me[0]
+        if len(save[0])==1:
+            save[0]=[me]
+        else:
+            save[0]=save[0][1:]+[me]
+    if save[1]==[] or your_seigen:
+        yourcost=0
+        yourcard=""
+    else:
+        you=save[1][0]
+        yourcost=you[3]
+        yourcard=you[0]
+        if len(save[1])==1:
+            save[1]=[you]
+        else:
+            save[1]=save[1][1:]+[you]
+    # カードの表示
+    pygame.display.update()
+    # 0は手前側の勝ち、1は奥側の勝ち
+    if mycost>=yourcost:
+        return [0,save]
+    else:
+        return [1,save]
