@@ -28,6 +28,8 @@ def main():
     pygame.display.set_caption("Duel Masters")
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+    #cipスタック01、pigスタック23、アタックトリガー45、常在能力67、手札の能力89、墓地の能力1011、超次元の能力1213、誘発した能力1415
+    effects=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     screen.fill(fieldcolor)
     pygame.display.update()
     advance=choose(screen,"フォーマットはアドバンスにしますか？")
@@ -127,7 +129,7 @@ def main():
     if mode==True:
         Easy(save,screen)
     else:
-        Duel(save,screen,log)
+        Duel(save,effects,screen,log)
 
 def Easy(save,screen):
     debug=3
@@ -254,7 +256,7 @@ def Easy(save,screen):
             pygame.display.update()
 
 #デュエル実行
-def Duel(save,screen,log):
+def Duel(save,effects,screen,log):
     debug=1
     save=shieldplus(5,save,True,screen,debug,False,True)
     save=shieldplus(5,save,False,screen,debug,False,True)
