@@ -15,16 +15,15 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 
-def r_c_001(me,mode):
-    return
-
-def r_c_002(save,flag,mode):
-    if mode=="cip":
-        # マナをフリーズさせる
-        return save
-    if mode=="attack":
-        # マナをフリーズさせる
+class r_c_001:
+    def attack():
         return
+
+class r_c_002:
+    def cip(save,flag):
+        return save
+    def attack(save,flag):
+        return save
 
 def r_c_003():
     return

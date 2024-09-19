@@ -12527,6 +12527,24 @@
         "STTF":true,
         "GSTF":false
     },
+    "z_s_009":{
+        "key":"z_s_009",
+        "name":"ジョジョジョ・マキシマム",
+        "race":["ジョーカーズ"],
+        "cost":9,
+        "mana":1,
+        "power":null,
+        "color":["z"],
+        "cipTF":false,
+        "alwaysTF":true,
+        "attackTF":false,
+        "pigTF":false,
+        "tapTF":false,
+        "cardtype":"s",
+        "keywordskills":["G-Zero"],
+        "STTF":false,
+        "GSTF":false
+    },
     "rg_c_001":{
         "key":"rg_c_001",
         "name":"ボルシャック・栄光・ルピア",
