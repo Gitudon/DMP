@@ -15,15 +15,11 @@ fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
 
-class r_c_001:
-    def attack():
-        return
+def r_c_001():
+    return
 
-class r_c_002:
-    def cip(save,flag):
-        return save
-    def attack(save,flag):
-        return save
+def r_c_002(save,flag):
+    return
 
 def r_c_003():
     return
