@@ -34,7 +34,7 @@ def dimension(screen,me,opposite):
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]))
-    pygame.display.update()
+    pygame.display.flip()
 
 def grdeck(screen,me,opposite):
     img = pygame.image.load("GUI/image/uramen/grura.jpg")
@@ -45,7 +45,7 @@ def grdeck(screen,me,opposite):
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-20-width*2,upbase[1]-10-height))
-    pygame.display.update()
+    pygame.display.flip()
 
 def manazone(screen,me,opposite):
     for i in range(len(me)):
@@ -71,7 +71,7 @@ def manazone(screen,me,opposite):
             screen.blit(img, (upbase[0]-width-22+50*i,upbase[1]+12-height))
         else:
             screen.blit(img, (upbase[0]-width-10+50*i,upbase[1]-10-height))
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def battlezone(screen,me,opposite):
@@ -113,7 +113,7 @@ def battlezone(screen,me,opposite):
             else:
                 img = pygame.transform.rotate(img, 180)
                 screen.blit(img, (upbase[0]-20-width*2+(10+width)*i,upbase[1]+(height+10)))
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def graveyard(screen,me,opposite):
@@ -126,7 +126,7 @@ def graveyard(screen,me,opposite):
         img2 = pygame.transform.rotate(img, 180)
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img2, (upbase[0]-10-width,upbase[1]))
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def emenu(screen):
@@ -180,7 +180,7 @@ def emenu(screen):
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
     screen.blit(gTxt, [1265, 920])
-    pygame.display.update()
+    pygame.display.flip()
 
 def menu(screen):
     font = pygame.font.SysFont("msgothic", 30)
@@ -233,7 +233,7 @@ def menu(screen):
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
     screen.blit(gTxt, [1265, 920])
-    pygame.display.update()
+    pygame.display.flip()
 
 #いい感じに変更する
 def debugmenu(screen):
@@ -287,7 +287,7 @@ def debugmenu(screen):
     pygame.draw.rect(screen, (226,4,27), pygame.Rect(1260,910,280,50))
     gTxt = font.render("ゲームを終了", True, (255,255,255))
     screen.blit(gTxt, [1265, 920])
-    pygame.display.update()
+    pygame.display.flip()
 
 def move(a,b,i):
     b.append(a[i])
@@ -636,7 +636,7 @@ def showcard(screen,card,flag,key):
             tmp=pygame.image.load("GUI/image/cards/"+card[0]+".jpg")
     tmp=pygame.transform.scale(tmp, (500, 720))
     screen.blit(tmp, (110,140))
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def cardmenu(screen,key):
@@ -669,7 +669,7 @@ def cardmenu(screen,key):
         pygame.draw.rect(screen, (0,191,255), pygame.Rect(630,145+80*i,780,70))
         gTxt = font.render(txt, True, (255,255,255))
         screen.blit(gTxt, [640,155+80*i])
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def lr(screen):
@@ -680,7 +680,7 @@ def lr(screen):
     pygame.draw.rect(screen, (0,0,255), pygame.Rect(1370,590,70,300))
     gTxt = font.render("←", True, (255,255,255))
     screen.blit(gTxt, [1380,715])
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def rect(screen,flag):
@@ -690,7 +690,7 @@ def rect(screen,flag):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [1417,107])
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def cardinfo2(card,screen):
@@ -1377,7 +1377,7 @@ def printcards(tmp,screen,mode,cards,flag):
                 screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+84+height*3))
             else:
                 screen.blit(t[i], (base[0]+10*(i%6+1)+w*(i%6),base[1]+40+height*3))
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def info(save,screen,debug):
@@ -1628,7 +1628,7 @@ def sshield(screen):
         img2 = pygame.transform.scale(img2, (width, height))
         screen.blit(img, ((downbase[0]-110)-width*i, downbase[1]))
         screen.blit(img2, ((upbase[0]+110)+width*i, upbase[1]))
-        pygame.display.update()
+        pygame.display.flip()
         time.sleep(0.5)
 
 #表向きカードが考慮されていませんよ
@@ -1643,7 +1643,7 @@ def shield(screen,flag,save):
         for i in range(len(save[3])):
             img2 = pygame.transform.scale(img2, (width, height))
             screen.blit(img2, ((upbase[0]+110)+width*i, upbase[1]))
-    pygame.display.update()
+    pygame.display.flip()
 
 def recover(save,screen,flag):
     screen.fill(fieldcolor)
@@ -1661,7 +1661,7 @@ def recover(save,screen,flag):
         menu(screen)
     else:
         emenu(screen)
-    pygame.display.update()
+    pygame.display.flip()
     return
 
 def deckinfo(save,flag,screen,debug):
@@ -1674,7 +1674,7 @@ def deckinfo(save,flag,screen,debug):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [downbase[0]+77,downbase[1]+107])
-        pygame.display.update()
+        pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1693,7 +1693,7 @@ def deckinfo(save,flag,screen,debug):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [upbase[0]+77,upbase[1]+107])
-        pygame.display.update()
+        pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1715,7 +1715,7 @@ def grdeckinfo(save,flag,screen,debug):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [downbase[0]+2*width+97,downbase[1]+117+height])
-        pygame.display.update()
+        pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1734,7 +1734,7 @@ def grdeckinfo(save,flag,screen,debug):
         font = pygame.font.SysFont("msgothic", 25)
         gTxt = font.render("×", True, (255,255,255))
         screen.blit(gTxt, [upbase[0]+57-2*width,upbase[1]-height+97])
-        pygame.display.update()
+        pygame.display.flip()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1788,7 +1788,7 @@ def decklist(screen,flag,advance,deckimg):
         img = pygame.image.load(Pass)
         img = pygame.transform.scale(img, card)
         screen.blit(img, (850+card[0]*(i%div), 180+card[1]*(i//div)))
-    pygame.display.update()
+    pygame.display.flip()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -1831,7 +1831,7 @@ def decklist(screen,flag,advance,deckimg):
                         img = pygame.image.load(Pass)
                         img = pygame.transform.scale(img, card)
                         screen.blit(img, (850+card[0]*(i%div), 180+card[1]*(i//div)))
-                    pygame.display.update()
+                    pygame.display.flip()
 
 def choose(screen,message):
     rect(screen,False)
@@ -1864,7 +1864,7 @@ def choose(screen,message):
     for i in range(len(tmp)):
         gTxt = font.render(tmp[i], True, (255,255,255))
         screen.blit(gTxt, [base[0]+20,base[1]+10*(i+1)+50*i])
-    pygame.display.update()
+    pygame.display.flip()
     while True:
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -1955,7 +1955,7 @@ def number(screen,message):
     for i in range(len(tmp)):
         gTxt = font.render(tmp[i], True, (255,255,255))
         screen.blit(gTxt, [base[0]+20,base[1]+10*(i+1)+50*i])
-    pygame.display.update()
+    pygame.display.flip()
     font = pygame.font.SysFont("msgothic", 100)
     while True:
         for event in pygame.event.get():
@@ -1971,34 +1971,34 @@ def number(screen,message):
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+140<x<=base[0]+260:
                         if n!=-1:
                             n=n*10+2
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+260<x<=base[0]+380:
                         if n!=-1:
                             n=n*10+3
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+380<x<=base[0]+500:
                         if n!=-1:
                             n=n*10+0
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+500<x<=base[0]+640:
                         n=0
                         pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                         gTxt = font.render(str(n), True, (255,255,255))
                         screen.blit(gTxt, [base[0]+660,base[1]+670])
-                        pygame.display.update()
+                        pygame.display.flip()
                 if base[1]+540<y<=base[1]+660:
                     if base[0]+20<=x<=base[0]+140:
                         if n!=-1:
@@ -2006,33 +2006,33 @@ def number(screen,message):
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+140<x<=base[0]+260:
                         if n!=-1:
                             n=n*10+5
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+260<x<=base[0]+380:
                         if n!=-1:
                             n=n*10+6
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+380<x<=base[0]+500:
                         n=-1
                         pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                         gTxt = font.render("∞", True, (255,255,255))
                         screen.blit(gTxt, [base[0]+660,base[1]+670])
-                        pygame.display.update()
+                        pygame.display.flip()
                     if base[0]+500<x<=base[0]+640:
                         n=random.randint(0,1000000)
                         pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                         gTxt = font.render(str(n), True, (255,255,255))
                         screen.blit(gTxt, [base[0]+660,base[1]+670])
-                        pygame.display.update()
+                        pygame.display.flip()
                 if base[1]+660<y<=base[1]+780:
                     if base[0]+20<=x<=base[0]+140:
                         if n!=-1:
@@ -2040,27 +2040,27 @@ def number(screen,message):
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+140<x<=base[0]+260:
                         if n!=-1:
                             n=n*10+8
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+260<x<=base[0]+380:
                         if n!=-1:
                             n=n*10+9
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+380<x<=base[0]+500:
                         if n!=-1:
                             pygame.draw.rect(screen, (0,255,0), pygame.Rect(base[0]+650,base[1]+660,680,120))
                             gTxt = font.render(str(n), True, (255,255,255))
                             screen.blit(gTxt, [base[0]+660,base[1]+670])
-                            pygame.display.update()
+                            pygame.display.flip()
                     if base[0]+500<x<=base[0]+640:
                         return n
 

@@ -1,2 +1,4 @@
-GUI/game/__pycache__/
-GUI/__pycache__/
+**/__pycache__/**
+/dmmemo.txt
+/fonts.txt
+/uv.lock

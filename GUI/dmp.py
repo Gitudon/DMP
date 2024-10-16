@@ -29,13 +29,13 @@ def main():
     #デッキのリスト01、シールドのリスト23、手札のリスト45、マナのリスト67、バトルゾーンのリスト89、墓地のリスト1011、超次元ゾーンのリスト1213、GRゾーンのリスト1415
     save=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
     screen.fill(fieldcolor)
-    pygame.display.update()
+    pygame.display.flip()
     advance=choose(screen,"フォーマットはアドバンスにしますか？")
     screen.fill(fieldcolor)
-    pygame.display.update()
+    pygame.display.flip()
     mode=choose(screen,"簡易モードで実行しますか？")
     screen.fill(fieldcolor)
-    pygame.display.update()
+    pygame.display.flip()
     logger=[]
     deckimg=[]
     deck_max=100
@@ -94,9 +94,9 @@ def main():
         save[15]=Shuffle(save[15])
     # print(save,file=codecs.open('GUI/etc/out/savelog.txt','w','utf-8'))
     screen.fill(fieldcolor)
-    pygame.display.update()
+    pygame.display.flip()
     deck(screen,save[0],save[1])
-    pygame.display.update()
+    pygame.display.flip()
     time.sleep(1)
     dimension(screen,save[12],save[13])
     if len(save[12])>0 or len(save[13])>0:
@@ -251,7 +251,7 @@ def Easy(save,screen):
                     #相手側GRゾーン
                     elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
                         grdeckinfo(save,False,screen,debug)
-            pygame.display.update()
+            pygame.display.flip()
 
 #デュエル実行
 def Duel(save,screen,log):
@@ -376,7 +376,7 @@ def Duel(save,screen,log):
                     #相手側GRゾーン
                     elif upbase[0]-20-2*width<=x<=upbase[0]-20-width:
                         grdeckinfo(save,False,screen,debug)
-            pygame.display.update()
+            pygame.display.flip()
 
 if __name__=="__main__":
     main()

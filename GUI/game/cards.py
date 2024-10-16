@@ -5,6 +5,7 @@ import sys
 import json
 import pickle
 from game import func
+from game import auto
 
 #定数の設定
 width=100
@@ -13,6 +14,28 @@ field=(1550,900)
 fieldcolor=(0,200,0)
 upbase=(230, 155)
 downbase=(920, 602)
+
+def r_c_001():
+    return
+
+def r_c_002(save,flag):
+    return
+
+def r_c_003():
+    return
+
+def r_c_004():
+    return
+
+def r_c_005(save,flag,mode,screen):
+    if mode=="cip":
+        # バトル効果
+        battle=func.choose(screen,"バトル効果を発動しますか？")
+        return
+
+def r_c_006():
+    # auto.gachinko_judge()
+    return
 
 def r_c_010(save,flag,mode):
     if mode=="cip":
